@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="SHOP.CO ecommerce homepage" />
+    <title>SHOP.CO</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Anton&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./css/styles.css" />
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to content</a>
+
+    <div class="announcement" data-announcement>
+      <p class="announcement__text" data-announcement-text></p>
+    </div>
+
+    <header class="header">
+      <div class="container header__inner">
+        <button class="icon-btn menu-btn" aria-label="Open menu" data-menu-btn>
+          <span></span><span></span><span></span>
+        </button>
+
+        <a href="#" class="logo" aria-label="SHOP.CO home">SHOP.CO</a>
+
+        <div class="header__center">
+          <nav class="mobile-nav" data-mobile-nav>
+            <a href="#new-arrivals">New Arrivals</a>
+            <a href="./settings.html">Settings</a>
+          </nav>
+        </div>
+
+        <div class="header__tools">
+          <button class="icon-btn" aria-label="Search" data-search-open>
+            <svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><path d="M10.5 18a7.5 7.5 0 1 1 0-15 7.5 7.5 0 0 1 0 15Z"></path><path d="M16.2 16.2 21 21"></path></svg>
+          </button>
+          <button class="icon-btn icon-btn--count" aria-label="Cart" data-cart-open>
+            <svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><path d="M7 7h14l-2 10H8L6 3H3"></path><circle cx="9.5" cy="20" r="1"></circle><circle cx="17.5" cy="20" r="1"></circle></svg>
+            <span class="badge" data-cart-count></span>
+          </button>
+          <a class="icon-btn" href="./settings.html" aria-label="Settings">
+            <svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><path d="M12 9v6"></path><path d="M9 12h6"></path><circle cx="12" cy="12" r="9"></circle></svg>
+          </a>
+        </div>
+      </div>
+    </header>
+
+    <div class="search-modal" data-search-modal aria-hidden="true">
+      <button class="search-modal__overlay" aria-label="Close search" data-search-close></button>
+      <div class="search-modal__panel" role="dialog" aria-modal="true" aria-label="Search products">
+        <div class="search-modal__head">
+          <strong>Search</strong>
+          <button class="icon-btn" aria-label="Close search" data-search-close>
+            <svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"></path></svg>
+          </button>
+        </div>
+        <input class="search-input" type="search" placeholder="Search products" data-search-input />
+        <div class="search-results" data-search-results></div>
+      </div>
+    </div>
+
+    <div class="cart-drawer" data-cart-drawer aria-hidden="true">
+      <button class="cart-drawer__overlay" aria-label="Close cart" data-cart-close></button>
+      <aside class="cart-drawer__panel" role="dialog" aria-modal="true" aria-label="Cart">
+        <div class="cart-drawer__head">
+          <strong>Cart</strong>
+          <button class="icon-btn" aria-label="Close cart" data-cart-close>
+            <svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"></path></svg>
+          </button>
+        </div>
+        <div class="cart-items" data-cart-items></div>
+      </aside>
+    </div>
+
+    <main id="main">
+      <section class="hero container" data-hero>
+        <div class="hero__content" data-reveal>
+          <h1 data-hero-heading></h1>
+          <p data-hero-subheading></p>
+          <a href="#new-arrivals" class="hero__btn" data-hero-button></a>
+
+          <ul class="stats" data-stats></ul>
+        </div>
+
+        <div class="hero__media" data-reveal>
+          <img src="" alt="Model" data-hero-image />
+          <span class="hero__star hero__star--one"></span>
+          <span class="hero__star hero__star--two"></span>
+        </div>
+      </section>
+
+      <section class="brands" data-reveal>
+        <div class="container brands__row" data-brands></div>
+      </section>
+
+      <section id="new-arrivals" class="arrivals container" data-reveal>
+        <h2 class="arrivals__title" data-arrivals-title></h2>
+        <div class="products" data-products></div>
+        <button class="view-all" type="button" data-view-all></button>
+      </section>
+    </main>
+
+    <script src="./js/main.js" defer></script>
+  </body>
+</html>

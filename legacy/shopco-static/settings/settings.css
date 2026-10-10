@@ -1,0 +1,221 @@
+:root {
+  --bg: #f2f2f2;
+  --surface: #ffffff;
+  --line: #e7e7e7;
+  --text: #101010;
+  --muted: #646464;
+  --accent: #000000;
+  --danger: #d64040;
+  --font-head: "Anton", "Arial Black", sans-serif;
+  --font-body: "Plus Jakarta Sans", Arial, sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background: radial-gradient(circle at 10% 0%, #ffffff 0%, #f2f2f2 50%, #ececec 100%);
+  color: var(--text);
+  font-family: var(--font-body);
+  min-height: 100vh;
+}
+
+.settings-wrap {
+  width: min(1020px, calc(100% - 26px));
+  margin: 14px auto 22px;
+}
+
+.back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: #111;
+  text-decoration: none;
+  border: 1px solid var(--line);
+  background: #fff;
+  border-radius: 999px;
+  padding: 7px 12px;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.back-link:hover {
+  background: #f7f7f7;
+}
+
+.settings-card {
+  margin-top: 10px;
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 14px;
+  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.07);
+}
+
+.settings-card h1 {
+  margin: 0;
+  font-family: var(--font-head);
+  font-size: 36px;
+  letter-spacing: -0.5px;
+}
+
+.settings-card > p {
+  margin: 6px 0 0;
+  color: var(--muted);
+  font-size: 12px;
+}
+
+form {
+  margin-top: 12px;
+  display: grid;
+  gap: 10px;
+}
+
+fieldset {
+  margin: 0;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 10px;
+  display: grid;
+  gap: 8px;
+}
+
+legend {
+  font-size: 12px;
+  padding: 0 4px;
+  color: #333;
+  font-weight: 700;
+}
+
+label {
+  display: grid;
+  gap: 5px;
+  font-size: 12px;
+  color: #2e2e2e;
+}
+
+input,
+textarea {
+  border: 1px solid var(--line);
+  border-radius: 9px;
+  padding: 10px 10px;
+  font-size: 13px;
+  font-family: inherit;
+  background: #fff;
+}
+
+input:focus,
+textarea:focus {
+  outline: 2px solid #d7d7d7;
+  outline-offset: 1px;
+}
+
+.editor-list {
+  display: grid;
+  gap: 8px;
+}
+
+.editor-item {
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 8px;
+  display: grid;
+  gap: 8px;
+}
+
+.editor-item__head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.editor-item__head strong {
+  font-size: 12px;
+}
+
+.remove-btn {
+  border: 0;
+  background: #ffe8ea;
+  color: #952c44;
+  font-size: 11px;
+  border-radius: 999px;
+  height: 26px;
+  min-width: 72px;
+  cursor: pointer;
+}
+
+.ghost-btn,
+.primary-btn,
+.danger-btn {
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  min-height: 36px;
+  padding: 0 14px;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.ghost-btn {
+  background: #fff;
+}
+
+.primary-btn {
+  border-color: #000;
+  background: #000;
+  color: #fff;
+}
+
+.danger-btn {
+  background: #fff4f4;
+  color: #a32f2f;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.status {
+  margin: 0;
+  font-size: 12px;
+  min-height: 18px;
+  color: #2f6d3d;
+}
+
+@media (min-width: 900px) {
+  .settings-wrap {
+    margin-top: 24px;
+  }
+
+  .settings-card {
+    border-radius: 18px;
+    padding: 20px;
+  }
+
+  .settings-card h1 {
+    font-size: 52px;
+  }
+
+  .settings-card > p {
+    font-size: 14px;
+  }
+
+  fieldset {
+    padding: 12px;
+  }
+
+  .grid-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+}

@@ -1,0 +1,10 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Plus Jakarta Sans", ui-sans-serif, system-ui, sans-serif;
+  --font-family-display: Anton, ui-sans-serif, system-ui, sans-serif;
+}
+
+body {
+  @apply bg-neutral-50 text-neutral-900 antialiased;
+}

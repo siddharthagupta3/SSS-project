@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Settings | SHOP.CO</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Anton&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./settings/settings.css" />
+  </head>
+  <body>
+    <main class="settings-wrap">
+      <a class="back-link" href="./index.html">Back to Homepage</a>
+      <section class="settings-card">
+        <h1>CMS Settings</h1>
+        <p>Update homepage content and save to local storage.</p>
+
+        <form data-settings-form>
+          <fieldset>
+            <legend>Announcement</legend>
+            <label>
+              Text
+              <input type="text" data-announcement-input required />
+            </label>
+          </fieldset>
+
+          <fieldset>
+            <legend>Hero</legend>
+            <label>Image path<input type="text" data-hero-image-input required /></label>
+            <label>Heading<textarea rows="2" data-hero-heading-input required></textarea></label>
+            <label>Subheading<textarea rows="3" data-hero-subheading-input required></textarea></label>
+            <label>Button text<input type="text" data-hero-button-input required /></label>
+          </fieldset>
+
+          <fieldset>
+            <legend>Brand logos</legend>
+            <div data-brands-editor></div>
+            <button type="button" class="ghost-btn" data-add-brand>Add Brand</button>
+          </fieldset>
+
+          <fieldset>
+            <legend>Products</legend>
+            <div data-products-editor></div>
+            <button type="button" class="ghost-btn" data-add-product>Add Product</button>
+          </fieldset>
+
+          <div class="actions">
+            <button type="submit" class="primary-btn">Save Changes</button>
+            <button type="button" class="danger-btn" data-reset-defaults>Reset Defaults</button>
+          </div>
+          <p class="status" data-status aria-live="polite"></p>
+        </form>
+      </section>
+    </main>
+
+    <script src="./settings/settings.js" defer></script>
+  </body>
+</html>
