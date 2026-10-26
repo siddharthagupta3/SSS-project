@@ -1,0 +1,76 @@
+const express = require('express');
+const cors = require('cors');
+const helmet = require('helmet');
+const morgan = require('morgan');
+const dotenv = require('dotenv');
+
+// Load environment variables
+dotenv.config();
+
+// Import error middleware
+const { notFound, errorHandler } = require('./middleware/errorMiddleware');
+
+const app = express();
+
+// Security Middlewares
+app.use(helmet());
+
+// CORS Configuration
+const allowedOrigin = process.env.CLIENT_URL || 'http://localhost:5173';
+app.use(
+  cors({
+    origin: (origin, callback) => {
+      // Allow requests with no origin (like mobile apps, curl, Postman) or matching origin
+      if (!origin || origin === allowedOrigin || origin === 'http://localhost:5173') {
+        callback(null, true);
+      } else {
+        callback(new Error(`CORS blocked request from origin: ${origin}`));
+      }
+    },
+    credentials: true,
+  })
+);
+
+// Body Parsers
+app.use(express.json({ limit: '10mb' }));
+app.use(express.urlencoded({ extended: true, limit: '10mb' }));
+
+// Development Logging
+if (process.env.NODE_ENV === 'development') {
+  app.use(morgan('dev'));
+}
+
+// Base / Health Check Route
+app.get('/api/health', (req, res) => {
+  res.status(200).json({
+    success: true,
+    message: 'SSS E-Commerce API is running smoothly',
+    timestamp: new Date().toISOString(),
+    environment: process.env.NODE_ENV || 'development',
+  });
+});
+
+// Root Welcome Route
+app.get('/', (req, res) => {
+  res.send('<h1>SSS E-Commerce API is Live</h1><p>Visit /api/health for system status.</p>');
+});
+
+// Placeholder for future routes (mounted in subsequent steps)
+// app.use('/api/auth', authRoutes);
+// app.use('/api/products', productRoutes);
+// app.use('/api/cart', cartRoutes);
+// app.use('/api/orders', orderRoutes);
+// app.use('/api/payment', paymentRoutes);
+// app.use('/api/admin', adminRoutes);
+
+// Error Handling Middlewares (must be registered after all routes)
+app.use(notFound);
+app.use(errorHandler);
+
+const PORT = process.env.PORT || 5000;
+
+app.listen(PORT, () => {
+  console.log(`🚀 SSS E-Commerce Server running on http://localhost:${PORT} in ${process.env.NODE_ENV || 'development'} mode`);
+});
+
+module.exports = app;
