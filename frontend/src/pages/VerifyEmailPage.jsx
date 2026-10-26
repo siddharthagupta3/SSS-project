@@ -99,13 +99,6 @@ const VerifyEmailPage = () => {
           </div>
         )}
 
-        {/* Development Quick Helper Box */}
-        {initialDevOtp && (
-          <div className="bg-amber-50 border border-amber-200 rounded-xl p-2.5 text-xs text-amber-800">
-            <span className="font-bold">⚡ Dev Mode OTP:</span> <span className="font-mono text-sm font-black">{initialDevOtp}</span>
-          </div>
-        )}
-
         <form onSubmit={handleVerify} className="space-y-6">
           <div>
             <label className="block text-xs font-semibold text-neutral-600 mb-2">

@@ -45,6 +45,18 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
+  const loginWithGoogle = async (googlePayload) => {
+    const res = await api.post('/api/auth/google', googlePayload);
+    if (res.data.success) {
+      const userData = res.data.data;
+      setUser(userData);
+      setToken(userData.token);
+      localStorage.setItem('sss_token', userData.token);
+      localStorage.setItem('sss_user', JSON.stringify(userData));
+      return userData;
+    }
+  };
+
   const register = async (name, email, password) => {
     const res = await api.post('/api/auth/register', { name, email, password });
     if (res.data.success) {
@@ -99,6 +111,7 @@ export const AuthProvider = ({ children }) => {
         isEmailVerified: !!user?.isEmailVerified,
         isAdmin: user?.role === 'admin',
         login,
+        loginWithGoogle,
         register,
         verifyOTP,
         resendOTP,

@@ -44,6 +44,22 @@ const userSchema = new mongoose.Schema(
       type: Date,
       select: false,
     },
+    // Google OAuth Fields
+    googleId: {
+      type: String,
+      default: '',
+    },
+    avatar: {
+      type: String,
+      default: '',
+    },
+    // User Wishlist
+    wishlist: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Product',
+      },
+    ],
     // Detailed Indian Shipping Address
     address: {
       fullName: { type: String, default: '' },

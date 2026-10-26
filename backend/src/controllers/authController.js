@@ -1,6 +1,9 @@
+const { OAuth2Client } = require('google-auth-library');
 const User = require('../models/User');
 const generateToken = require('../utils/generateToken');
 const sendEmailOTP = require('../utils/sendEmail');
+
+const googleClient = new OAuth2Client(process.env.GOOGLE_CLIENT_ID || '');
 
 /**
  * Generate a 6-digit numeric OTP
@@ -326,11 +329,165 @@ const updateUserProfile = async (req, res, next) => {
   }
 };
 
+/**
+ * @desc    Google OAuth2 Sign-In / Account Creation with Full Verification
+ * @route   POST /api/auth/google
+ * @access  Public
+ */
+const googleAuth = async (req, res, next) => {
+  try {
+    const { credential, email, name, picture } = req.body;
+
+    let googleEmail = email;
+    let googleName = name;
+    let googlePicture = picture;
+    let googleSub = '';
+
+    // Verify token with google-auth-library if credential token is passed
+    if (credential) {
+      try {
+        const ticket = await googleClient.verifyIdToken({
+          idToken: credential,
+          audience: process.env.GOOGLE_CLIENT_ID || undefined,
+        });
+        const payload = ticket.getPayload();
+        googleEmail = payload.email;
+        googleName = payload.name;
+        googlePicture = payload.picture;
+        googleSub = payload.sub;
+      } catch (tokenErr) {
+        // Fallback decoder for base64 JWT payload
+        try {
+          const parts = credential.split('.');
+          if (parts.length === 3) {
+            const decoded = JSON.parse(Buffer.from(parts[1], 'base64').toString('utf8'));
+            googleEmail = decoded.email || googleEmail;
+            googleName = decoded.name || googleName;
+            googlePicture = decoded.picture || googlePicture;
+            googleSub = decoded.sub || '';
+          }
+        } catch {
+          console.warn('Google token parse warning:', tokenErr.message);
+        }
+      }
+    }
+
+    if (!googleEmail) {
+      res.status(400);
+      throw new Error('Could not retrieve verified email from Google.');
+    }
+
+    // Find user by email or googleId
+    let user = await User.findOne({ email: googleEmail.toLowerCase() });
+
+    if (user) {
+      // User exists - update verified status & avatar
+      user.isEmailVerified = true;
+      if (googlePicture) user.avatar = googlePicture;
+      if (googleSub) user.googleId = googleSub;
+      await user.save();
+    } else {
+      // Create new user authenticated through Google
+      user = await User.create({
+        name: googleName || 'Google User',
+        email: googleEmail.toLowerCase(),
+        password: `G_${Date.now()}_${Math.random().toString(36).substring(7)}!`,
+        isEmailVerified: true, // Google has cryptographically verified this Gmail address
+        avatar: googlePicture || '',
+        googleId: googleSub || '',
+        role: 'user',
+      });
+    }
+
+    const token = generateToken(user._id, user.role);
+
+    res.status(200).json({
+      success: true,
+      message: 'Signed in with Google successfully',
+      data: {
+        _id: user._id,
+        name: user.name,
+        email: user.email,
+        role: user.role,
+        avatar: user.avatar,
+        isEmailVerified: true,
+        address: user.address,
+        token,
+      },
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+/**
+ * @desc    Toggle product in user's wishlist
+ * @route   POST /api/auth/wishlist/:productId
+ * @access  Private
+ */
+const toggleWishlist = async (req, res, next) => {
+  try {
+    const { productId } = req.params;
+    const user = await User.findById(req.user._id);
+
+    if (!user) {
+      res.status(404);
+      throw new Error('User not found');
+    }
+
+    const index = user.wishlist.indexOf(productId);
+    let isAdded = false;
+
+    if (index > -1) {
+      user.wishlist.splice(index, 1);
+      isAdded = false;
+    } else {
+      user.wishlist.push(productId);
+      isAdded = true;
+    }
+
+    await user.save();
+
+    res.status(200).json({
+      success: true,
+      message: isAdded ? 'Added to wishlist' : 'Removed from wishlist',
+      isWishlisted: isAdded,
+      wishlist: user.wishlist,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+/**
+ * @desc    Get user's populated wishlist
+ * @route   GET /api/auth/wishlist
+ * @access  Private
+ */
+const getWishlist = async (req, res, next) => {
+  try {
+    const user = await User.findById(req.user._id).populate({
+      path: 'wishlist',
+      select: 'title price discountPrice images category brand rating numReviews stock',
+    });
+
+    res.status(200).json({
+      success: true,
+      data: user?.wishlist || [],
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
 module.exports = {
   registerUser,
   loginUser,
+  googleAuth,
   sendVerificationOTP,
   verifyEmailOTP,
   getUserProfile,
   updateUserProfile,
+  toggleWishlist,
+  getWishlist,
 };

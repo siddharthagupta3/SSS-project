@@ -9,6 +9,7 @@ const {
   createProduct,
   updateProduct,
   deleteProduct,
+  createProductReview,
 } = require('../controllers/productController');
 
 const { verifyToken, requireAdmin } = require('../middleware/authMiddleware');
@@ -18,6 +19,9 @@ router.get('/', getProducts);
 router.get('/featured', getFeaturedProducts);
 router.get('/categories', getProductCategories);
 router.get('/:id', getProductById);
+
+// Customer review route
+router.post('/:id/reviews', verifyToken, createProductReview);
 
 // Admin-only management routes
 router.post('/', verifyToken, requireAdmin, createProduct);

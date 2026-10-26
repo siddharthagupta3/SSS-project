@@ -240,14 +240,19 @@ const CheckoutPage = () => {
         </div>
       </div>
 
-      {/* Razorpay Test Mode Alert */}
-      <div className="bg-amber-50 border border-amber-200 rounded-2xl p-4 mb-8 flex items-start gap-3">
-        <span className="text-xl">💳</span>
-        <div className="text-xs text-amber-900">
-          <p className="font-bold">Razorpay Test Mode Active</p>
-          <p className="mt-0.5 text-amber-700">
-            This checkout uses Razorpay Test Mode. You can test with test cards, UPI, or instant simulation without real money deduction.
-          </p>
+      {/* Flipkart-Style Trust Badges */}
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-8 text-xs font-semibold text-neutral-700">
+        <div className="bg-neutral-50 border border-neutral-200 rounded-2xl p-3 flex items-center gap-2.5">
+          <ShieldCheckIcon className="w-5 h-5 text-emerald-600 shrink-0" />
+          <span>100% Safe & Secure Payment</span>
+        </div>
+        <div className="bg-neutral-50 border border-neutral-200 rounded-2xl p-3 flex items-center gap-2.5">
+          <TruckIcon className="w-5 h-5 text-blue-600 shrink-0" />
+          <span>Tracked Express Courier Delivery</span>
+        </div>
+        <div className="bg-neutral-50 border border-neutral-200 rounded-2xl p-3 flex items-center gap-2.5">
+          <CheckIcon className="w-5 h-5 text-purple-600 shrink-0" />
+          <span>7-Day Replacement Guarantee</span>
         </div>
       </div>
 

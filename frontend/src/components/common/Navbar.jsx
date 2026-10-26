@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import { useCart } from '../../context/CartContext';
+import { useWishlist } from '../../context/WishlistContext';
 import {
   SearchIcon,
   ShoppingBagIcon,
@@ -9,11 +10,13 @@ import {
   MenuIcon,
   CloseIcon,
   CheckIcon,
+  HeartIcon,
 } from './Icons';
 
 const Navbar = () => {
   const { user, isAuthenticated, isAdmin, logout } = useAuth();
   const { cartCount } = useCart();
+  const { wishlistCount } = useWishlist();
   const navigate = useNavigate();
 
   const [keyword, setKeyword] = useState('');
@@ -120,13 +123,23 @@ const Navbar = () => {
           </form>
 
           {/* Action Icons */}
-          <div className="flex items-center space-x-4">
+          <div className="flex items-center space-x-3">
             
+            {/* Wishlist Icon */}
+            <Link to="/wishlist" className="relative p-2 text-neutral-800 hover:text-red-500 transition" title="Wishlist">
+              <HeartIcon className="w-5 h-5" />
+              {wishlistCount > 0 && (
+                <span className="absolute top-0 right-0 bg-red-500 text-white text-[10px] font-bold rounded-full h-4 w-4 flex items-center justify-center">
+                  {wishlistCount}
+                </span>
+              )}
+            </Link>
+
             {/* Cart Icon */}
-            <Link to="/cart" className="relative p-2 text-neutral-800 hover:text-black transition">
-              <ShoppingBagIcon className="w-6 h-6" />
+            <Link to="/cart" className="relative p-2 text-neutral-800 hover:text-black transition" title="Shopping Bag">
+              <ShoppingBagIcon className="w-5 h-5" />
               {cartCount > 0 && (
-                <span className="absolute top-0 right-0 bg-black text-white text-[11px] font-bold rounded-full h-5 w-5 flex items-center justify-center">
+                <span className="absolute top-0 right-0 bg-black text-white text-[10px] font-bold rounded-full h-4 w-4 flex items-center justify-center">
                   {cartCount > 99 ? '99+' : cartCount}
                 </span>
               )}
@@ -180,6 +193,14 @@ const Navbar = () => {
                       className="block px-4 py-2 text-sm text-neutral-700 hover:bg-neutral-50"
                     >
                       My Orders
+                    </Link>
+
+                    <Link
+                      to="/wishlist"
+                      onClick={() => setUserDropdownOpen(false)}
+                      className="block px-4 py-2 text-sm text-neutral-700 hover:bg-neutral-50"
+                    >
+                      My Wishlist ({wishlistCount})
                     </Link>
 
                     {isAdmin && (
