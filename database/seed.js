@@ -1,5 +1,8 @@
-const mongoose = require('mongoose');
 const path = require('path');
+// Add backend/node_modules to lookup paths so mongoose, bcryptjs and dotenv can be required from root or database
+module.paths.push(path.join(__dirname, '../backend/node_modules'));
+
+const mongoose = require('mongoose');
 const dotenv = require('dotenv');
 
 // Load environment from backend/.env
