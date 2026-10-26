@@ -8,6 +8,7 @@ import {
   UserIcon,
   MenuIcon,
   CloseIcon,
+  CheckIcon,
 } from './Icons';
 
 const Navbar = () => {
@@ -36,9 +37,44 @@ const Navbar = () => {
 
   return (
     <header className="sticky top-0 z-50 bg-white border-b border-neutral-200">
-      {/* Top Banner */}
-      <div className="bg-black text-white text-xs py-2 text-center font-medium px-4">
-        Sign up and get 20% off your first order. Use code <span className="underline font-bold">SHOP10</span>
+      {/* Moving Announcement Ticker (Left to Right continuous marquee) */}
+      <div className="bg-black text-white text-xs py-2 overflow-hidden border-b border-neutral-900 select-none">
+        <div className="animate-marquee-ltr flex items-center space-x-12 whitespace-nowrap">
+          <span className="flex items-center gap-2">
+            <span className="text-amber-400">⚡</span>
+            <span>SIGN UP AND GET 20% OFF YOUR FIRST ORDER • USE CODE: <strong className="underline tracking-wider">SHOP10</strong></span>
+          </span>
+          <span className="flex items-center gap-2">
+            <span className="text-emerald-400">📦</span>
+            <span>FREE DELIVERY ALL OVER INDIA ON ORDERS ABOVE ₹999</span>
+          </span>
+          <span className="flex items-center gap-2">
+            <span className="text-blue-400">🔒</span>
+            <span>100% SECURE CHECKOUT WITH RAZORPAY & INSTANT GMAIL VERIFICATION</span>
+          </span>
+          <span className="flex items-center gap-2">
+            <span className="text-purple-400">✨</span>
+            <span>NEW STREETWEAR & LUXURY DROP 2026 LIVE NOW</span>
+          </span>
+
+          {/* Duplicated for seamless infinite loop */}
+          <span className="flex items-center gap-2">
+            <span className="text-amber-400">⚡</span>
+            <span>SIGN UP AND GET 20% OFF YOUR FIRST ORDER • USE CODE: <strong className="underline tracking-wider">SHOP10</strong></span>
+          </span>
+          <span className="flex items-center gap-2">
+            <span className="text-emerald-400">📦</span>
+            <span>FREE DELIVERY ALL OVER INDIA ON ORDERS ABOVE ₹999</span>
+          </span>
+          <span className="flex items-center gap-2">
+            <span className="text-blue-400">🔒</span>
+            <span>100% SECURE CHECKOUT WITH RAZORPAY & INSTANT GMAIL VERIFICATION</span>
+          </span>
+          <span className="flex items-center gap-2">
+            <span className="text-purple-400">✨</span>
+            <span>NEW STREETWEAR & LUXURY DROP 2026 LIVE NOW</span>
+          </span>
+        </div>
       </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -62,16 +98,18 @@ const Navbar = () => {
           <nav className="hidden md:flex items-center space-x-6 text-sm font-medium text-neutral-700">
             <Link to="/shop" className="hover:text-black transition">Shop</Link>
             <Link to="/shop?category=T-Shirts" className="hover:text-black transition">T-Shirts</Link>
+            <Link to="/shop?category=Shirts" className="hover:text-black transition">Shirts</Link>
             <Link to="/shop?category=Jeans" className="hover:text-black transition">Jeans</Link>
+            <Link to="/shop?category=Cargo Pants" className="hover:text-black transition">Cargo Pants</Link>
             <Link to="/shop?category=Jackets" className="hover:text-black transition">Jackets</Link>
-            <Link to="/shop?category=Shoes" className="hover:text-black transition">Shoes</Link>
+            <Link to="/shop?category=Watches" className="hover:text-black transition">Watches</Link>
           </nav>
 
           {/* Search Bar */}
           <form onSubmit={handleSearchSubmit} className="hidden sm:flex flex-1 max-w-md relative">
             <input
               type="text"
-              placeholder="Search for products, brands..."
+              placeholder="Search for products, brands, cargo..."
               value={keyword}
               onChange={(e) => setKeyword(e.target.value)}
               className="w-full bg-neutral-100 text-sm rounded-full py-2.5 pl-10 pr-4 text-neutral-800 placeholder-neutral-400 focus:outline-none focus:ring-2 focus:ring-black"
@@ -101,16 +139,39 @@ const Navbar = () => {
                   onClick={() => setUserDropdownOpen(!userDropdownOpen)}
                   className="flex items-center gap-2 p-1.5 rounded-full hover:bg-neutral-100 transition"
                 >
-                  <div className="w-8 h-8 rounded-full bg-neutral-900 text-white flex items-center justify-center font-bold text-sm">
-                    {user?.name?.charAt(0).toUpperCase() || 'U'}
+                  <div className="relative">
+                    <div className="w-8 h-8 rounded-full bg-neutral-900 text-white flex items-center justify-center font-bold text-sm">
+                      {user?.name?.charAt(0).toUpperCase() || 'U'}
+                    </div>
+                    {user?.isEmailVerified && (
+                      <span className="absolute -bottom-1 -right-1 bg-emerald-500 text-white rounded-full p-0.5" title="Verified Gmail Account">
+                        <CheckIcon className="w-2.5 h-2.5" />
+                      </span>
+                    )}
                   </div>
                 </button>
 
                 {userDropdownOpen && (
-                  <div className="absolute right-0 mt-2 w-56 bg-white rounded-xl shadow-xl border border-neutral-100 py-2 z-50">
+                  <div className="absolute right-0 mt-2 w-64 bg-white rounded-2xl shadow-2xl border border-neutral-100 py-2 z-50">
                     <div className="px-4 py-2 border-b border-neutral-100">
                       <p className="text-sm font-semibold text-neutral-900 truncate">{user?.name}</p>
                       <p className="text-xs text-neutral-500 truncate">{user?.email}</p>
+                      <div className="mt-1.5">
+                        {user?.isEmailVerified ? (
+                          <span className="inline-flex items-center gap-1 text-[11px] font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full">
+                            <CheckIcon className="w-3 h-3" />
+                            <span>Gmail Verified</span>
+                          </span>
+                        ) : (
+                          <Link
+                            to="/verify-email"
+                            onClick={() => setUserDropdownOpen(false)}
+                            className="inline-flex items-center gap-1 text-[11px] font-bold text-amber-700 bg-amber-50 px-2 py-0.5 rounded-full hover:underline"
+                          >
+                            <span>⚠️ Verify Gmail (Enter OTP)</span>
+                          </Link>
+                        )}
+                      </div>
                     </div>
 
                     <Link
@@ -173,9 +234,11 @@ const Navbar = () => {
           <nav className="flex flex-col space-y-3 font-medium text-neutral-700">
             <Link to="/shop" onClick={() => setMobileMenuOpen(false)} className="hover:text-black">All Shop</Link>
             <Link to="/shop?category=T-Shirts" onClick={() => setMobileMenuOpen(false)} className="hover:text-black">T-Shirts</Link>
+            <Link to="/shop?category=Shirts" onClick={() => setMobileMenuOpen(false)} className="hover:text-black">Shirts</Link>
             <Link to="/shop?category=Jeans" onClick={() => setMobileMenuOpen(false)} className="hover:text-black">Jeans</Link>
+            <Link to="/shop?category=Cargo Pants" onClick={() => setMobileMenuOpen(false)} className="hover:text-black">Cargo Pants</Link>
             <Link to="/shop?category=Jackets" onClick={() => setMobileMenuOpen(false)} className="hover:text-black">Jackets</Link>
-            <Link to="/shop?category=Shoes" onClick={() => setMobileMenuOpen(false)} className="hover:text-black">Shoes</Link>
+            <Link to="/shop?category=Watches" onClick={() => setMobileMenuOpen(false)} className="hover:text-black">Watches</Link>
             {isAdmin && (
               <Link to="/admin" onClick={() => setMobileMenuOpen(false)} className="text-emerald-700 font-semibold">
                 Admin Panel

@@ -34,6 +34,8 @@ const productSchema = new mongoose.Schema(
         'Shoes',
         'Accessories',
         'Hoodies',
+        'Cargo Pants',
+        'Watches',
       ],
       trim: true,
     },

@@ -57,6 +57,21 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
+  const verifyOTP = async (email, otp) => {
+    const res = await api.post('/api/auth/verify-otp', { email, otp });
+    if (res.data.success) {
+      const updatedUser = { ...user, isEmailVerified: true };
+      setUser(updatedUser);
+      localStorage.setItem('sss_user', JSON.stringify(updatedUser));
+      return res.data;
+    }
+  };
+
+  const resendOTP = async (email) => {
+    const res = await api.post('/api/auth/send-otp', { email: email || user?.email });
+    return res.data;
+  };
+
   const logout = () => {
     setUser(null);
     setToken(null);
@@ -81,9 +96,12 @@ export const AuthProvider = ({ children }) => {
         token,
         loading,
         isAuthenticated: !!user,
+        isEmailVerified: !!user?.isEmailVerified,
         isAdmin: user?.role === 'admin',
         login,
         register,
+        verifyOTP,
+        resendOTP,
         logout,
         updateProfile,
       }}

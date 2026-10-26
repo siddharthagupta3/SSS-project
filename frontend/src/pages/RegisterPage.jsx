@@ -30,8 +30,14 @@ const RegisterPage = () => {
 
     setLoading(true);
     try {
-      await register(name, email, password);
-      navigate('/shop');
+      const userData = await register(name, email, password);
+      // Navigate to Gmail OTP verification
+      navigate('/verify-email', {
+        state: {
+          email,
+          devOtp: userData?.devOtp,
+        },
+      });
     } catch (err) {
       setError(err.response?.data?.message || err.message || 'Registration failed');
     } finally {

@@ -86,14 +86,47 @@ const HomePage = () => {
         </div>
       </section>
 
-      {/* Brand Strip */}
-      <section className="bg-black py-8">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-wrap justify-around items-center gap-8 text-white font-black text-xl sm:text-2xl tracking-widest uppercase opacity-80">
+      {/* Brand Strip - Left to Right Moving Animated Ticker */}
+      <section className="bg-black py-7 overflow-hidden select-none border-y border-neutral-800">
+        <div className="animate-marquee-ltr flex items-center space-x-14 text-white font-black text-2xl sm:text-3xl tracking-widest uppercase opacity-90 whitespace-nowrap">
           <span>VERSACE</span>
+          <span className="text-amber-400 text-lg">✦</span>
           <span>ZARA</span>
+          <span className="text-amber-400 text-lg">✦</span>
           <span>GUCCI</span>
+          <span className="text-amber-400 text-lg">✦</span>
           <span>PRADA</span>
+          <span className="text-amber-400 text-lg">✦</span>
           <span>Calvin Klein</span>
+          <span className="text-amber-400 text-lg">✦</span>
+          <span>NIKE</span>
+          <span className="text-amber-400 text-lg">✦</span>
+          <span>LEVI'S</span>
+          <span className="text-amber-400 text-lg">✦</span>
+          <span>ADIDAS</span>
+          <span className="text-amber-400 text-lg">✦</span>
+          <span>PUMA</span>
+          <span className="text-amber-400 text-lg">✦</span>
+
+          {/* Duplicate for seamless infinite loop */}
+          <span>VERSACE</span>
+          <span className="text-amber-400 text-lg">✦</span>
+          <span>ZARA</span>
+          <span className="text-amber-400 text-lg">✦</span>
+          <span>GUCCI</span>
+          <span className="text-amber-400 text-lg">✦</span>
+          <span>PRADA</span>
+          <span className="text-amber-400 text-lg">✦</span>
+          <span>Calvin Klein</span>
+          <span className="text-amber-400 text-lg">✦</span>
+          <span>NIKE</span>
+          <span className="text-amber-400 text-lg">✦</span>
+          <span>LEVI'S</span>
+          <span className="text-amber-400 text-lg">✦</span>
+          <span>ADIDAS</span>
+          <span className="text-amber-400 text-lg">✦</span>
+          <span>PUMA</span>
+          <span className="text-amber-400 text-lg">✦</span>
         </div>
       </section>
 

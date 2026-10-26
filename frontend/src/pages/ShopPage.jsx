@@ -9,10 +9,12 @@ const CATEGORIES = [
   'T-Shirts',
   'Shirts',
   'Jeans',
+  'Cargo Pants',
   'Jackets',
-  'Shoes',
-  'Accessories',
   'Hoodies',
+  'Shoes',
+  'Watches',
+  'Accessories',
 ];
 
 const ShopPage = () => {

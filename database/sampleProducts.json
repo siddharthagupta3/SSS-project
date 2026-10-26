@@ -37,6 +37,24 @@
     "isNewArrival": true
   },
   {
+    "title": "Graphic Backprint Anime Streetwear Tee",
+    "description": "Bold Japanese typography with vibrant cyberpunk graphic print. 100% combed cotton with dropped shoulders and reinforced seam stitching.",
+    "price": 1399,
+    "discountPrice": 999,
+    "category": "T-Shirts",
+    "brand": "NeoTokyo",
+    "stock": 30,
+    "images": [
+      "https://images.unsplash.com/photo-1576566588028-4147f3842f27?w=800&auto=format&fit=crop&q=80"
+    ],
+    "sizes": ["S", "M", "L", "XL"],
+    "colors": ["Pitch Black", "Off White"],
+    "rating": 4.7,
+    "numReviews": 95,
+    "isFeatured": false,
+    "isNewArrival": true
+  },
+  {
     "title": "Classic Oxford Button-Down Casual Shirt",
     "description": "Tailored from 100% breathable Oxford weave cotton. Features button-down collar and single chest pocket for both office and weekend wear.",
     "price": 2199,
@@ -111,6 +129,24 @@
     "isNewArrival": true
   },
   {
+    "title": "Multi-Pocket Tactical Cargo Pants",
+    "description": "Constructed from ripstop cotton with articulated knee gussets and 6 utilitarian cargo pockets. Elasticated cuffs with drawstring closure.",
+    "price": 3299,
+    "discountPrice": 2599,
+    "category": "Cargo Pants",
+    "brand": "TechGear",
+    "stock": 28,
+    "images": [
+      "https://images.unsplash.com/photo-1624378439575-d8705ad7ae80?w=800&auto=format&fit=crop&q=80"
+    ],
+    "sizes": ["30", "32", "34", "36"],
+    "colors": ["Military Olive", "Tactical Black", "Desert Khaki"],
+    "rating": 4.9,
+    "numReviews": 84,
+    "isFeatured": true,
+    "isNewArrival": true
+  },
+  {
     "title": "Rugged Sherpa-Lined Trucker Jacket",
     "description": "Heavy duty denim outer shell with warm faux-sherpa fleece interior lining. Dual flap chest pockets and adjustable waist tabs.",
     "price": 4999,
@@ -128,6 +164,24 @@
     "numReviews": 98,
     "isFeatured": true,
     "isNewArrival": false
+  },
+  {
+    "title": "Heavy Duty Corduroy Overshirt Jacket",
+    "description": "Wide wale 8-wale textured corduroy with brushed flannel lining. Antique brass snap buttons and tailored straight hem.",
+    "price": 3799,
+    "discountPrice": 2999,
+    "category": "Jackets",
+    "brand": "Urban Stitch",
+    "stock": 20,
+    "images": [
+      "https://images.unsplash.com/photo-1548883354-7622d03aca27?w=800&auto=format&fit=crop&q=80"
+    ],
+    "sizes": ["S", "M", "L", "XL"],
+    "colors": ["Tobacco Caramel", "Forest Emerald"],
+    "rating": 4.7,
+    "numReviews": 56,
+    "isFeatured": true,
+    "isNewArrival": true
   },
   {
     "title": "Lightweight Waterproof Windbreaker Bomber",
@@ -167,6 +221,24 @@
     "isNewArrival": true
   },
   {
+    "title": "Oversized Heavy Fleece Zip-Up Hoodie",
+    "description": "Boxy drop-shoulder cut with heavy two-way metal YKK zipper. Dual side welt pockets and extra deep hood for cozy streetwear layering.",
+    "price": 3199,
+    "discountPrice": 2499,
+    "category": "Hoodies",
+    "brand": "StreetCulture",
+    "stock": 35,
+    "images": [
+      "https://images.unsplash.com/photo-1578587018452-892bacefd3f2?w=800&auto=format&fit=crop&q=80"
+    ],
+    "sizes": ["M", "L", "XL"],
+    "colors": ["Washed Slate", "Oatmeal Melange"],
+    "rating": 4.8,
+    "numReviews": 73,
+    "isFeatured": false,
+    "isNewArrival": true
+  },
+  {
     "title": "Retro Low-Top Streetwear Sneakers",
     "description": "Premium full-grain leather upper with cushioned EVA midsole and vulcanized gum rubber outsole for all-day urban comfort.",
     "price": 4499,
@@ -182,6 +254,24 @@
     "colors": ["Triple White", "White / Navy"],
     "rating": 4.7,
     "numReviews": 145,
+    "isFeatured": true,
+    "isNewArrival": false
+  },
+  {
+    "title": "Suede Leather Chelsea Ankle Boots",
+    "description": "Handmade Italian calf suede leather with elasticated side gores and Goodyear-welted stacked crepe rubber sole.",
+    "price": 5499,
+    "discountPrice": 4299,
+    "category": "Shoes",
+    "brand": "Strider Heritage",
+    "stock": 16,
+    "images": [
+      "https://images.unsplash.com/photo-1638247025967-b4e38f787b76?w=800&auto=format&fit=crop&q=80"
+    ],
+    "sizes": ["7", "8", "9", "10"],
+    "colors": ["Dark Sand", "Espresso Brown"],
+    "rating": 4.9,
+    "numReviews": 62,
     "isFeatured": true,
     "isNewArrival": false
   },
@@ -204,6 +294,43 @@
     "isNewArrival": true
   },
   {
+    "title": "Automatic Skeleton Mechanical Watch",
+    "description": "Exhibition open-heart skeleton dial showing the 24-jewel automatic movement. Scratch-resistant sapphire crystal glass and genuine leather strap.",
+    "price": 8999,
+    "discountPrice": 6999,
+    "category": "Watches",
+    "brand": "AeroTime",
+    "stock": 12,
+    "images": [
+      "https://images.unsplash.com/photo-1524805444758-089113d48a6d?w=800&auto=format&fit=crop&q=80",
+      "https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?w=800&auto=format&fit=crop&q=80"
+    ],
+    "sizes": ["42mm Dial"],
+    "colors": ["Silver & Black", "Rose Gold & Brown"],
+    "rating": 4.9,
+    "numReviews": 49,
+    "isFeatured": true,
+    "isNewArrival": true
+  },
+  {
+    "title": "Matte Black Minimalist Chronograph Watch",
+    "description": "Japanese precision quartz movement with matte black PVD stainless steel mesh band. 5 ATM water resistance with date window.",
+    "price": 5499,
+    "discountPrice": 4299,
+    "category": "Watches",
+    "brand": "AeroTime",
+    "stock": 18,
+    "images": [
+      "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=800&auto=format&fit=crop&q=80"
+    ],
+    "sizes": ["40mm Dial"],
+    "colors": ["Stealth Black"],
+    "rating": 4.8,
+    "numReviews": 81,
+    "isFeatured": false,
+    "isNewArrival": false
+  },
+  {
     "title": "Handcrafted Top-Grain Leather Bi-Fold Wallet",
     "description": "Slim minimalist profile crafted from vegetable-tanned genuine leather. RFID blocking technology with 6 card slots and full cash compartment.",
     "price": 1499,
@@ -222,25 +349,6 @@
     "isNewArrival": true
   },
   {
-    "title": "Matte Black Stainless Steel Chronograph Watch",
-    "description": "Japanese quartz movement with scratch-resistant sapphire crystal glass and 5 ATM water resistance. Inter-changeable mesh strap.",
-    "price": 5999,
-    "discountPrice": 4499,
-    "category": "Accessories",
-    "brand": "AeroTime",
-    "stock": 15,
-    "images": [
-      "https://images.unsplash.com/photo-1524805444758-089113d48a6d?w=800&auto=format&fit=crop&q=80",
-      "https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?w=800&auto=format&fit=crop&q=80"
-    ],
-    "sizes": ["40mm Dial"],
-    "colors": ["Stealth Black", "Silver Mesh"],
-    "rating": 4.9,
-    "numReviews": 67,
-    "isFeatured": true,
-    "isNewArrival": false
-  },
-  {
     "title": "Polarized Acetate Square Sunglasses",
     "description": "Hand-polished Italian acetate frame with UV400 polarized lenses that eliminate glare while preserving true color fidelity.",
     "price": 1999,
@@ -257,6 +365,24 @@
     "numReviews": 79,
     "isFeatured": false,
     "isNewArrival": true
+  },
+  {
+    "title": "Aviator Metallic Gradient Sunglasses",
+    "description": "Ultra lightweight titanium wireframe with teardrop lenses and soft silicone nose pads. 100% UVA/UVB ray protection.",
+    "price": 2299,
+    "discountPrice": 1699,
+    "category": "Accessories",
+    "brand": "Solaris",
+    "stock": 25,
+    "images": [
+      "https://images.unsplash.com/photo-1572635196237-14b3f281503f?w=800&auto=format&fit=crop&q=80"
+    ],
+    "sizes": ["Standard"],
+    "colors": ["Gold / Amber", "Gunmetal / Black"],
+    "rating": 4.8,
+    "numReviews": 67,
+    "isFeatured": true,
+    "isNewArrival": false
   },
   {
     "title": "Washed Canvas Roll-Top Commuter Backpack",

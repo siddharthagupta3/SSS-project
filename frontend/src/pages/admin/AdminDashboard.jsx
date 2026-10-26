@@ -7,7 +7,17 @@ import {
   CheckIcon,
 } from '../../components/common/Icons';
 
-const CATEGORIES = ['T-Shirts', 'Shirts', 'Jeans', 'Jackets', 'Shoes', 'Accessories', 'Hoodies'];
+const CATEGORIES = [
+  'T-Shirts',
+  'Shirts',
+  'Jeans',
+  'Cargo Pants',
+  'Jackets',
+  'Hoodies',
+  'Shoes',
+  'Watches',
+  'Accessories',
+];
 
 const AdminDashboard = () => {
   const [activeTab, setActiveTab] = useState('products'); // 'products' | 'orders'
