@@ -7,6 +7,10 @@ const dotenv = require('dotenv');
 // Load environment variables
 dotenv.config();
 
+// Connect to Database
+const connectDB = require('./config/db');
+connectDB();
+
 // Import error middleware
 const { notFound, errorHandler } = require('./middleware/errorMiddleware');
 
@@ -55,13 +59,17 @@ app.get('/', (req, res) => {
   res.send('<h1>SSS E-Commerce API is Live</h1><p>Visit /api/health for system status.</p>');
 });
 
-// Placeholder for future routes (mounted in subsequent steps)
-// app.use('/api/auth', authRoutes);
-// app.use('/api/products', productRoutes);
-// app.use('/api/cart', cartRoutes);
-// app.use('/api/orders', orderRoutes);
-// app.use('/api/payment', paymentRoutes);
-// app.use('/api/admin', adminRoutes);
+// Routes
+const authRoutes = require('./routes/authRoutes');
+const productRoutes = require('./routes/productRoutes');
+const cartRoutes = require('./routes/cartRoutes');
+const orderRoutes = require('./routes/orderRoutes');
+
+// Mount API Routes
+app.use('/api/auth', authRoutes);
+app.use('/api/products', productRoutes);
+app.use('/api/cart', cartRoutes);
+app.use('/api/orders', orderRoutes);
 
 // Error Handling Middlewares (must be registered after all routes)
 app.use(notFound);

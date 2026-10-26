@@ -1,0 +1,14 @@
+{
+  "name": "sss-ecommerce-fullstack",
+  "version": "1.0.0",
+  "description": "Complete Production-Ready MERN E-Commerce Web Application with Razorpay and Admin Dashboard",
+  "scripts": {
+    "start:backend": "cd backend && npm run dev",
+    "start:frontend": "cd frontend && npm run dev",
+    "seed": "node database/seed.js",
+    "build:frontend": "cd frontend && npm run build"
+  },
+  "keywords": ["mern", "ecommerce", "razorpay", "react", "node", "express", "mongodb"],
+  "author": "",
+  "license": "ISC"
+}
