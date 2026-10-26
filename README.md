@@ -37,9 +37,11 @@ SSS/
 │   ├── src/
 │   │   ├── config/           # DB connection & Razorpay setup
 │   │   ├── controllers/      # auth, product, cart, order controllers
+│   │   ├── data/             # Sample data (products.json)
 │   │   ├── middleware/       # JWT auth, admin guard, error handler, rate limiter
 │   │   ├── models/           # User, Product, Cart, Order Mongoose schemas
 │   │   ├── routes/           # auth, product, cart, order REST endpoints
+│   │   ├── seeds/            # Database seeding scripts
 │   │   ├── utils/            # JWT generator, nodemailer email service
 │   │   └── server.js         # Express server entry point
 │   ├── .env.example          # Clean configuration template
@@ -55,12 +57,6 @@ SSS/
 │   │   └── main.jsx
 │   ├── .env.example
 │   └── package.json
-│
-├── database/                 # Database scripts & 24 sample products
-│   ├── sampleProducts.json   # High-resolution catalog with images & specs
-│   ├── connection.js         # Mongoose connector utility
-│   ├── seed.js               # Database population script
-│   └── README.md
 │
 ├── .gitignore                # Protects secrets & node_modules
 ├── package.json              # Root runner scripts
@@ -132,7 +128,8 @@ VITE_GOOGLE_CLIENT_ID=your_google_client_id.apps.googleusercontent.com
 
 ```bash
 # 1. Seed database with 24 products & default accounts
-node database/seed.js
+cd backend
+npm run seed
 
 # 2. Start Backend (Terminal 1)
 cd backend

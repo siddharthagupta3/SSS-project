@@ -15,7 +15,7 @@ export const WishlistProvider = ({ children }) => {
       if (isAuthenticated) {
         try {
           setLoading(true);
-          const res = await api.get('/api/auth/wishlist');
+          const res = await api.get('/auth/wishlist');
           if (res.data.success) {
             setWishlist(res.data.data || []);
           }
@@ -54,7 +54,7 @@ export const WishlistProvider = ({ children }) => {
 
     if (isAuthenticated) {
       try {
-        const res = await api.post(`/api/auth/wishlist/${productId}`);
+        const res = await api.post(`/auth/wishlist/${productId}`);
         if (res.data.success) {
           if (isPresent) {
             setWishlist((prev) => prev.filter((item) => (item._id || item) !== productId));

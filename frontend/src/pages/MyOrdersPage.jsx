@@ -10,7 +10,7 @@ const MyOrdersPage = () => {
   useEffect(() => {
     const fetchOrders = async () => {
       try {
-        const res = await api.get('/api/orders/my-orders');
+        const res = await api.get('/orders/my-orders');
         if (res.data.success) {
           setOrders(res.data.data || []);
         }

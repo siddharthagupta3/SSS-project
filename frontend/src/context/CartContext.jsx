@@ -28,7 +28,7 @@ export const CartProvider = ({ children }) => {
 
     try {
       setLoading(true);
-      const res = await api.get('/api/cart');
+      const res = await api.get('/cart');
       if (res.data.success && res.data.data?.items) {
         setCartItems(res.data.data.items);
       }
@@ -55,7 +55,7 @@ export const CartProvider = ({ children }) => {
 
     if (isAuthenticated) {
       try {
-        const res = await api.post('/api/cart', {
+        const res = await api.post('/cart', {
           productId: product._id,
           quantity,
           size,
@@ -103,7 +103,7 @@ export const CartProvider = ({ children }) => {
 
     if (isAuthenticated) {
       try {
-        const res = await api.put(`/api/cart/${itemId}`, { quantity });
+        const res = await api.put(`/cart/${itemId}`, { quantity });
         if (res.data.success && res.data.data?.items) {
           setCartItems(res.data.data.items);
         }
@@ -135,7 +135,7 @@ export const CartProvider = ({ children }) => {
   const clearCart = async () => {
     if (isAuthenticated) {
       try {
-        await api.delete('/api/cart');
+        await api.delete('/cart');
       } catch (err) {
         console.error('Clear cart failed:', err.message);
       }

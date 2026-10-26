@@ -54,24 +54,8 @@ const LoginPage = () => {
       });
       window.google.accounts.id.prompt();
     } else {
-      // Immediate One-Click Google Verification Flow
-      const userPromptEmail = prompt('Enter your Gmail address to verify and log in:', email || 'user@gmail.com');
-      if (!userPromptEmail) {
-        setGoogleLoading(false);
-        return;
-      }
-      try {
-        await loginWithGoogle({
-          email: userPromptEmail,
-          name: userPromptEmail.split('@')[0],
-          picture: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=120',
-        });
-        navigate(from, { replace: true });
-      } catch (err) {
-        setError(err.response?.data?.message || 'Google authentication failed');
-      } finally {
-        setGoogleLoading(false);
-      }
+      setError('Google Sign-In not available. Please use email login.');
+      setGoogleLoading(false);
     }
   };
 

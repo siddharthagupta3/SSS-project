@@ -17,7 +17,7 @@ export const AuthProvider = ({ children }) => {
       const storedToken = localStorage.getItem('sss_token');
       if (storedToken) {
         try {
-          const res = await api.get('/api/auth/profile');
+          const res = await api.get('/auth/profile');
           if (res.data.success) {
             setUser(res.data.data);
             localStorage.setItem('sss_user', JSON.stringify(res.data.data));
@@ -34,7 +34,7 @@ export const AuthProvider = ({ children }) => {
   }, []);
 
   const login = async (email, password) => {
-    const res = await api.post('/api/auth/login', { email, password });
+    const res = await api.post('/auth/login', { email, password });
     if (res.data.success) {
       const userData = res.data.data;
       setUser(userData);
@@ -46,7 +46,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   const loginWithGoogle = async (googlePayload) => {
-    const res = await api.post('/api/auth/google', googlePayload);
+    const res = await api.post('/auth/google', googlePayload);
     if (res.data.success) {
       const userData = res.data.data;
       setUser(userData);
@@ -58,7 +58,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   const register = async (name, email, password) => {
-    const res = await api.post('/api/auth/register', { name, email, password });
+    const res = await api.post('/auth/register', { name, email, password });
     if (res.data.success) {
       const userData = res.data.data;
       setUser(userData);
@@ -70,7 +70,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   const verifyOTP = async (email, otp) => {
-    const res = await api.post('/api/auth/verify-otp', { email, otp });
+    const res = await api.post('/auth/verify-otp', { email, otp });
     if (res.data.success) {
       const updatedUser = { ...user, isEmailVerified: true };
       setUser(updatedUser);
@@ -80,7 +80,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   const resendOTP = async (email) => {
-    const res = await api.post('/api/auth/send-otp', { email: email || user?.email });
+    const res = await api.post('/auth/send-otp', { email: email || user?.email });
     return res.data;
   };
 
@@ -92,7 +92,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   const updateProfile = async (profileData) => {
-    const res = await api.put('/api/auth/profile', profileData);
+    const res = await api.put('/auth/profile', profileData);
     if (res.data.success) {
       const updatedUser = res.data.data;
       setUser(updatedUser);

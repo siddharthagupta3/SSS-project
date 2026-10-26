@@ -45,8 +45,8 @@ const AdminDashboard = () => {
     setLoading(true);
     try {
       const [prodRes, orderRes] = await Promise.all([
-        api.get('/api/products?limit=100'),
-        api.get('/api/orders'),
+        api.get('/products?limit=100'),
+        api.get('/orders'),
       ]);
 
       if (prodRes.data.success) {
@@ -119,7 +119,7 @@ const AdminDashboard = () => {
       if (editingProduct) {
         await api.put(`/api/products/${editingProduct._id}`, payload);
       } else {
-        await api.post('/api/products', payload);
+        await api.post('/products', payload);
       }
 
       setShowProductModal(false);

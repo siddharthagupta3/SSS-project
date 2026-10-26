@@ -139,7 +139,7 @@ const CheckoutPage = () => {
       };
 
       // 2. Call backend to create pending order and Razorpay order
-      const res = await api.post('/api/orders/create-razorpay-order', {
+      const res = await api.post('/orders/create-razorpay-order', {
         orderItems,
         shippingAddress: fullShippingAddress,
       });
@@ -156,7 +156,7 @@ const CheckoutPage = () => {
       if (!scriptLoaded || keyId.includes('placeholder')) {
         // Fallback simulation mode for testing when test key or script is restricted
         console.log('Simulating payment verification in sandbox mode...');
-        const verifyRes = await api.post('/api/orders/verify-payment', {
+        const verifyRes = await api.post('/orders/verify-payment', {
           orderId: order._id,
           razorpay_order_id: razorpayOrderId,
           razorpay_payment_id: `pay_test_${Date.now()}`,
@@ -189,7 +189,7 @@ const CheckoutPage = () => {
         handler: async (response) => {
           try {
             // Verify HMAC SHA-256 signature on backend
-            const verifyRes = await api.post('/api/orders/verify-payment', {
+            const verifyRes = await api.post('/orders/verify-payment', {
               orderId: order._id,
               razorpay_order_id: response.razorpay_order_id,
               razorpay_payment_id: response.razorpay_payment_id,

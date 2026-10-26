@@ -11,7 +11,7 @@ const OrderSuccessPage = () => {
   useEffect(() => {
     const fetchOrder = async () => {
       try {
-        const res = await api.get(`/api/orders/${id}`);
+        const res = await api.get(`/orders/${id}`);
         if (res.data.success) {
           setOrder(res.data.data);
         }

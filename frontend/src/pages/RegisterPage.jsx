@@ -68,23 +68,8 @@ const RegisterPage = () => {
       });
       window.google.accounts.id.prompt();
     } else {
-      const userPromptEmail = prompt('Enter your Gmail address to create your verified account:', email || 'user@gmail.com');
-      if (!userPromptEmail) {
-        setGoogleLoading(false);
-        return;
-      }
-      try {
-        await loginWithGoogle({
-          email: userPromptEmail,
-          name: name || userPromptEmail.split('@')[0],
-          picture: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=120',
-        });
-        navigate('/shop');
-      } catch (err) {
-        setError(err.response?.data?.message || 'Google account creation failed');
-      } finally {
-        setGoogleLoading(false);
-      }
+      setError('Google Sign-In not available. Please use email registration.');
+      setGoogleLoading(false);
     }
   };
 

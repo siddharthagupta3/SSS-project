@@ -5,7 +5,7 @@
   "scripts": {
     "start:backend": "cd backend && npm run dev",
     "start:frontend": "cd frontend && npm run dev",
-    "seed": "node database/seed.js",
+    "seed": "cd backend && npm run seed",
     "build:frontend": "cd frontend && npm run build"
   },
   "keywords": ["mern", "ecommerce", "razorpay", "react", "node", "express", "mongodb"],

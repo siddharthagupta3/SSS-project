@@ -12,7 +12,7 @@ const HomePage = () => {
   useEffect(() => {
     const fetchHomeData = async () => {
       try {
-        const res = await api.get('/api/products/featured');
+        const res = await api.get('/products/featured');
         if (res.data.success) {
           setFeaturedProducts(res.data.data.featured || []);
           setNewArrivals(res.data.data.newArrivals || []);

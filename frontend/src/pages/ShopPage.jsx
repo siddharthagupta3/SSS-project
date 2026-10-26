@@ -44,7 +44,7 @@ const ShopPage = () => {
         query.append('page', pageParam);
         query.append('limit', 12);
 
-        const res = await api.get(`/api/products?${query.toString()}`);
+        const res = await api.get(`/products?${query.toString()}`);
         if (res.data.success) {
           setProducts(res.data.data.products || []);
           setTotalPages(res.data.data.pages || 1);

@@ -53,7 +53,7 @@ const ProductDetailPage = () => {
   const fetchProduct = async () => {
     setLoading(true);
     try {
-      const res = await api.get(`/api/products/${id}`);
+      const res = await api.get(`/products/${id}`);
       if (res.data.success && res.data.data) {
         const item = res.data.data;
         setProduct(item);
@@ -113,7 +113,7 @@ const ProductDetailPage = () => {
     setReviewSubmitting(true);
     setReviewError('');
     try {
-      const res = await api.post(`/api/products/${id}/reviews`, {
+      const res = await api.post(`/products/${id}/reviews`, {
         rating: reviewRating,
         comment: reviewComment,
       });
