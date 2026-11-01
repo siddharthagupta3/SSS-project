@@ -6,6 +6,7 @@ const apiUrl = (
 
 const api = axios.create({
   baseURL: `${apiUrl}/api`,
+  timeout: 30000,
   headers: {
     "Content-Type": "application/json",
   },
@@ -27,6 +28,11 @@ api.interceptors.request.use(
 api.interceptors.response.use(
   (response) => response,
   (error) => {
+    if (!error.response) {
+      error.message =
+        "Unable to connect to the server. Please try again in a moment.";
+    }
+
     if (error.response && error.response.status === 401) {
       // Clear token if invalid or expired
       if (localStorage.getItem("sss_token")) {

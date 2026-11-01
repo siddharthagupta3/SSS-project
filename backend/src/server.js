@@ -22,6 +22,7 @@ app.use(helmet());
 // CORS Configuration
 const configuredOrigins = [
   process.env.CLIENT_URL,
+  process.env.VERCEL_URL && `https://${process.env.VERCEL_URL}`,
   ...(process.env.CORS_ORIGINS || '').split(','),
 ]
   .map((origin) => origin.trim())

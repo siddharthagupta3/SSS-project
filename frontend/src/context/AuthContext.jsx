@@ -34,15 +34,22 @@ export const AuthProvider = ({ children }) => {
   }, []);
 
   const login = async (email, password) => {
-    const res = await api.post('/auth/login', { email, password });
-    if (res.data.success) {
-      const userData = res.data.data;
-      setUser(userData);
-      setToken(userData.token);
-      localStorage.setItem('sss_token', userData.token);
-      localStorage.setItem('sss_user', JSON.stringify(userData));
-      return userData;
+    const normalizedEmail = email.trim().toLowerCase();
+    const res = await api.post('/auth/login', {
+      email: normalizedEmail,
+      password,
+    });
+
+    if (!res.data.success || !res.data.data?.token) {
+      throw new Error(res.data.message || 'Login failed. Please try again.');
     }
+
+    const userData = res.data.data;
+    setUser(userData);
+    setToken(userData.token);
+    localStorage.setItem('sss_token', userData.token);
+    localStorage.setItem('sss_user', JSON.stringify(userData));
+    return userData;
   };
 
   const loginWithGoogle = async (googlePayload) => {
