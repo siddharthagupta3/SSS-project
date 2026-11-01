@@ -96,37 +96,7 @@ SSS/
 
 ---
 
-## 🔑 Where to Add Your API Keys
 
-All code is fully written and working. Keep your live API keys in `backend/.env` and `frontend/.env` (which are already created and added to `.gitignore`):
-
-### 1. In `backend/.env`:
-```env
-# MongoDB Atlas Database URI (https://cloud.mongodb.com)
-MONGO_URI=mongodb+srv://<username>:<password>@cluster0.mongodb.net/sss_ecommerce?retryWrites=true&w=majority
-
-# Razorpay Credentials (https://dashboard.razorpay.com)
-RAZORPAY_KEY_ID=rzp_test_yourKeyId
-RAZORPAY_KEY_SECRET=yourKeySecret
-
-# Google Sign-In Client ID (https://console.cloud.google.com/apis/credentials)
-GOOGLE_CLIENT_ID=your_google_client_id.apps.googleusercontent.com
-
-# Gmail SMTP for sending real OTP emails (https://myaccount.google.com/apppasswords)
-EMAIL_USER=your_email@gmail.com
-EMAIL_PASS=your_16_digit_gmail_app_password
-```
-
-### 2. In `frontend/.env`:
-```env
-VITE_API_URL=http://localhost:5000
-VITE_RAZORPAY_KEY_ID=rzp_test_yourKeyId
-VITE_GOOGLE_CLIENT_ID=your_google_client_id.apps.googleusercontent.com
-```
-
----
-
-## 💻 Local Setup & Installation
 
 ```bash
 # 1. Seed database with 24 products & default accounts
@@ -146,25 +116,3 @@ npm run dev
 
 ---
 
-## 🌐 Production Deployment Guide (Free Tiers)
-
-1. **Database:** Create a free MongoDB Atlas M0 cluster, whitelist `0.0.0.0/0`, and copy your connection string into `backend/.env`.
-2. **Backend (Render.com):**
-   - Connect repository, set Root Directory to `backend`.
-   - Build: `npm install`, Start: `npm start`.
-   - Add environment variables (`MONGO_URI`, `JWT_SECRET`, `CLIENT_URL`, etc.).
-3. **Frontend (Vercel.com):**
-   - Connect repository, set Root Directory to `frontend`.
-   - Framework: `Vite`, Output: `dist`.
-   - Add environment variable `VITE_API_URL` pointing to your Render backend.
-
----
-
-## 🏷 Custom Domain Setup (< 1000 INR)
-
-1. Buy a `.in` domain (₹399 - ₹499/year) from Hostinger, Namecheap, or GoDaddy.
-2. In Vercel Project Settings ➔ **Domains**, add `yourbrand.in`.
-3. In your Domain Registrar's DNS Manager, configure:
-   - **Type A:** Name `@`, Value `76.76.21.21`
-   - **Type CNAME:** Name `www`, Value `cname.vercel-dns.com`
-4. Vercel automatically activates free SSL / HTTPS encryption within minutes.
