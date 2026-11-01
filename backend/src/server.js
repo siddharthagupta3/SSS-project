@@ -20,16 +20,26 @@ const app = express();
 app.use(helmet());
 
 // CORS Configuration
-const allowedOrigin = process.env.CLIENT_URL || 'http://localhost:5173';
+const configuredOrigins = [
+  process.env.CLIENT_URL,
+  ...(process.env.CORS_ORIGINS || '').split(','),
+]
+  .map((origin) => origin.trim())
+  .filter(Boolean);
+
+const isAllowedOrigin = (origin) =>
+  !origin ||
+  configuredOrigins.includes(origin) ||
+  origin.startsWith('http://localhost:') ||
+  origin.startsWith('http://127.0.0.1:') ||
+  /^https:\/\/[a-z0-9-]+\.vercel\.app$/i.test(origin);
+
 app.use(
   cors({
     origin: (origin, callback) => {
       // Allow requests with no origin (like mobile apps, curl, Postman) or matching origin
       // Also allow all localhost ports for development
-      if (!origin ||
-          origin === allowedOrigin ||
-          origin.startsWith('http://localhost:') ||
-          origin.startsWith('http://127.0.0.1:')) {
+      if (isAllowedOrigin(origin)) {
         callback(null, true);
       } else {
         callback(new Error(`CORS blocked request from origin: ${origin}`));
