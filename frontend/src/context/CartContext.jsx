@@ -120,7 +120,7 @@ export const CartProvider = ({ children }) => {
   const removeFromCart = async (itemId) => {
     if (isAuthenticated) {
       try {
-        const res = await api.delete(`/api/cart/${itemId}`);
+        const res = await api.delete(`/cart/${itemId}`);
         if (res.data.success && res.data.data?.items) {
           setCartItems(res.data.data.items);
         }

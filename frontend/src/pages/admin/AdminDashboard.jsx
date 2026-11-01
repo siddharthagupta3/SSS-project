@@ -117,7 +117,7 @@ const AdminDashboard = () => {
       };
 
       if (editingProduct) {
-        await api.put(`/api/products/${editingProduct._id}`, payload);
+        await api.put(`/products/${editingProduct._id}`, payload);
       } else {
         await api.post('/products', payload);
       }
@@ -132,7 +132,7 @@ const AdminDashboard = () => {
   const handleDeleteProduct = async (id) => {
     if (window.confirm('Are you sure you want to delete this product?')) {
       try {
-        await api.delete(`/api/products/${id}`);
+        await api.delete(`/products/${id}`);
         fetchData();
       } catch (err) {
         alert(err.response?.data?.message || 'Error deleting product');
@@ -142,7 +142,7 @@ const AdminDashboard = () => {
 
   const handleStatusChange = async (orderId, newStatus) => {
     try {
-      await api.put(`/api/orders/${orderId}/status`, { orderStatus: newStatus });
+      await api.put(`/orders/${orderId}/status`, { orderStatus: newStatus });
       fetchData();
     } catch (err) {
       alert(err.response?.data?.message || 'Error updating order status');

@@ -54,7 +54,9 @@ SSS/
 │   │   ├── context/          # AuthContext, CartContext, WishlistContext
 │   │   ├── pages/            # Home, Shop, ProductDetail, Cart, Wishlist, Checkout, Orders, Admin, Auth
 │   │   ├── App.jsx           # App routing with React Router
+│   │   ├── index.css         # Global styles
 │   │   └── main.jsx
+│   ├── index.html            # HTML entry with Google script
 │   ├── .env.example
 │   └── package.json
 │
