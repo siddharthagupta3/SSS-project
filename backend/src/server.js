@@ -25,7 +25,11 @@ app.use(
   cors({
     origin: (origin, callback) => {
       // Allow requests with no origin (like mobile apps, curl, Postman) or matching origin
-      if (!origin || origin === allowedOrigin || origin === 'http://localhost:5173') {
+      // Also allow all localhost ports for development
+      if (!origin ||
+          origin === allowedOrigin ||
+          origin.startsWith('http://localhost:') ||
+          origin.startsWith('http://127.0.0.1:')) {
         callback(null, true);
       } else {
         callback(new Error(`CORS blocked request from origin: ${origin}`));
