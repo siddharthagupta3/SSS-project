@@ -60,6 +60,7 @@ const RegisterPage = () => {
             await loginWithGoogle({ credential: response.credential });
             navigate('/shop');
           } catch (err) {
+            console.error('Google Auth Error:', err);
             setError(err.response?.data?.message || 'Google account creation failed');
           } finally {
             setGoogleLoading(false);
@@ -68,7 +69,7 @@ const RegisterPage = () => {
       });
       window.google.accounts.id.prompt();
     } else {
-      setError('Google Sign-In not available. Please use email registration.');
+      setError('Google Sign-In not configured. Please use email registration.');
       setGoogleLoading(false);
     }
   };

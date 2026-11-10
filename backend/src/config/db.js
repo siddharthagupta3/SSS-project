@@ -6,8 +6,10 @@ const mongoose = require('mongoose');
  */
 const connectDB = async () => {
   try {
-    const mongoURI =
-      process.env.MONGO_URI || 'mongodb://127.0.0.1:27017/sss_ecommerce';
+    // Force local MongoDB for development
+    const mongoURI = process.env.NODE_ENV === 'production'
+      ? process.env.MONGO_URI
+      : 'mongodb://127.0.0.1:27017/sss_ecommerce';
     
     const conn = await mongoose.connect(mongoURI, {
       autoIndex: true, // Build indexes automatically in dev

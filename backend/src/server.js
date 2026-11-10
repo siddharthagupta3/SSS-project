@@ -23,9 +23,9 @@ app.use(helmet());
 const configuredOrigins = [
   process.env.CLIENT_URL,
   process.env.VERCEL_URL && `https://${process.env.VERCEL_URL}`,
-  ...(process.env.CORS_ORIGINS || '').split(','),
+  ...(process.env.CORS_ORIGINS ? process.env.CORS_ORIGINS.split(',') : []),
 ]
-  .map((origin) => origin.trim())
+  .map((origin) => origin?.trim())
   .filter(Boolean);
 
 const isAllowedOrigin = (origin) =>
@@ -33,7 +33,10 @@ const isAllowedOrigin = (origin) =>
   configuredOrigins.includes(origin) ||
   origin.startsWith('http://localhost:') ||
   origin.startsWith('http://127.0.0.1:') ||
-  /^https:\/\/[a-z0-9-]+\.vercel\.app$/i.test(origin);
+  origin.startsWith('https://localhost:') ||
+  origin.startsWith('https://127.0.0.1:') ||
+  /^https:\/\/[a-z0-9-]+\.vercel\.app$/i.test(origin) ||
+  /^https:\/\/[a-z0-9-]+\.onrender\.com$/i.test(origin);
 
 app.use(
   cors({

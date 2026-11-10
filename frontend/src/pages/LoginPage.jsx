@@ -46,6 +46,7 @@ const LoginPage = () => {
             await loginWithGoogle({ credential: response.credential });
             navigate(from, { replace: true });
           } catch (err) {
+            console.error('Google Login Error:', err);
             setError(err.response?.data?.message || 'Google authentication failed');
           } finally {
             setGoogleLoading(false);
@@ -54,7 +55,7 @@ const LoginPage = () => {
       });
       window.google.accounts.id.prompt();
     } else {
-      setError('Google Sign-In not available. Please use email login.');
+      setError('Google Sign-In not configured. Please use email login.');
       setGoogleLoading(false);
     }
   };

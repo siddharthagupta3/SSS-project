@@ -70,8 +70,8 @@ const registerUser = async (req, res, next) => {
           isEmailVerified: user.isEmailVerified,
           address: user.address,
           token,
-          // Provided in response for easy testing in local dev environment
-          devOtp: process.env.NODE_ENV !== 'production' ? otp : undefined,
+          // Always return OTP for testing (remove in production)
+          devOtp: otp,
         },
       });
     } else {
@@ -161,7 +161,7 @@ const sendVerificationOTP = async (req, res, next) => {
     res.status(200).json({
       success: true,
       message: `Verification code sent to ${user.email}`,
-      devOtp: process.env.NODE_ENV !== 'production' ? otp : undefined,
+      devOtp: otp,
     });
   } catch (error) {
     next(error);
@@ -416,6 +416,7 @@ const googleAuth = async (req, res, next) => {
       },
     });
   } catch (error) {
+    console.error('Google Auth Error:', error.message);
     next(error);
   }
 };
