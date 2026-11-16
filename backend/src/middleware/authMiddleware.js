@@ -14,13 +14,11 @@ const verifyToken = async (req, res, next) => {
   ) {
     try {
       token = req.headers.authorization.split(' ')[1];
-      const jwtSecret = process.env.JWT_SECRET || 'fallback_secret_for_development_mode_only';
-      
-      // Security warning if using fallback
-      if (!process.env.JWT_SECRET) {
-        console.warn('⚠️ SECURITY WARNING: Using fallback JWT_SECRET. Set JWT_SECRET in .env for production!');
+      const jwtSecret = process.env.JWT_SECRET;
+      if (!jwtSecret) {
+        throw new Error('JWT_SECRET is not set in .env');
       }
-      
+
       const decoded = jwt.verify(token, jwtSecret);
 
       // Fetch user from database excluding password

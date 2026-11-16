@@ -109,6 +109,7 @@ npm run dev
 # Running on http://localhost:5000
 
 # 3. Start Frontend (Terminal 2)
+
 cd frontend
 npm run dev
 # Running on http://localhost:5173

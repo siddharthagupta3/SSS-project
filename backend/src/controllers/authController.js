@@ -70,8 +70,6 @@ const registerUser = async (req, res, next) => {
           isEmailVerified: user.isEmailVerified,
           address: user.address,
           token,
-          // Always return OTP for testing (remove in production)
-          devOtp: otp,
         },
       });
     } else {
@@ -161,7 +159,6 @@ const sendVerificationOTP = async (req, res, next) => {
     res.status(200).json({
       success: true,
       message: `Verification code sent to ${user.email}`,
-      devOtp: otp,
     });
   } catch (error) {
     next(error);

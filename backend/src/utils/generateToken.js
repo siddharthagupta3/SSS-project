@@ -7,12 +7,11 @@ const jwt = require('jsonwebtoken');
  * @returns {string} Signed JWT token
  */
 const generateToken = (id, role = 'user') => {
-  const secret = process.env.JWT_SECRET || 'fallback_secret_for_development_mode_only';
+  const secret = process.env.JWT_SECRET;
   const expiresIn = process.env.JWT_EXPIRES_IN || '7d';
 
-  // Security warning if using fallback
-  if (!process.env.JWT_SECRET) {
-    console.warn('⚠️ SECURITY WARNING: Using fallback JWT_SECRET. Set JWT_SECRET in .env for production!');
+  if (!secret) {
+    throw new Error('JWT_SECRET is not set in .env');
   }
 
   return jwt.sign({ id, role }, secret, {
