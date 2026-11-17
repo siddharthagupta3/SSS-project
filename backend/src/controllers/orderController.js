@@ -156,10 +156,10 @@ const verifyPayment = async (req, res, next) => {
 
       await order.save();
 
-      // Decrement product stock
+      // Decrement product stock and increment soldCount
       for (const item of order.orderItems) {
         await Product.findByIdAndUpdate(item.product, {
-          $inc: { stock: -item.quantity },
+          $inc: { stock: -item.quantity, soldCount: item.quantity },
         });
       }
 

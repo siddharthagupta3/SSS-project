@@ -89,6 +89,50 @@ const getFeaturedProducts = async (req, res, next) => {
 };
 
 /**
+ * @desc    Get new arrivals (newest products)
+ * @route   GET /api/products/new-arrivals
+ * @access  Public
+ */
+const getNewArrivals = async (req, res, next) => {
+  try {
+    const limit = Number(req.query.limit) || 10;
+    const products = await Product.find({})
+      .sort({ createdAt: -1 })
+      .limit(limit)
+      .lean();
+
+    res.status(200).json({
+      success: true,
+      data: products,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+/**
+ * @desc    Get top selling products (by soldCount)
+ * @route   GET /api/products/top-selling
+ * @access  Public
+ */
+const getTopSelling = async (req, res, next) => {
+  try {
+    const limit = Number(req.query.limit) || 10;
+    const products = await Product.find({})
+      .sort({ soldCount: -1 })
+      .limit(limit)
+      .lean();
+
+    res.status(200).json({
+      success: true,
+      data: products,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+/**
  * @desc    Get all distinct product categories
  * @route   GET /api/products/categories
  * @access  Public
@@ -305,6 +349,8 @@ const createProductReview = async (req, res, next) => {
 module.exports = {
   getProducts,
   getFeaturedProducts,
+  getNewArrivals,
+  getTopSelling,
   getProductCategories,
   getProductById,
   createProduct,

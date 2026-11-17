@@ -11,6 +11,7 @@ const CATEGORIES = [
   'T-Shirts',
   'Shirts',
   'Jeans',
+  'Pants',
   'Cargo Pants',
   'Jackets',
   'Hoodies',
@@ -37,6 +38,11 @@ const AdminDashboard = () => {
     brand: 'SHOP.CO',
     stock: 20,
     imageUrl: '',
+    imageUrl2: '',
+    imageUrl3: '',
+    sizes: ['S', 'M', 'L', 'XL'],
+    colors: ['Black', 'White', 'Navy'],
+    rating: 4.5,
     isFeatured: false,
     isNewArrival: false,
   });
@@ -77,6 +83,11 @@ const AdminDashboard = () => {
       brand: 'SHOP.CO',
       stock: 20,
       imageUrl: '',
+      imageUrl2: '',
+      imageUrl3: '',
+      sizes: ['S', 'M', 'L', 'XL'],
+      colors: ['Black', 'White', 'Navy'],
+      rating: 4.5,
       isFeatured: false,
       isNewArrival: false,
     });
@@ -94,6 +105,11 @@ const AdminDashboard = () => {
       brand: product.brand || 'SHOP.CO',
       stock: product.stock,
       imageUrl: product.images?.[0] || '',
+      imageUrl2: product.images?.[1] || '',
+      imageUrl3: product.images?.[2] || '',
+      sizes: product.sizes || ['S', 'M', 'L', 'XL'],
+      colors: product.colors || ['Black', 'White', 'Navy'],
+      rating: product.rating || 4.5,
       isFeatured: Boolean(product.isFeatured),
       isNewArrival: Boolean(product.isNewArrival),
     });
@@ -103,6 +119,10 @@ const AdminDashboard = () => {
   const handleSaveProduct = async (e) => {
     e.preventDefault();
     try {
+      const images = [productForm.imageUrl || 'https://images.unsplash.com/photo-1521572267360-ee0c2909d518?w=800'];
+      if (productForm.imageUrl2) images.push(productForm.imageUrl2);
+      if (productForm.imageUrl3) images.push(productForm.imageUrl3);
+
       const payload = {
         title: productForm.title,
         description: productForm.description,
@@ -111,7 +131,10 @@ const AdminDashboard = () => {
         category: productForm.category,
         brand: productForm.brand,
         stock: Number(productForm.stock),
-        images: [productForm.imageUrl || 'https://images.unsplash.com/photo-1521572267360-ee0c2909d518?w=800'],
+        images: images,
+        sizes: productForm.sizes,
+        colors: productForm.colors,
+        rating: Number(productForm.rating),
         isFeatured: productForm.isFeatured,
         isNewArrival: productForm.isNewArrival,
       };
@@ -347,7 +370,7 @@ const AdminDashboard = () => {
       {/* Add / Edit Product Modal */}
       {showProductModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-xs p-4">
-          <div className="bg-white rounded-3xl max-w-xl w-full p-6 sm:p-8 max-h-[90vh] overflow-y-auto space-y-6 shadow-2xl">
+          <div className="bg-white rounded-3xl max-w-2xl w-full p-6 sm:p-8 max-h-[90vh] overflow-y-auto space-y-6 shadow-2xl">
             <div className="flex justify-between items-center border-b pb-4">
               <h2 className="text-xl font-black uppercase tracking-tight text-neutral-900">
                 {editingProduct ? 'Edit Product' : 'Add New Product'}
@@ -420,19 +443,31 @@ const AdminDashboard = () => {
                   </select>
                 </div>
                 <div>
-                  <label className="block text-xs font-semibold text-neutral-700 mb-1">Stock Quantity *</label>
+                  <label className="block text-xs font-semibold text-neutral-700 mb-1">Brand *</label>
                   <input
-                    type="number"
+                    type="text"
                     required
-                    value={productForm.stock}
-                    onChange={(e) => setProductForm({ ...productForm, stock: e.target.value })}
+                    value={productForm.brand}
+                    onChange={(e) => setProductForm({ ...productForm, brand: e.target.value })}
                     className="w-full bg-neutral-100 text-sm px-4 py-2 rounded-xl outline-none focus:ring-2 focus:ring-black"
+                    placeholder="SHOP.CO"
                   />
                 </div>
               </div>
 
               <div>
-                <label className="block text-xs font-semibold text-neutral-700 mb-1">Image URL (Unsplash or Cloudinary) *</label>
+                <label className="block text-xs font-semibold text-neutral-700 mb-1">Stock Quantity *</label>
+                <input
+                  type="number"
+                  required
+                  value={productForm.stock}
+                  onChange={(e) => setProductForm({ ...productForm, stock: e.target.value })}
+                  className="w-full bg-neutral-100 text-sm px-4 py-2 rounded-xl outline-none focus:ring-2 focus:ring-black"
+                />
+              </div>
+
+              <div>
+                <label className="block text-xs font-semibold text-neutral-700 mb-1">Primary Image URL *</label>
                 <input
                   type="url"
                   required
@@ -440,6 +475,64 @@ const AdminDashboard = () => {
                   onChange={(e) => setProductForm({ ...productForm, imageUrl: e.target.value })}
                   className="w-full bg-neutral-100 text-sm px-4 py-2 rounded-xl outline-none focus:ring-2 focus:ring-black"
                   placeholder="https://images.unsplash.com/..."
+                />
+              </div>
+
+              <div>
+                <label className="block text-xs font-semibold text-neutral-700 mb-1">Secondary Image URL (Optional)</label>
+                <input
+                  type="url"
+                  value={productForm.imageUrl2}
+                  onChange={(e) => setProductForm({ ...productForm, imageUrl2: e.target.value })}
+                  className="w-full bg-neutral-100 text-sm px-4 py-2 rounded-xl outline-none focus:ring-2 focus:ring-black"
+                  placeholder="https://images.unsplash.com/..."
+                />
+              </div>
+
+              <div>
+                <label className="block text-xs font-semibold text-neutral-700 mb-1">Third Image URL (Optional)</label>
+                <input
+                  type="url"
+                  value={productForm.imageUrl3}
+                  onChange={(e) => setProductForm({ ...productForm, imageUrl3: e.target.value })}
+                  className="w-full bg-neutral-100 text-sm px-4 py-2 rounded-xl outline-none focus:ring-2 focus:ring-black"
+                  placeholder="https://images.unsplash.com/..."
+                />
+              </div>
+
+              <div>
+                <label className="block text-xs font-semibold text-neutral-700 mb-1">Sizes (comma-separated)</label>
+                <input
+                  type="text"
+                  value={productForm.sizes.join(', ')}
+                  onChange={(e) => setProductForm({ ...productForm, sizes: e.target.value.split(',').map(s => s.trim()).filter(Boolean) })}
+                  className="w-full bg-neutral-100 text-sm px-4 py-2 rounded-xl outline-none focus:ring-2 focus:ring-black"
+                  placeholder="S, M, L, XL"
+                />
+              </div>
+
+              <div>
+                <label className="block text-xs font-semibold text-neutral-700 mb-1">Colors (comma-separated)</label>
+                <input
+                  type="text"
+                  value={productForm.colors.join(', ')}
+                  onChange={(e) => setProductForm({ ...productForm, colors: e.target.value.split(',').map(c => c.trim()).filter(Boolean) })}
+                  className="w-full bg-neutral-100 text-sm px-4 py-2 rounded-xl outline-none focus:ring-2 focus:ring-black"
+                  placeholder="Black, White, Navy"
+                />
+              </div>
+
+              <div>
+                <label className="block text-xs font-semibold text-neutral-700 mb-1">Rating (0-5)</label>
+                <input
+                  type="number"
+                  step="0.1"
+                  min="0"
+                  max="5"
+                  value={productForm.rating}
+                  onChange={(e) => setProductForm({ ...productForm, rating: e.target.value })}
+                  className="w-full bg-neutral-100 text-sm px-4 py-2 rounded-xl outline-none focus:ring-2 focus:ring-black"
+                  placeholder="4.5"
                 />
               </div>
 

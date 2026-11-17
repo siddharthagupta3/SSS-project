@@ -4,6 +4,8 @@ const router = express.Router();
 const {
   getProducts,
   getFeaturedProducts,
+  getNewArrivals,
+  getTopSelling,
   getProductCategories,
   getProductById,
   createProduct,
@@ -17,6 +19,8 @@ const { verifyToken, requireAdmin } = require('../middleware/authMiddleware');
 // Public catalog routes
 router.get('/', getProducts);
 router.get('/featured', getFeaturedProducts);
+router.get('/new-arrivals', getNewArrivals);
+router.get('/top-selling', getTopSelling);
 router.get('/categories', getProductCategories);
 router.get('/:id', getProductById);
 

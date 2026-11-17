@@ -7,12 +7,22 @@
     "category": "T-Shirts",
     "brand": "SHOP.CO Essentials",
     "stock": 35,
+    "soldCount": 245,
     "images": [
       "https://images.unsplash.com/photo-1521572267360-ee0c2909d518?w=800&auto=format&fit=crop&q=80",
       "https://images.unsplash.com/photo-1583743814966-8936f5b7be1a?w=800&auto=format&fit=crop&q=80"
     ],
-    "sizes": ["S", "M", "L", "XL"],
-    "colors": ["Black", "White", "Olive"],
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL"
+    ],
+    "colors": [
+      "Black",
+      "White",
+      "Olive"
+    ],
     "rating": 4.8,
     "numReviews": 124,
     "isFeatured": true,
@@ -29,12 +39,20 @@
     "images": [
       "https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?w=800&auto=format&fit=crop&q=80"
     ],
-    "sizes": ["M", "L", "XL"],
-    "colors": ["Washed Charcoal", "Vintage Beige"],
+    "sizes": [
+      "M",
+      "L",
+      "XL"
+    ],
+    "colors": [
+      "Washed Charcoal",
+      "Vintage Beige"
+    ],
     "rating": 4.6,
     "numReviews": 89,
     "isFeatured": true,
-    "isNewArrival": true
+    "isNewArrival": true,
+    "soldCount": 347
   },
   {
     "title": "Graphic Backprint Anime Streetwear Tee",
@@ -47,12 +65,21 @@
     "images": [
       "https://images.unsplash.com/photo-1576566588028-4147f3842f27?w=800&auto=format&fit=crop&q=80"
     ],
-    "sizes": ["S", "M", "L", "XL"],
-    "colors": ["Pitch Black", "Off White"],
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL"
+    ],
+    "colors": [
+      "Pitch Black",
+      "Off White"
+    ],
     "rating": 4.7,
     "numReviews": 95,
     "isFeatured": false,
-    "isNewArrival": true
+    "isNewArrival": true,
+    "soldCount": 436
   },
   {
     "title": "Classic Oxford Button-Down Casual Shirt",
@@ -66,12 +93,23 @@
       "https://images.unsplash.com/photo-1596755094514-f87e34085b2c?w=800&auto=format&fit=crop&q=80",
       "https://images.unsplash.com/photo-1602810318383-e386cc2a3ccf?w=800&auto=format&fit=crop&q=80"
     ],
-    "sizes": ["S", "M", "L", "XL", "XXL"],
-    "colors": ["Light Blue", "Crisp White", "Soft Pink"],
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL",
+      "XXL"
+    ],
+    "colors": [
+      "Light Blue",
+      "Crisp White",
+      "Soft Pink"
+    ],
     "rating": 4.7,
     "numReviews": 76,
     "isFeatured": false,
-    "isNewArrival": true
+    "isNewArrival": true,
+    "soldCount": 188
   },
   {
     "title": "Cuban Collar Resort Linen Shirt",
@@ -84,12 +122,20 @@
     "images": [
       "https://images.unsplash.com/photo-1620012253295-c15c429f60e9?w=800&auto=format&fit=crop&q=80"
     ],
-    "sizes": ["M", "L", "XL"],
-    "colors": ["Sage Green", "Sandstone"],
+    "sizes": [
+      "M",
+      "L",
+      "XL"
+    ],
+    "colors": [
+      "Sage Green",
+      "Sandstone"
+    ],
     "rating": 4.9,
     "numReviews": 42,
     "isFeatured": true,
-    "isNewArrival": false
+    "isNewArrival": false,
+    "soldCount": 83
   },
   {
     "title": "Slim-Tapered Selvedge Denim Jeans",
@@ -103,12 +149,21 @@
       "https://images.unsplash.com/photo-1542272604-780c96856592?w=800&auto=format&fit=crop&q=80",
       "https://images.unsplash.com/photo-1541099649105-f69ad21f3246?w=800&auto=format&fit=crop&q=80"
     ],
-    "sizes": ["30", "32", "34", "36"],
-    "colors": ["Deep Indigo", "Washed Blue"],
+    "sizes": [
+      "30",
+      "32",
+      "34",
+      "36"
+    ],
+    "colors": [
+      "Deep Indigo",
+      "Washed Blue"
+    ],
     "rating": 4.8,
     "numReviews": 156,
     "isFeatured": true,
-    "isNewArrival": false
+    "isNewArrival": false,
+    "soldCount": 220
   },
   {
     "title": "Relaxed Straight-Leg Vintage Jeans",
@@ -121,12 +176,20 @@
     "images": [
       "https://images.unsplash.com/photo-1582552938357-32b906df40cb?w=800&auto=format&fit=crop&q=80"
     ],
-    "sizes": ["30", "32", "34"],
-    "colors": ["Vintage Light Wash", "Faded Black"],
+    "sizes": [
+      "30",
+      "32",
+      "34"
+    ],
+    "colors": [
+      "Vintage Light Wash",
+      "Faded Black"
+    ],
     "rating": 4.5,
     "numReviews": 64,
     "isFeatured": false,
-    "isNewArrival": true
+    "isNewArrival": true,
+    "soldCount": 194
   },
   {
     "title": "Multi-Pocket Tactical Cargo Pants",
@@ -139,12 +202,22 @@
     "images": [
       "https://images.unsplash.com/photo-1624378439575-d8705ad7ae80?w=800&auto=format&fit=crop&q=80"
     ],
-    "sizes": ["30", "32", "34", "36"],
-    "colors": ["Military Olive", "Tactical Black", "Desert Khaki"],
+    "sizes": [
+      "30",
+      "32",
+      "34",
+      "36"
+    ],
+    "colors": [
+      "Military Olive",
+      "Tactical Black",
+      "Desert Khaki"
+    ],
     "rating": 4.9,
     "numReviews": 84,
     "isFeatured": true,
-    "isNewArrival": true
+    "isNewArrival": true,
+    "soldCount": 308
   },
   {
     "title": "Rugged Sherpa-Lined Trucker Jacket",
@@ -158,12 +231,20 @@
       "https://images.unsplash.com/photo-1551028719-00167b16eac5?w=800&auto=format&fit=crop&q=80",
       "https://images.unsplash.com/photo-1520975916090-3105956dac38?w=800&auto=format&fit=crop&q=80"
     ],
-    "sizes": ["M", "L", "XL"],
-    "colors": ["Denim Blue", "Cognac Brown"],
+    "sizes": [
+      "M",
+      "L",
+      "XL"
+    ],
+    "colors": [
+      "Denim Blue",
+      "Cognac Brown"
+    ],
     "rating": 4.9,
     "numReviews": 98,
     "isFeatured": true,
-    "isNewArrival": false
+    "isNewArrival": false,
+    "soldCount": 195
   },
   {
     "title": "Heavy Duty Corduroy Overshirt Jacket",
@@ -176,12 +257,21 @@
     "images": [
       "https://images.unsplash.com/photo-1548883354-7622d03aca27?w=800&auto=format&fit=crop&q=80"
     ],
-    "sizes": ["S", "M", "L", "XL"],
-    "colors": ["Tobacco Caramel", "Forest Emerald"],
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL"
+    ],
+    "colors": [
+      "Tobacco Caramel",
+      "Forest Emerald"
+    ],
     "rating": 4.7,
     "numReviews": 56,
     "isFeatured": true,
-    "isNewArrival": true
+    "isNewArrival": true,
+    "soldCount": 399
   },
   {
     "title": "Lightweight Waterproof Windbreaker Bomber",
@@ -194,12 +284,21 @@
     "images": [
       "https://images.unsplash.com/photo-1544441893-675973e31985?w=800&auto=format&fit=crop&q=80"
     ],
-    "sizes": ["S", "M", "L", "XL"],
-    "colors": ["Matte Black", "Army Olive"],
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL"
+    ],
+    "colors": [
+      "Matte Black",
+      "Army Olive"
+    ],
     "rating": 4.6,
     "numReviews": 53,
     "isFeatured": false,
-    "isNewArrival": true
+    "isNewArrival": true,
+    "soldCount": 451
   },
   {
     "title": "Heavyweight Fleece Pullover Hoodie",
@@ -213,12 +312,22 @@
       "https://images.unsplash.com/photo-1556905055-8f358a7a47b2?w=800&auto=format&fit=crop&q=80",
       "https://images.unsplash.com/photo-1509967419530-da38b4704bc6?w=800&auto=format&fit=crop&q=80"
     ],
-    "sizes": ["S", "M", "L", "XL"],
-    "colors": ["Heather Grey", "Midnight Black", "Forest Green"],
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL"
+    ],
+    "colors": [
+      "Heather Grey",
+      "Midnight Black",
+      "Forest Green"
+    ],
     "rating": 4.9,
     "numReviews": 210,
     "isFeatured": true,
-    "isNewArrival": true
+    "isNewArrival": true,
+    "soldCount": 189
   },
   {
     "title": "Oversized Heavy Fleece Zip-Up Hoodie",
@@ -231,12 +340,20 @@
     "images": [
       "https://images.unsplash.com/photo-1578587018452-892bacefd3f2?w=800&auto=format&fit=crop&q=80"
     ],
-    "sizes": ["M", "L", "XL"],
-    "colors": ["Washed Slate", "Oatmeal Melange"],
+    "sizes": [
+      "M",
+      "L",
+      "XL"
+    ],
+    "colors": [
+      "Washed Slate",
+      "Oatmeal Melange"
+    ],
     "rating": 4.8,
     "numReviews": 73,
     "isFeatured": false,
-    "isNewArrival": true
+    "isNewArrival": true,
+    "soldCount": 152
   },
   {
     "title": "Retro Low-Top Streetwear Sneakers",
@@ -250,12 +367,22 @@
       "https://images.unsplash.com/photo-1549298916-b41d501d3772?w=800&auto=format&fit=crop&q=80",
       "https://images.unsplash.com/photo-1525966222134-fcfa99b8ae77?w=800&auto=format&fit=crop&q=80"
     ],
-    "sizes": ["7", "8", "9", "10", "11"],
-    "colors": ["Triple White", "White / Navy"],
+    "sizes": [
+      "7",
+      "8",
+      "9",
+      "10",
+      "11"
+    ],
+    "colors": [
+      "Triple White",
+      "White / Navy"
+    ],
     "rating": 4.7,
     "numReviews": 145,
     "isFeatured": true,
-    "isNewArrival": false
+    "isNewArrival": false,
+    "soldCount": 417
   },
   {
     "title": "Suede Leather Chelsea Ankle Boots",
@@ -268,12 +395,21 @@
     "images": [
       "https://images.unsplash.com/photo-1638247025967-b4e38f787b76?w=800&auto=format&fit=crop&q=80"
     ],
-    "sizes": ["7", "8", "9", "10"],
-    "colors": ["Dark Sand", "Espresso Brown"],
+    "sizes": [
+      "7",
+      "8",
+      "9",
+      "10"
+    ],
+    "colors": [
+      "Dark Sand",
+      "Espresso Brown"
+    ],
     "rating": 4.9,
     "numReviews": 62,
     "isFeatured": true,
-    "isNewArrival": false
+    "isNewArrival": false,
+    "soldCount": 111
   },
   {
     "title": "Classic Canvas High-Top Everyday Sneakers",
@@ -286,12 +422,21 @@
     "images": [
       "https://images.unsplash.com/photo-1560769629-975ec94e6a86?w=800&auto=format&fit=crop&q=80"
     ],
-    "sizes": ["7", "8", "9", "10"],
-    "colors": ["Classic Black", "Ecru Off-White"],
+    "sizes": [
+      "7",
+      "8",
+      "9",
+      "10"
+    ],
+    "colors": [
+      "Classic Black",
+      "Ecru Off-White"
+    ],
     "rating": 4.5,
     "numReviews": 88,
     "isFeatured": false,
-    "isNewArrival": true
+    "isNewArrival": true,
+    "soldCount": 378
   },
   {
     "title": "Automatic Skeleton Mechanical Watch",
@@ -305,12 +450,18 @@
       "https://images.unsplash.com/photo-1524805444758-089113d48a6d?w=800&auto=format&fit=crop&q=80",
       "https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?w=800&auto=format&fit=crop&q=80"
     ],
-    "sizes": ["42mm Dial"],
-    "colors": ["Silver & Black", "Rose Gold & Brown"],
+    "sizes": [
+      "42mm Dial"
+    ],
+    "colors": [
+      "Silver & Black",
+      "Rose Gold & Brown"
+    ],
     "rating": 4.9,
     "numReviews": 49,
     "isFeatured": true,
-    "isNewArrival": true
+    "isNewArrival": true,
+    "soldCount": 339
   },
   {
     "title": "Matte Black Minimalist Chronograph Watch",
@@ -323,12 +474,17 @@
     "images": [
       "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=800&auto=format&fit=crop&q=80"
     ],
-    "sizes": ["40mm Dial"],
-    "colors": ["Stealth Black"],
+    "sizes": [
+      "40mm Dial"
+    ],
+    "colors": [
+      "Stealth Black"
+    ],
     "rating": 4.8,
     "numReviews": 81,
     "isFeatured": false,
-    "isNewArrival": false
+    "isNewArrival": false,
+    "soldCount": 34
   },
   {
     "title": "Handcrafted Top-Grain Leather Bi-Fold Wallet",
@@ -341,12 +497,18 @@
     "images": [
       "https://images.unsplash.com/photo-1627123424574-724758594e93?w=800&auto=format&fit=crop&q=80"
     ],
-    "sizes": ["One Size"],
-    "colors": ["Vintage Tan", "Deep Espresso"],
+    "sizes": [
+      "One Size"
+    ],
+    "colors": [
+      "Vintage Tan",
+      "Deep Espresso"
+    ],
     "rating": 4.8,
     "numReviews": 134,
     "isFeatured": false,
-    "isNewArrival": true
+    "isNewArrival": true,
+    "soldCount": 332
   },
   {
     "title": "Polarized Acetate Square Sunglasses",
@@ -359,12 +521,18 @@
     "images": [
       "https://images.unsplash.com/photo-1511499767150-a48a237f0083?w=800&auto=format&fit=crop&q=80"
     ],
-    "sizes": ["Standard"],
-    "colors": ["Tortoise Shell", "Glossy Black"],
+    "sizes": [
+      "Standard"
+    ],
+    "colors": [
+      "Tortoise Shell",
+      "Glossy Black"
+    ],
     "rating": 4.6,
     "numReviews": 79,
     "isFeatured": false,
-    "isNewArrival": true
+    "isNewArrival": true,
+    "soldCount": 177
   },
   {
     "title": "Aviator Metallic Gradient Sunglasses",
@@ -377,12 +545,18 @@
     "images": [
       "https://images.unsplash.com/photo-1572635196237-14b3f281503f?w=800&auto=format&fit=crop&q=80"
     ],
-    "sizes": ["Standard"],
-    "colors": ["Gold / Amber", "Gunmetal / Black"],
+    "sizes": [
+      "Standard"
+    ],
+    "colors": [
+      "Gold / Amber",
+      "Gunmetal / Black"
+    ],
     "rating": 4.8,
     "numReviews": 67,
     "isFeatured": true,
-    "isNewArrival": false
+    "isNewArrival": false,
+    "soldCount": 230
   },
   {
     "title": "Washed Canvas Roll-Top Commuter Backpack",
@@ -395,11 +569,1055 @@
     "images": [
       "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=800&auto=format&fit=crop&q=80"
     ],
-    "sizes": ["22L"],
-    "colors": ["Charcoal Grey", "Field Khaki"],
+    "sizes": [
+      "22L"
+    ],
+    "colors": [
+      "Charcoal Grey",
+      "Field Khaki"
+    ],
     "rating": 4.8,
     "numReviews": 112,
     "isFeatured": true,
-    "isNewArrival": false
+    "isNewArrival": false,
+    "soldCount": 398
+  },
+  {
+    "title": "Premium Cotton Pique Polo Shirt",
+    "description": "Classic pique weave cotton with ribbed collar and cuffs. Breathable moisture-wicking fabric perfect for summer casual wear.",
+    "price": 1799,
+    "discountPrice": 1399,
+    "category": "T-Shirts",
+    "brand": "SHOP.CO Classics",
+    "stock": 40,
+    "images": [
+      "https://images.unsplash.com/photo-1625910513413-5fc92651ee09?w=800&auto=format&fit=crop&q=80"
+    ],
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL"
+    ],
+    "colors": [
+      "Navy Blue",
+      "White",
+      "Forest Green"
+    ],
+    "rating": 4.6,
+    "numReviews": 68,
+    "isFeatured": false,
+    "isNewArrival": true,
+    "soldCount": 466
+  },
+  {
+    "title": "Minimalist Adjustable Baseball Cap",
+    "description": "6-panel structured cap with embroidered logo and adjustable snapback closure. Breathable mesh back panel for comfort.",
+    "price": 899,
+    "discountPrice": 699,
+    "category": "Accessories",
+    "brand": "StreetCulture",
+    "stock": 60,
+    "images": [
+      "https://images.unsplash.com/photo-1588850561407-ed78c282e89b?w=800&auto=format&fit=crop&q=80"
+    ],
+    "sizes": [
+      "One Size"
+    ],
+    "colors": [
+      "Black",
+      "White",
+      "Navy",
+      "Khaki"
+    ],
+    "rating": 4.5,
+    "numReviews": 145,
+    "isFeatured": false,
+    "isNewArrival": true,
+    "soldCount": 200
+  },
+  {
+    "title": "Japanese Selvedge Denim Jacket",
+    "description": "Classic trucker jacket crafted from 13oz Japanese selvedge denim. Features copper hardware and custom indigo dye finish.",
+    "price": 5999,
+    "discountPrice": 4499,
+    "category": "Jackets",
+    "brand": "Denim Lab",
+    "stock": 15,
+    "images": [
+      "https://images.unsplash.com/photo-1576995853123-5a10305d93c0?w=800&auto=format&fit=crop&q=80"
+    ],
+    "sizes": [
+      "M",
+      "L",
+      "XL"
+    ],
+    "colors": [
+      "Indigo",
+      "Black"
+    ],
+    "rating": 4.9,
+    "numReviews": 42,
+    "isFeatured": true,
+    "isNewArrival": true,
+    "soldCount": 198
+  },
+  {
+    "title": "Premium Cotton Graphic Print Tee",
+    "description": "Artist collaboration graphic print on 180 GSM cotton. Limited edition design with unique streetwear aesthetic.",
+    "price": 1599,
+    "discountPrice": 1199,
+    "category": "T-Shirts",
+    "brand": "Artistry Co",
+    "stock": 25,
+    "images": [
+      "https://images.unsplash.com/photo-1583743814966-8936f5b7be1a?w=800&auto=format&fit=crop&q=80"
+    ],
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL"
+    ],
+    "colors": [
+      "White",
+      "Black"
+    ],
+    "rating": 4.7,
+    "numReviews": 56,
+    "isFeatured": false,
+    "isNewArrival": true,
+    "soldCount": 53
+  },
+  {
+    "title": "Classic Canvas High-Top Sneakers",
+    "description": "Timeless high-top silhouette with durable canvas upper and vulcanized rubber sole. Iconic streetwear staple.",
+    "price": 2999,
+    "discountPrice": 2299,
+    "category": "Shoes",
+    "brand": "Strider Classics",
+    "stock": 35,
+    "images": [
+      "https://images.unsplash.com/photo-1600269452121-4f2416e55c28?w=800&auto=format&fit=crop&q=80"
+    ],
+    "sizes": [
+      "7",
+      "8",
+      "9",
+      "10",
+      "11"
+    ],
+    "colors": [
+      "Black/White",
+      "Red/White",
+      "Navy/White"
+    ],
+    "rating": 4.6,
+    "numReviews": 92,
+    "isFeatured": true,
+    "isNewArrival": true,
+    "soldCount": 36
+  },
+  {
+    "title": "Minimalist Leather Belt",
+    "description": "Handcrafted full-grain leather belt with brushed metal buckle. Width 40mm, perfect for both casual and formal wear.",
+    "price": 1299,
+    "discountPrice": 999,
+    "category": "Accessories",
+    "brand": "Artisan Leather",
+    "stock": 45,
+    "images": [
+      "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=800&auto=format&fit=crop&q=80"
+    ],
+    "sizes": [
+      "One Size"
+    ],
+    "colors": [
+      "Cognac Brown",
+      "Black",
+      "Tan"
+    ],
+    "rating": 4.7,
+    "numReviews": 78,
+    "isFeatured": false,
+    "isNewArrival": true,
+    "soldCount": 249
+  },
+  {
+    "title": "Lightweight Running Shorts",
+    "description": "Performance running shorts with moisture-wicking fabric, built-in liner, and zippered side pocket for essentials.",
+    "price": 1499,
+    "discountPrice": 1099,
+    "category": "T-Shirts",
+    "brand": "SportTech",
+    "stock": 50,
+    "images": [
+      "https://images.unsplash.com/photo-1506629082955-511b1aa562c8?w=800&auto=format&fit=crop&q=80"
+    ],
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL"
+    ],
+    "colors": [
+      "Black",
+      "Navy",
+      "Grey"
+    ],
+    "rating": 4.5,
+    "numReviews": 34,
+    "isFeatured": false,
+    "isNewArrival": true,
+    "soldCount": 104
+  },
+  {
+    "title": "Premium Cotton Crew Socks (3-Pack)",
+    "description": "Set of 3 premium cotton crew socks with reinforced heel and toe. Breathable and durable for everyday wear.",
+    "price": 699,
+    "discountPrice": 499,
+    "category": "Accessories",
+    "brand": "SHOP.CO Essentials",
+    "stock": 100,
+    "images": [
+      "https://images.unsplash.com/photo-1586350977774-bc4793b51e80?w=800&auto=format&fit=crop&q=80"
+    ],
+    "sizes": [
+      "One Size"
+    ],
+    "colors": [
+      "Black/White/Grey",
+      "Navy/White/Beige"
+    ],
+    "rating": 4.4,
+    "numReviews": 201,
+    "isFeatured": false,
+    "isNewArrival": true,
+    "soldCount": 69
+  },
+  {
+    "title": "Vintage Wash Denim Shorts",
+    "description": "Classic 5-pocket denim shorts with vintage wash treatment. Relaxed fit with 10-inch inseam perfect for summer.",
+    "price": 2199,
+    "discountPrice": 1699,
+    "category": "Jeans",
+    "brand": "Denim Lab",
+    "stock": 30,
+    "images": [
+      "https://images.unsplash.com/photo-1591195853828-11db59a44f6b?w=800&auto=format&fit=crop&q=80"
+    ],
+    "sizes": [
+      "30",
+      "32",
+      "34",
+      "36"
+    ],
+    "colors": [
+      "Light Wash",
+      "Medium Wash",
+      "Black"
+    ],
+    "rating": 4.6,
+    "numReviews": 45,
+    "isFeatured": false,
+    "isNewArrival": true,
+    "soldCount": 53
+  },
+  {
+    "title": "Classic Straight Leg Chino Pants",
+    "description": "Premium cotton chino with straight leg fit. Features slanted front pockets and welt back pockets. Perfect for casual and smart-casual wear.",
+    "price": 2499,
+    "discountPrice": 1999,
+    "category": "Jeans",
+    "brand": "Urban Stitch",
+    "stock": 40,
+    "images": [
+      "https://images.unsplash.com/photo-1473966968600-fa801b869a1a?w=800&auto=format&fit=crop&q=80"
+    ],
+    "sizes": [
+      "30",
+      "32",
+      "34",
+      "36",
+      "38"
+    ],
+    "colors": [
+      "Beige",
+      "Navy",
+      "Olive",
+      "Black"
+    ],
+    "rating": 4.7,
+    "numReviews": 89,
+    "isFeatured": true,
+    "isNewArrival": true,
+    "soldCount": 212
+  },
+  {
+    "title": "Slim Fit Stretch Trousers",
+    "description": "Modern slim fit trousers with 2% elastane for comfort. wrinkle-resistant fabric with tapered leg. Ideal for office wear.",
+    "price": 2799,
+    "discountPrice": 2199,
+    "category": "Jeans",
+    "brand": "FormalFit",
+    "stock": 35,
+    "images": [
+      "https://images.unsplash.com/photo-1594938298603-c8148c4dae35?w=800&auto=format&fit=crop&q=80"
+    ],
+    "sizes": [
+      "30",
+      "32",
+      "34",
+      "36"
+    ],
+    "colors": [
+      "Charcoal",
+      "Navy",
+      "Black"
+    ],
+    "rating": 4.6,
+    "numReviews": 67,
+    "isFeatured": false,
+    "isNewArrival": true,
+    "soldCount": 101
+  },
+  {
+    "title": "Relaxed Fit Jogger Pants",
+    "description": "Comfortable jogger pants with elastic cuffs and drawstring waist. Cotton blend fabric with side pockets. Perfect for athleisure.",
+    "price": 1999,
+    "discountPrice": 1499,
+    "category": "Jeans",
+    "brand": "SportTech",
+    "stock": 50,
+    "images": [
+      "https://images.unsplash.com/photo-1552902865-b72c031ac5ea?w=800&auto=format&fit=crop&q=80"
+    ],
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL"
+    ],
+    "colors": [
+      "Grey",
+      "Black",
+      "Navy"
+    ],
+    "rating": 4.5,
+    "numReviews": 112,
+    "isFeatured": false,
+    "isNewArrival": true,
+    "soldCount": 310
+  },
+  {
+    "title": "Distressed Skinny Jeans",
+    "description": "Fashion-forward skinny jeans with intentional distressing and ripped details. High-stretch denim for comfort and modern silhouette.",
+    "price": 3299,
+    "discountPrice": 2599,
+    "category": "Jeans",
+    "brand": "StreetCulture",
+    "stock": 25,
+    "images": [
+      "https://images.unsplash.com/photo-1541099649105-f69ad21f3246?w=800&auto=format&fit=crop&q=80"
+    ],
+    "sizes": [
+      "28",
+      "30",
+      "32",
+      "34"
+    ],
+    "colors": [
+      "Light Blue",
+      "Medium Blue",
+      "Black"
+    ],
+    "rating": 4.4,
+    "numReviews": 78,
+    "isFeatured": false,
+    "isNewArrival": true,
+    "soldCount": 227
+  },
+  {
+    "title": "High Rise Wide Leg Pants",
+    "description": "Vintage-inspired high rise wide leg pants. Soft drape fabric with pleated front. Trendy silhouette for modern fashion.",
+    "price": 2899,
+    "discountPrice": 2299,
+    "category": "Jeans",
+    "brand": "RetroStyle",
+    "stock": 30,
+    "images": [
+      "https://images.unsplash.com/photo-1594633312681-425c7b97ccd1?w=800&auto=format&fit=crop&q=80"
+    ],
+    "sizes": [
+      "30",
+      "32",
+      "34",
+      "36"
+    ],
+    "colors": [
+      "Cream",
+      "Sage",
+      "Black"
+    ],
+    "rating": 4.7,
+    "numReviews": 45,
+    "isFeatured": true,
+    "isNewArrival": true,
+    "soldCount": 39
+  },
+  {
+    "title": "Cargo Utility Pants",
+    "description": "Functional cargo pants with multiple utility pockets. Durable cotton blend fabric with articulated knees. Perfect for outdoor activities.",
+    "price": 3499,
+    "discountPrice": 2799,
+    "category": "Cargo Pants",
+    "brand": "TechGear",
+    "stock": 35,
+    "images": [
+      "https://images.unsplash.com/photo-1624378439575-d8705ad7ae80?w=800&auto=format&fit=crop&q=80"
+    ],
+    "sizes": [
+      "30",
+      "32",
+      "34",
+      "36"
+    ],
+    "colors": [
+      "Olive",
+      "Black",
+      "Khaki"
+    ],
+    "rating": 4.8,
+    "numReviews": 92,
+    "isFeatured": true,
+    "isNewArrival": true,
+    "soldCount": 62
+  },
+  {
+    "title": "Slim Fit Dress Pants",
+    "description": "Professional dress pants with slim fit and flat front. wrinkle-resistant wool blend fabric. Perfect for formal occasions.",
+    "price": 3999,
+    "discountPrice": 3199,
+    "category": "Jeans",
+    "brand": "FormalFit",
+    "stock": 25,
+    "images": [
+      "https://images.unsplash.com/photo-1507679799987-c73779587ccf?w=800&auto=format&fit=crop&q=80"
+    ],
+    "sizes": [
+      "30",
+      "32",
+      "34",
+      "36"
+    ],
+    "colors": [
+      "Navy",
+      "Charcoal",
+      "Black"
+    ],
+    "rating": 4.6,
+    "numReviews": 56,
+    "isFeatured": false,
+    "isNewArrival": true,
+    "soldCount": 114
+  },
+  {
+    "title": "Relaxed Fit Linen Pants",
+    "description": "Breathable linen pants with relaxed fit. Perfect for summer and warm weather. Natural fabric with excellent moisture-wicking properties.",
+    "price": 3199,
+    "discountPrice": 2499,
+    "category": "Jeans",
+    "brand": "Coastline",
+    "stock": 30,
+    "images": [
+      "https://images.unsplash.com/photo-1594938298603-c8148c4dae35?w=800&auto=format&fit=crop&q=80"
+    ],
+    "sizes": [
+      "30",
+      "32",
+      "34",
+      "36"
+    ],
+    "colors": [
+      "Natural",
+      "White",
+      "Sage"
+    ],
+    "rating": 4.7,
+    "numReviews": 38,
+    "isFeatured": false,
+    "isNewArrival": true,
+    "soldCount": 92
+  },
+  {
+    "title": "Tapered Track Pants",
+    "description": "Athletic track pants with tapered leg and elastic cuffs. Moisture-wicking polyester blend. Side stripe detail for sporty look.",
+    "price": 1799,
+    "discountPrice": 1299,
+    "category": "Jeans",
+    "brand": "SportTech",
+    "stock": 45,
+    "images": [
+      "https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=800&auto=format&fit=crop&q=80"
+    ],
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL"
+    ],
+    "colors": [
+      "Black",
+      "Navy",
+      "Grey",
+      "Red"
+    ],
+    "rating": 4.5,
+    "numReviews": 124,
+    "isFeatured": false,
+    "isNewArrival": true,
+    "soldCount": 39
+  },
+  {
+    "title": "Classic Fit Cotton Shirt",
+    "description": "Timeless classic fit shirt in 100% cotton. Button-down collar with single chest pocket. Versatile for both casual and formal wear.",
+    "price": 1899,
+    "discountPrice": 1499,
+    "category": "Shirts",
+    "brand": "Urban Stitch",
+    "stock": 50,
+    "images": [
+      "https://images.unsplash.com/photo-1596755094514-f87e34085b2c?w=800&auto=format&fit=crop&q=80"
+    ],
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL",
+      "XXL"
+    ],
+    "colors": [
+      "White",
+      "Light Blue",
+      "Pink",
+      "Striped"
+    ],
+    "rating": 4.6,
+    "numReviews": 145,
+    "isFeatured": true,
+    "isNewArrival": true,
+    "soldCount": 408
+  },
+  {
+    "title": "Slim Fit Formal Shirt",
+    "description": "Modern slim fit formal shirt with spread collar. wrinkle-resistant fabric with subtle sheen. Perfect for business and special occasions.",
+    "price": 2299,
+    "discountPrice": 1799,
+    "category": "Shirts",
+    "brand": "FormalFit",
+    "stock": 40,
+    "images": [
+      "https://images.unsplash.com/photo-1602810318383-e386cc2a3ccf?w=800&auto=format&fit=crop&q=80"
+    ],
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL"
+    ],
+    "colors": [
+      "White",
+      "Light Blue",
+      "Pink",
+      "Lavender"
+    ],
+    "rating": 4.7,
+    "numReviews": 89,
+    "isFeatured": true,
+    "isNewArrival": true,
+    "soldCount": 335
+  },
+  {
+    "title": "Casual Checkered Shirt",
+    "description": "Classic checkered pattern casual shirt. Soft flannel fabric with relaxed fit. Perfect for layering in cooler weather.",
+    "price": 2199,
+    "discountPrice": 1699,
+    "category": "Shirts",
+    "brand": "SHOP.CO Casual",
+    "stock": 35,
+    "images": [
+      "https://images.unsplash.com/photo-1594938298603-c8148c4dae35?w=800&auto=format&fit=crop&q=80"
+    ],
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL"
+    ],
+    "colors": [
+      "Red/Black",
+      "Blue/White",
+      "Green/Brown"
+    ],
+    "rating": 4.5,
+    "numReviews": 67,
+    "isFeatured": false,
+    "isNewArrival": true,
+    "soldCount": 36
+  },
+  {
+    "title": "Denim Shirt",
+    "description": "Classic denim shirt with button-down collar. Medium-weight denim fabric with chest pockets. Versatile piece for casual wear.",
+    "price": 2499,
+    "discountPrice": 1999,
+    "category": "Shirts",
+    "brand": "Denim Lab",
+    "stock": 30,
+    "images": [
+      "https://images.unsplash.com/photo-1589310243389-96a5483213a8?w=800&auto=format&fit=crop&q=80"
+    ],
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL"
+    ],
+    "colors": [
+      "Light Blue",
+      "Dark Blue",
+      "Black"
+    ],
+    "rating": 4.6,
+    "numReviews": 78,
+    "isFeatured": false,
+    "isNewArrival": true,
+    "soldCount": 172
+  },
+  {
+    "title": "Printed Tropical Shirt",
+    "description": "Vibrant tropical print shirt for summer. Lightweight breathable fabric with relaxed fit. Perfect for vacations and beach wear.",
+    "price": 1999,
+    "discountPrice": 1499,
+    "category": "Shirts",
+    "brand": "Coastline",
+    "stock": 25,
+    "images": [
+      "https://images.unsplash.com/photo-1598033129183-c4f50c736f10?w=800&auto=format&fit=crop&q=80"
+    ],
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL"
+    ],
+    "colors": [
+      "Multi",
+      "Blue/Green",
+      "Red/Yellow"
+    ],
+    "rating": 4.4,
+    "numReviews": 45,
+    "isFeatured": false,
+    "isNewArrival": true,
+    "soldCount": 457
+  },
+  {
+    "title": "Flannel Plaid Shirt",
+    "description": "Cozy flannel plaid shirt for colder weather. Brushed interior for warmth. Classic fit with button-down collar.",
+    "price": 2399,
+    "discountPrice": 1899,
+    "category": "Shirts",
+    "brand": "SHOP.CO Essentials",
+    "stock": 30,
+    "images": [
+      "https://images.unsplash.com/photo-1596755094514-f87e34085b2c?w=800&auto=format&fit=crop&q=80"
+    ],
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL"
+    ],
+    "colors": [
+      "Red/Black",
+      "Blue/Grey",
+      "Green/Tan"
+    ],
+    "rating": 4.7,
+    "numReviews": 92,
+    "isFeatured": true,
+    "isNewArrival": true,
+    "soldCount": 237
+  },
+  {
+    "title": "Linen Casual Shirt",
+    "description": "Lightweight linen shirt for summer comfort. Breathable natural fabric with relaxed fit. Perfect for hot weather.",
+    "price": 2699,
+    "discountPrice": 2099,
+    "category": "Shirts",
+    "brand": "Coastline",
+    "stock": 25,
+    "images": [
+      "https://images.unsplash.com/photo-1620012253295-c15c429f60e9?w=800&auto=format&fit=crop&q=80"
+    ],
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL"
+    ],
+    "colors": [
+      "White",
+      "Beige",
+      "Sage",
+      "Light Blue"
+    ],
+    "rating": 4.5,
+    "numReviews": 38,
+    "isFeatured": false,
+    "isNewArrival": true,
+    "soldCount": 269
+  },
+  {
+    "title": "Striped Polo Shirt",
+    "description": "Classic striped polo shirt with ribbed collar. Cotton pique fabric for comfort and breathability. Smart casual essential.",
+    "price": 1699,
+    "discountPrice": 1299,
+    "category": "Shirts",
+    "brand": "SHOP.CO Classics",
+    "stock": 45,
+    "images": [
+      "https://images.unsplash.com/photo-1625910513413-5fc92651ee09?w=800&auto=format&fit=crop&q=80"
+    ],
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL"
+    ],
+    "colors": [
+      "Navy/White",
+      "Red/White",
+      "Black/White"
+    ],
+    "rating": 4.6,
+    "numReviews": 112,
+    "isFeatured": false,
+    "isNewArrival": true,
+    "soldCount": 34
+  },
+  {
+    "title": "Oversized Graphic Print Shirt",
+    "description": "Trendy oversized shirt with bold graphic print. Unique streetwear aesthetic. 100% cotton with dropped shoulders.",
+    "price": 2499,
+    "discountPrice": 1899,
+    "category": "Shirts",
+    "brand": "StreetCulture",
+    "stock": 20,
+    "images": [
+      "https://images.unsplash.com/photo-1583743814966-8936f5b7be1a?w=800&auto=format&fit=crop&q=80"
+    ],
+    "sizes": [
+      "M",
+      "L",
+      "XL"
+    ],
+    "colors": [
+      "White/Black",
+      "Black/White"
+    ],
+    "rating": 4.5,
+    "numReviews": 34,
+    "isFeatured": false,
+    "isNewArrival": true,
+    "soldCount": 178
+  },
+  {
+    "title": "Performance Running Shoes",
+    "description": "Lightweight performance running shoes with breathable mesh upper. Cushioned EVA midsole and durable rubber outsole.",
+    "price": 5999,
+    "discountPrice": 4499,
+    "category": "Shoes",
+    "brand": "Strider Pro",
+    "stock": 30,
+    "images": [
+      "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=800&auto=format&fit=crop&q=80"
+    ],
+    "sizes": [
+      "7",
+      "8",
+      "9",
+      "10",
+      "11"
+    ],
+    "colors": [
+      "Black/Red",
+      "White/Blue",
+      "Grey/Yellow"
+    ],
+    "rating": 4.8,
+    "numReviews": 156,
+    "isFeatured": true,
+    "isNewArrival": true,
+    "soldCount": 173
+  },
+  {
+    "title": "Classic Leather Sneakers",
+    "description": "Premium leather sneakers with classic design. Cushioned insole and durable rubber sole. Perfect for everyday wear.",
+    "price": 4999,
+    "discountPrice": 3799,
+    "category": "Shoes",
+    "brand": "Strider Heritage",
+    "stock": 25,
+    "images": [
+      "https://images.unsplash.com/photo-1549298916-b41d501d3772?w=800&auto=format&fit=crop&q=80"
+    ],
+    "sizes": [
+      "7",
+      "8",
+      "9",
+      "10",
+      "11"
+    ],
+    "colors": [
+      "White",
+      "Black",
+      "Brown"
+    ],
+    "rating": 4.7,
+    "numReviews": 134,
+    "isFeatured": true,
+    "isNewArrival": true,
+    "soldCount": 436
+  },
+  {
+    "title": "Sport Training Shoes",
+    "description": "Versatile training shoes for gym and sports. Supportive upper with cushioned midsole. Excellent stability and traction.",
+    "price": 5499,
+    "discountPrice": 4199,
+    "category": "Shoes",
+    "brand": "SportTech",
+    "stock": 35,
+    "images": [
+      "https://images.unsplash.com/photo-1606107557195-0e29a4b5b4aa?w=800&auto=format&fit=crop&q=80"
+    ],
+    "sizes": [
+      "7",
+      "8",
+      "9",
+      "10",
+      "11"
+    ],
+    "colors": [
+      "Black/White",
+      "Navy/Orange",
+      "Grey/Green"
+    ],
+    "rating": 4.6,
+    "numReviews": 89,
+    "isFeatured": false,
+    "isNewArrival": true,
+    "soldCount": 258
+  },
+  {
+    "title": "Slip-On Canvas Shoes",
+    "description": "Easy slip-on canvas shoes with elastic side gussets. Comfortable and convenient for everyday wear. Classic design.",
+    "price": 2499,
+    "discountPrice": 1899,
+    "category": "Shoes",
+    "brand": "Strider Casual",
+    "stock": 40,
+    "images": [
+      "https://images.unsplash.com/photo-1560769629-975ec94e6a86?w=800&auto=format&fit=crop&q=80"
+    ],
+    "sizes": [
+      "7",
+      "8",
+      "9",
+      "10"
+    ],
+    "colors": [
+      "Black",
+      "White",
+      "Navy",
+      "Red"
+    ],
+    "rating": 4.5,
+    "numReviews": 178,
+    "isFeatured": false,
+    "isNewArrival": true,
+    "soldCount": 265
+  },
+  {
+    "title": "High-Top Basketball Shoes",
+    "description": "High-top basketball shoes with ankle support. Cushioned collar and responsive midsole. Excellent court traction.",
+    "price": 6999,
+    "discountPrice": 5299,
+    "category": "Shoes",
+    "brand": "Strider Pro",
+    "stock": 20,
+    "images": [
+      "https://images.unsplash.com/photo-1600269452121-4f2416e55c28?w=800&auto=format&fit=crop&q=80"
+    ],
+    "sizes": [
+      "8",
+      "9",
+      "10",
+      "11"
+    ],
+    "colors": [
+      "Black/Red",
+      "White/Black",
+      "Blue/Yellow"
+    ],
+    "rating": 4.9,
+    "numReviews": 67,
+    "isFeatured": true,
+    "isNewArrival": true,
+    "soldCount": 399
+  },
+  {
+    "title": "Leather Boat Shoes",
+    "description": "Classic leather boat shoes with hand-sewn construction. Non-marking rubber sole with razor-cut siping. Nautical style.",
+    "price": 5499,
+    "discountPrice": 4199,
+    "category": "Shoes",
+    "brand": "Strider Heritage",
+    "stock": 25,
+    "images": [
+      "https://images.unsplash.com/photo-1638247025967-b4e38f787b76?w=800&auto=format&fit=crop&q=80"
+    ],
+    "sizes": [
+      "7",
+      "8",
+      "9",
+      "10"
+    ],
+    "colors": [
+      "Brown",
+      "Tan",
+      "Navy"
+    ],
+    "rating": 4.7,
+    "numReviews": 45,
+    "isFeatured": false,
+    "isNewArrival": true,
+    "soldCount": 68
+  },
+  {
+    "title": "Minimalist Mesh Running Shoes",
+    "description": "Ultra-lightweight mesh running shoes. Breathable upper with responsive cushioning. Perfect for long-distance running.",
+    "price": 6499,
+    "discountPrice": 4899,
+    "category": "Shoes",
+    "brand": "Strider Pro",
+    "stock": 30,
+    "images": [
+      "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=800&auto=format&fit=crop&q=80"
+    ],
+    "sizes": [
+      "7",
+      "8",
+      "9",
+      "10",
+      "11"
+    ],
+    "colors": [
+      "White/Black",
+      "Black/White",
+      "Grey/Blue"
+    ],
+    "rating": 4.8,
+    "numReviews": 92,
+    "isFeatured": true,
+    "isNewArrival": true,
+    "soldCount": 236
+  },
+  {
+    "title": "Retro Skate Shoes",
+    "description": "Classic skate shoes with durable canvas upper. Padded collar and tongue for comfort. Sticky rubber outsole for grip.",
+    "price": 3299,
+    "discountPrice": 2499,
+    "category": "Shoes",
+    "brand": "StreetCulture",
+    "stock": 35,
+    "images": [
+      "https://images.unsplash.com/photo-1525966222134-fcfa99b8ae77?w=800&auto=format&fit=crop&q=80"
+    ],
+    "sizes": [
+      "7",
+      "8",
+      "9",
+      "10",
+      "11"
+    ],
+    "colors": [
+      "Black/White",
+      "Navy/White",
+      "Red/Black"
+    ],
+    "rating": 4.6,
+    "numReviews": 78,
+    "isFeatured": false,
+    "isNewArrival": true,
+    "soldCount": 365
+  },
+  {
+    "title": "Waterproof Hiking Boots",
+    "description": "Durable waterproof hiking boots with Gore-Tex lining. Rugged outsole with excellent traction. Ankle support for trails.",
+    "price": 7999,
+    "discountPrice": 5999,
+    "category": "Shoes",
+    "brand": "OutdoorPro",
+    "stock": 15,
+    "images": [
+      "https://images.unsplash.com/photo-1534188753412-3e26d0d618d6?w=800&auto=format&fit=crop&q=80"
+    ],
+    "sizes": [
+      "8",
+      "9",
+      "10",
+      "11"
+    ],
+    "colors": [
+      "Brown",
+      "Black",
+      "Grey"
+    ],
+    "rating": 4.9,
+    "numReviews": 34,
+    "isFeatured": true,
+    "isNewArrival": true,
+    "soldCount": 111
+  },
+  {
+    "title": "Comfort Walking Shoes",
+    "description": "Ultra-comfortable walking shoes with memory foam insole. Lightweight and flexible. Perfect for all-day wear.",
+    "price": 3999,
+    "discountPrice": 2999,
+    "category": "Shoes",
+    "brand": "Strider Comfort",
+    "stock": 40,
+    "images": [
+      "https://images.unsplash.com/photo-1560769629-975ec94e6a86?w=800&auto=format&fit=crop&q=80"
+    ],
+    "sizes": [
+      "7",
+      "8",
+      "9",
+      "10",
+      "11"
+    ],
+    "colors": [
+      "Black",
+      "White",
+      "Grey",
+      "Navy"
+    ],
+    "rating": 4.7,
+    "numReviews": 145,
+    "isFeatured": false,
+    "isNewArrival": true,
+    "soldCount": 294
   }
 ]
