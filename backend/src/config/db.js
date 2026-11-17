@@ -6,10 +6,7 @@ const mongoose = require('mongoose');
  */
 const connectDB = async () => {
   try {
-    // Use local MongoDB in development, Atlas in production
-    const mongoURI = process.env.NODE_ENV === 'production'
-      ? process.env.MONGO_URI
-      : 'mongodb://127.0.0.1:27017/sss_ecommerce';
+    const mongoURI = process.env.MONGO_URI;
 
     if (!mongoURI) {
       throw new Error('MONGO_URI environment variable is required in production');
