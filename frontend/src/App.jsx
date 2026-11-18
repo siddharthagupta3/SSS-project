@@ -29,6 +29,7 @@ import AdminDashboard from './pages/admin/AdminDashboard';
 import AdminProfilePage from './pages/admin/AdminProfilePage';
 import ProfilePage from './pages/ProfilePage';
 import AdminLoginPage from './pages/admin/AdminLoginPage';
+import ServiceDetailPage from './pages/ServiceDetailPage';
 
 const ScrollToTop = () => {
   const { pathname } = useLocation();
@@ -66,6 +67,7 @@ function App() {
                   <Route path="/new-arrivals" element={<NewArrivalsPage />} />
                   <Route path="/watches" element={<WatchesPage />} />
                   <Route path="/developer" element={<DeveloperPage />} />
+                  <Route path="/info/:slug" element={<ServiceDetailPage />} />
 
                   {/* Protected Customer Routes */}
                   <Route

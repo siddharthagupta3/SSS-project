@@ -42,30 +42,30 @@ const Footer = () => {
           <div>
             <h5 className="text-xs font-bold uppercase tracking-wider text-black">Company</h5>
             <ul className="mt-4 space-y-2 text-sm text-neutral-600">
-              <li><Link to="/shop" className="hover:text-black">About Us</Link></li>
-              <li><Link to="/shop" className="hover:text-black">Features</Link></li>
-              <li><Link to="/shop" className="hover:text-black">Works</Link></li>
-              <li><Link to="/shop" className="hover:text-black">Career</Link></li>
+              <li><Link to="/info/about-us" className="hover:text-black">About Us</Link></li>
+              <li><Link to="/info/features" className="hover:text-black">Features</Link></li>
+              <li><Link to="/info/works" className="hover:text-black">Works</Link></li>
+              <li><Link to="/info/career" className="hover:text-black">Career</Link></li>
             </ul>
           </div>
 
           <div>
             <h5 className="text-xs font-bold uppercase tracking-wider text-black">Help</h5>
             <ul className="mt-4 space-y-2 text-sm text-neutral-600">
-              <li><Link to="/shop" className="hover:text-black">Customer Support</Link></li>
-              <li><Link to="/shop" className="hover:text-black">Delivery Details</Link></li>
-              <li><Link to="/shop" className="hover:text-black">Terms & Conditions</Link></li>
-              <li><Link to="/shop" className="hover:text-black">Privacy Policy</Link></li>
+              <li><Link to="/info/customer-support" className="hover:text-black">Customer Support</Link></li>
+              <li><Link to="/info/delivery-details" className="hover:text-black">Delivery Details</Link></li>
+              <li><Link to="/info/terms-conditions" className="hover:text-black">Terms & Conditions</Link></li>
+              <li><Link to="/info/privacy-policy" className="hover:text-black">Privacy Policy</Link></li>
             </ul>
           </div>
 
           <div>
             <h5 className="text-xs font-bold uppercase tracking-wider text-black">FAQ</h5>
             <ul className="mt-4 space-y-2 text-sm text-neutral-600">
-              <li><Link to="/shop" className="hover:text-black">Account</Link></li>
-              <li><Link to="/my-orders" className="hover:text-black">Manage Deliveries</Link></li>
-              <li><Link to="/shop" className="hover:text-black">Orders</Link></li>
-              <li><Link to="/shop" className="hover:text-black">Payments</Link></li>
+              <li><Link to="/info/account" className="hover:text-black">Account</Link></li>
+              <li><Link to="/info/manage-deliveries" className="hover:text-black">Manage Deliveries</Link></li>
+              <li><Link to="/info/orders" className="hover:text-black">Orders</Link></li>
+              <li><Link to="/info/payments" className="hover:text-black">Payments</Link></li>
             </ul>
           </div>
 
