@@ -101,7 +101,10 @@ const Navbar = () => {
             >
               {mobileMenuOpen ? <CloseIcon className="w-6 h-6" /> : <MenuIcon className="w-6 h-6" />}
             </button>
-            <Link to="/" className="shrink-0 translate-y-px text-xl sm:text-3xl font-black leading-none tracking-tighter text-black uppercase">
+            <Link
+              to="/"
+              className="flex h-9 items-center text-xl sm:text-3xl font-black leading-none tracking-tighter text-black uppercase"
+            >
               SHOP.CO
             </Link>
           </div>
@@ -339,9 +342,14 @@ const Navbar = () => {
               )}
             </nav>
             <div className="mt-auto border-t border-neutral-100 pt-4">
-              <p className="px-2 pb-2 text-[10px] font-bold uppercase tracking-[0.18em] text-neutral-400">
-                Settings
-              </p>
+              <Link
+                to={isAuthenticated ? (isAdmin ? '/admin/profile' : '/profile') : '/login'}
+                onClick={() => setMobileMenuOpen(false)}
+                className="mb-2 flex items-center justify-between px-2 py-1 text-[11px] font-bold uppercase tracking-[0.18em] text-neutral-500"
+              >
+                <span>Settings</span>
+                <span aria-hidden="true">›</span>
+              </Link>
               {isAuthenticated ? (
                 <div className="space-y-1">
                   <Link

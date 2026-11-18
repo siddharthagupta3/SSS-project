@@ -192,14 +192,14 @@ const ProfilePage = () => {
   ];
 
   return (
-    <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
-      <h1 className="text-3xl font-black uppercase mb-8">My Profile</h1>
-      <div className="flex gap-2 overflow-x-auto border-b mb-8">
+    <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-10">
+      <h1 className="text-2xl sm:text-3xl font-black uppercase mb-6 sm:mb-8">Settings & Profile</h1>
+      <div className="flex gap-1 sm:gap-2 overflow-x-auto border-b mb-6 sm:mb-8 scrollbar-hide">
         {tabs.map(([key, label]) => (
           <button
             key={key}
             onClick={() => setActiveTab(key)}
-            className={`shrink-0 px-4 pb-3 text-sm font-bold border-b-2 ${activeTab === key ? 'border-black text-black' : 'border-transparent text-neutral-400'}`}
+            className={`shrink-0 px-3 sm:px-4 pb-3 text-xs sm:text-sm font-bold border-b-2 ${activeTab === key ? 'border-black text-black' : 'border-transparent text-neutral-400'}`}
           >
             {label}
           </button>
