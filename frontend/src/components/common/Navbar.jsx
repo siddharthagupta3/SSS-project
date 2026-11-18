@@ -92,7 +92,7 @@ const Navbar = () => {
         <div className="flex h-16 items-center justify-between gap-1 sm:gap-4">
           
           {/* Mobile Menu Button & Brand */}
-          <div className="flex min-w-0 items-center gap-2 sm:gap-3">
+          <div className="flex min-w-0 items-center justify-start gap-2 sm:gap-3">
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
               className="md:hidden flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border border-neutral-200 bg-white text-neutral-800 shadow-sm hover:border-black hover:bg-neutral-50 active:scale-95 transition"
@@ -101,7 +101,7 @@ const Navbar = () => {
             >
               {mobileMenuOpen ? <CloseIcon className="w-6 h-6" /> : <MenuIcon className="w-6 h-6" />}
             </button>
-            <Link to="/" className="shrink-0 text-xl sm:text-3xl font-black tracking-tighter text-black uppercase">
+            <Link to="/" className="shrink-0 translate-y-px text-xl sm:text-3xl font-black leading-none tracking-tighter text-black uppercase">
               SHOP.CO
             </Link>
           </div>
@@ -338,6 +338,51 @@ const Navbar = () => {
                 </Link>
               )}
             </nav>
+            <div className="mt-auto border-t border-neutral-100 pt-4">
+              <p className="px-2 pb-2 text-[10px] font-bold uppercase tracking-[0.18em] text-neutral-400">
+                Settings
+              </p>
+              {isAuthenticated ? (
+                <div className="space-y-1">
+                  <Link
+                    to={isAdmin ? '/admin/profile' : '/profile'}
+                    onClick={() => setMobileMenuOpen(false)}
+                    className="flex items-center rounded-xl px-3 py-3 text-sm font-semibold text-neutral-800 hover:bg-neutral-100"
+                  >
+                    Profile & Account
+                  </Link>
+                  <Link
+                    to="/my-orders"
+                    onClick={() => setMobileMenuOpen(false)}
+                    className="flex items-center rounded-xl px-3 py-3 text-sm font-semibold text-neutral-800 hover:bg-neutral-100"
+                  >
+                    My Orders
+                  </Link>
+                  <Link
+                    to="/wishlist"
+                    onClick={() => setMobileMenuOpen(false)}
+                    className="flex items-center rounded-xl px-3 py-3 text-sm font-semibold text-neutral-800 hover:bg-neutral-100"
+                  >
+                    Wishlist
+                  </Link>
+                  <button
+                    type="button"
+                    onClick={handleLogout}
+                    className="w-full rounded-xl px-3 py-3 text-left text-sm font-bold text-red-600 hover:bg-red-50"
+                  >
+                    Logout
+                  </button>
+                </div>
+              ) : (
+                <Link
+                  to="/login"
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="flex items-center justify-center rounded-xl bg-black px-4 py-3 text-sm font-bold text-white"
+                >
+                  Login
+                </Link>
+              )}
+            </div>
           </aside>
         </div>
       )}

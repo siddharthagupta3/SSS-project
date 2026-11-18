@@ -87,18 +87,18 @@ const HomePage = () => {
             </div>
 
             {/* Metrics */}
-            <div className="grid grid-cols-3 gap-8 pt-8 border-t border-neutral-200">
+            <div className="grid grid-cols-3 gap-2 sm:gap-8 pt-8 border-t border-neutral-200">
               <div>
-                <h3 className="text-3xl sm:text-4xl font-extrabold text-neutral-900">200+</h3>
-                <p className="text-xs text-neutral-500 mt-1">International Brands</p>
+                <h3 className="text-xl sm:text-4xl font-extrabold text-neutral-900 leading-tight whitespace-nowrap">200+</h3>
+                <p className="text-[10px] sm:text-xs text-neutral-500 mt-1 leading-tight">International Brands</p>
               </div>
               <div>
-                <h3 className="text-3xl sm:text-4xl font-extrabold text-neutral-900">2,000+</h3>
-                <p className="text-xs text-neutral-500 mt-1">High-Quality Products</p>
+                <h3 className="text-xl sm:text-4xl font-extrabold text-neutral-900 leading-tight whitespace-nowrap">2,000+</h3>
+                <p className="text-[10px] sm:text-xs text-neutral-500 mt-1 leading-tight">High-Quality Products</p>
               </div>
               <div>
-                <h3 className="text-3xl sm:text-4xl font-extrabold text-neutral-900">30,000+</h3>
-                <p className="text-xs text-neutral-500 mt-1">Happy Customers</p>
+                <h3 className="text-xl sm:text-4xl font-extrabold text-neutral-900 leading-tight whitespace-nowrap">30,000+</h3>
+                <p className="text-[10px] sm:text-xs text-neutral-500 mt-1 leading-tight">Happy Customers</p>
               </div>
             </div>
           </div>
