@@ -47,7 +47,7 @@ const Navbar = () => {
   };
 
   return (
-    <header className="sticky top-0 z-50 bg-white border-b border-neutral-200">
+    <header className="sticky top-0 z-50 w-full max-w-[100vw] bg-white border-b border-neutral-200 overflow-visible">
       {/* Moving Announcement Ticker (Left to Right continuous marquee) */}
       <div className="bg-black text-white text-xs py-2 overflow-hidden border-b border-neutral-900 select-none hidden sm:block">
         <div className="animate-marquee-ltr flex items-center space-x-12 whitespace-nowrap">
@@ -322,7 +322,7 @@ const Navbar = () => {
             className="absolute inset-0 bg-black/40 backdrop-blur-sm"
             onClick={() => setMobileMenuOpen(false)}
           />
-          <aside className="absolute left-0 top-0 h-full w-[82%] max-w-sm bg-white shadow-2xl p-5 flex flex-col">
+          <aside className="absolute left-0 top-0 h-[100dvh] max-h-[100dvh] w-[82%] max-w-sm overflow-y-auto bg-white shadow-2xl p-5 pb-[env(safe-area-inset-bottom)] flex flex-col">
             <div className="flex items-center justify-between border-b border-neutral-100 pb-4">
               <Link to="/" onClick={() => setMobileMenuOpen(false)} className="text-2xl font-black tracking-tighter">
                 SHOP.CO
