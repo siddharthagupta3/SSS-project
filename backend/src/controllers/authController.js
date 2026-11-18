@@ -344,51 +344,47 @@ const updateUserProfile = async (req, res, next) => {
  */
 const googleAuth = async (req, res, next) => {
   try {
-    const { credential, email, name, picture } = req.body;
-
-    let googleEmail = email;
-    let googleName = name;
-    let googlePicture = picture;
-    let googleSub = '';
-
-    // Verify token with google-auth-library if credential token is passed
-    if (credential) {
-      try {
-        const ticket = await googleClient.verifyIdToken({
-          idToken: credential,
-          audience: process.env.GOOGLE_CLIENT_ID || undefined,
-        });
-        const payload = ticket.getPayload();
-        googleEmail = payload.email;
-        googleName = payload.name;
-        googlePicture = payload.picture;
-        googleSub = payload.sub;
-      } catch (tokenErr) {
-        // Fallback decoder for base64 JWT payload
-        try {
-          const parts = credential.split('.');
-          if (parts.length === 3) {
-            const decoded = JSON.parse(Buffer.from(parts[1], 'base64').toString('utf8'));
-            googleEmail = decoded.email || googleEmail;
-            googleName = decoded.name || googleName;
-            googlePicture = decoded.picture || googlePicture;
-            googleSub = decoded.sub || '';
-          }
-        } catch {
-          console.warn('Google token parse warning:', tokenErr.message);
-        }
-      }
+    const { credential } = req.body;
+    const clientId = process.env.GOOGLE_CLIENT_ID;
+    if (!clientId) {
+      res.status(503);
+      throw new Error('Google Sign-In is not configured');
     }
-
-    if (!googleEmail) {
+    if (!credential) {
       res.status(400);
-      throw new Error('Could not retrieve verified email from Google.');
+      throw new Error('Google credential is required');
     }
+
+    let payload;
+    try {
+      const ticket = await googleClient.verifyIdToken({
+        idToken: credential,
+        audience: clientId,
+      });
+      payload = ticket.getPayload();
+    } catch {
+      res.status(401);
+      throw new Error('Google authentication failed');
+    }
+
+    if (!payload?.email || payload.email_verified !== true) {
+      res.status(401);
+      throw new Error('Google authentication failed');
+    }
+
+    const googleEmail = payload.email;
+    const googleName = payload.name;
+    const googlePicture = payload.picture;
+    const googleSub = payload.sub;
 
     // Find user by email or googleId
     let user = await User.findOne({ email: googleEmail.toLowerCase() });
 
     if (user) {
+      if (user.role === 'admin') {
+        res.status(403);
+        throw new Error('Admin accounts must use secure admin login');
+      }
       // User exists - update verified status & avatar
       user.isEmailVerified = true;
       if (googlePicture) user.avatar = googlePicture;

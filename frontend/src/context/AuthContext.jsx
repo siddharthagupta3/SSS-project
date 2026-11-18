@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useEffect } from 'react';
+import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
 import api from '../api/client';
 
 const AuthContext = createContext();
@@ -52,7 +52,7 @@ export const AuthProvider = ({ children }) => {
     return userData;
   };
 
-  const loginWithGoogle = async (googlePayload) => {
+  const loginWithGoogle = useCallback(async (googlePayload) => {
     const res = await api.post('/auth/google', googlePayload);
     if (res.data.success) {
       const userData = res.data.data;
@@ -62,7 +62,7 @@ export const AuthProvider = ({ children }) => {
       localStorage.setItem('sss_user', JSON.stringify(userData));
       return userData;
     }
-  };
+  }, []);
 
   const register = async (name, email, password) => {
     const res = await api.post('/auth/register', { name, email, password });

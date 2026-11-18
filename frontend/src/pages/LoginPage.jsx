@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import { UserIcon, GoogleIcon } from '../components/common/Icons';
+import { UserIcon } from '../components/common/Icons';
+import { loadGoogleIdentityServices } from '../utils/googleAuth';
 
 const LoginPage = () => {
   const [email, setEmail] = useState('');
@@ -9,6 +10,7 @@ const LoginPage = () => {
   const [loading, setLoading] = useState(false);
   const [googleLoading, setGoogleLoading] = useState(false);
   const [error, setError] = useState('');
+  const googleButtonRef = useRef(null);
 
   const { login, loginWithGoogle } = useAuth();
   const navigate = useNavigate();
@@ -16,6 +18,49 @@ const LoginPage = () => {
 
   const queryRedirect = new URLSearchParams(location.search).get('redirect');
   const from = location.state?.from?.pathname || queryRedirect || '/';
+  const googleClientId = import.meta.env.VITE_GOOGLE_CLIENT_ID;
+
+  useEffect(() => {
+    if (!googleClientId || !googleButtonRef.current) return undefined;
+
+    let active = true;
+    loadGoogleIdentityServices()
+      .then((googleIdentity) => {
+        if (!active || !googleButtonRef.current) return;
+        googleIdentity.initialize({
+          client_id: googleClientId,
+          callback: async (response) => {
+            if (!response?.credential) {
+              setError('Google authentication failed');
+              return;
+            }
+            setGoogleLoading(true);
+            setError('');
+            try {
+              const user = await loginWithGoogle({ credential: response.credential });
+              navigate(user.role === 'admin' ? '/admin' : from, { replace: true });
+            } catch (err) {
+              setError(err.response?.data?.message || 'Google authentication failed');
+            } finally {
+              setGoogleLoading(false);
+            }
+          },
+        });
+        googleIdentity.renderButton(googleButtonRef.current, {
+          type: 'standard',
+          theme: 'outline',
+          size: 'large',
+          text: 'continue_with',
+          shape: 'pill',
+          width: 320,
+        });
+      })
+      .catch((err) => setError(err.message));
+
+    return () => {
+      active = false;
+    };
+  }, [googleClientId, from, loginWithGoogle, navigate]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -32,36 +77,6 @@ const LoginPage = () => {
       setError(err.response?.data?.message || err.message || 'Invalid email or password');
     } finally {
       setLoading(false);
-    }
-  };
-
-  const handleGoogleSignIn = async () => {
-    setGoogleLoading(true);
-    setError('');
-
-    // Check if Google Client ID is configured in environment
-    const googleClientId = import.meta.env.VITE_GOOGLE_CLIENT_ID;
-
-    if (googleClientId && window.google?.accounts?.id) {
-      // Live Google Identity Services
-      window.google.accounts.id.initialize({
-        client_id: googleClientId,
-        callback: async (response) => {
-          try {
-            await loginWithGoogle({ credential: response.credential });
-            navigate(from, { replace: true });
-          } catch (err) {
-            console.error('Google Login Error:', err);
-            setError(err.response?.data?.message || 'Google authentication failed');
-          } finally {
-            setGoogleLoading(false);
-          }
-        },
-      });
-      window.google.accounts.id.prompt();
-    } else {
-      setError('Google Sign-In not configured. Please use email login.');
-      setGoogleLoading(false);
     }
   };
 
@@ -85,16 +100,9 @@ const LoginPage = () => {
           </div>
         )}
 
-        {/* Continue with Google (Amazon / Flipkart Style) */}
-        <button
-          type="button"
-          onClick={handleGoogleSignIn}
-          disabled={googleLoading}
-          className="w-full border border-neutral-300 hover:border-black bg-white hover:bg-neutral-50 text-neutral-800 text-sm py-3 px-4 rounded-full font-semibold flex items-center justify-center gap-3 transition shadow-xs active:scale-95 disabled:opacity-50"
-        >
-          <GoogleIcon className="w-5 h-5 shrink-0" />
-          <span>{googleLoading ? 'Connecting to Google...' : 'Continue with Google'}</span>
-        </button>
+        <div className="w-full flex justify-center min-h-[44px]" ref={googleButtonRef}>
+          {!googleClientId && <span className="text-xs text-neutral-500">Google Sign-In is not configured.</span>}
+        </div>
 
         <div className="relative flex items-center justify-center">
           <div className="border-t border-neutral-200 w-full" />

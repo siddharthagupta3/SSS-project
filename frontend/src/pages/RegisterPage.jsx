@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import { UserIcon, GoogleIcon } from '../components/common/Icons';
+import { loadGoogleIdentityServices } from '../utils/googleAuth';
+import { UserIcon } from '../components/common/Icons';
 
 const RegisterPage = () => {
   const [name, setName] = useState('');
@@ -11,6 +12,8 @@ const RegisterPage = () => {
   const [loading, setLoading] = useState(false);
   const [googleLoading, setGoogleLoading] = useState(false);
   const [error, setError] = useState('');
+  const googleButtonRef = useRef(null);
+  const googleClientId = import.meta.env.VITE_GOOGLE_CLIENT_ID;
 
   const { register, loginWithGoogle } = useAuth();
   const navigate = useNavigate();
@@ -46,33 +49,43 @@ const RegisterPage = () => {
     }
   };
 
-  const handleGoogleSignUp = async () => {
-    setGoogleLoading(true);
-    setError('');
-
-    const googleClientId = import.meta.env.VITE_GOOGLE_CLIENT_ID;
-
-    if (googleClientId && window.google?.accounts?.id) {
-      window.google.accounts.id.initialize({
-        client_id: googleClientId,
-        callback: async (response) => {
-          try {
-            await loginWithGoogle({ credential: response.credential });
-            navigate('/shop');
-          } catch (err) {
-            console.error('Google Auth Error:', err);
-            setError(err.response?.data?.message || 'Google account creation failed');
-          } finally {
-            setGoogleLoading(false);
-          }
-        },
-      });
-      window.google.accounts.id.prompt();
-    } else {
-      setError('Google Sign-In not configured. Please use email registration.');
-      setGoogleLoading(false);
-    }
-  };
+  useEffect(() => {
+    if (!googleClientId || !googleButtonRef.current) return undefined;
+    let active = true;
+    loadGoogleIdentityServices()
+      .then((googleIdentity) => {
+        if (!active || !googleButtonRef.current) return;
+        googleIdentity.initialize({
+          client_id: googleClientId,
+          callback: async (response) => {
+            if (!response?.credential) {
+              setError('Google authentication failed');
+              return;
+            }
+            setGoogleLoading(true);
+            setError('');
+            try {
+              await loginWithGoogle({ credential: response.credential });
+              navigate('/shop', { replace: true });
+            } catch (err) {
+              setError(err.response?.data?.message || 'Google account creation failed');
+            } finally {
+              setGoogleLoading(false);
+            }
+          },
+        });
+        googleIdentity.renderButton(googleButtonRef.current, {
+          type: 'standard',
+          theme: 'outline',
+          size: 'large',
+          text: 'signup_with',
+          shape: 'pill',
+          width: 320,
+        });
+      })
+      .catch((err) => setError(err.message));
+    return () => { active = false; };
+  }, [googleClientId, loginWithGoogle, navigate]);
 
   return (
     <div className="min-h-[75vh] flex items-center justify-center px-4 py-12">
@@ -94,16 +107,9 @@ const RegisterPage = () => {
           </div>
         )}
 
-        {/* Continue with Google (Instant Verification) */}
-        <button
-          type="button"
-          onClick={handleGoogleSignUp}
-          disabled={googleLoading}
-          className="w-full border border-neutral-300 hover:border-black bg-white hover:bg-neutral-50 text-neutral-800 text-sm py-3 px-4 rounded-full font-semibold flex items-center justify-center gap-3 transition shadow-xs active:scale-95 disabled:opacity-50"
-        >
-          <GoogleIcon className="w-5 h-5 shrink-0" />
-          <span>{googleLoading ? 'Connecting to Google...' : 'Sign up with Google'}</span>
-        </button>
+        <div className="w-full flex justify-center min-h-[44px]" ref={googleButtonRef}>
+          {!googleClientId && <span className="text-xs text-neutral-500">Google Sign-In is not configured.</span>}
+        </div>
 
         <div className="relative flex items-center justify-center">
           <div className="border-t border-neutral-200 w-full" />

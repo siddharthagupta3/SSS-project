@@ -115,5 +115,19 @@ npm run dev
 # Running on http://localhost:5173
 ```
 
+### Google Sign-In setup
+
+Google Cloud Console → APIs & Services → Credentials → Web OAuth 2.0 Client:
+
+Add these Authorized JavaScript origins:
+
+```text
+http://localhost:5173
+http://127.0.0.1:5173
+https://sssproduct.vercel.app
+```
+
+If the deployed Vercel domain is different, also add that exact `https://` origin.
+
 ---
 
