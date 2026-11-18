@@ -88,20 +88,20 @@ const Navbar = () => {
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-16 gap-4">
+      <div className="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8">
+        <div className="flex h-16 items-center justify-between gap-1 sm:gap-4">
           
           {/* Mobile Menu Button & Brand */}
-          <div className="flex items-center gap-3">
+          <div className="flex min-w-0 items-center gap-2 sm:gap-3">
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="md:hidden flex h-10 w-10 items-center justify-center rounded-xl border border-neutral-200 bg-white text-neutral-800 shadow-sm hover:border-black hover:bg-neutral-50 active:scale-95 transition"
+              className="md:hidden flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border border-neutral-200 bg-white text-neutral-800 shadow-sm hover:border-black hover:bg-neutral-50 active:scale-95 transition"
               aria-label="Toggle Menu"
               aria-expanded={mobileMenuOpen}
             >
               {mobileMenuOpen ? <CloseIcon className="w-6 h-6" /> : <MenuIcon className="w-6 h-6" />}
             </button>
-            <Link to="/" className="text-2xl sm:text-3xl font-black tracking-tighter text-black uppercase">
+            <Link to="/" className="shrink-0 text-xl sm:text-3xl font-black tracking-tighter text-black uppercase">
               SHOP.CO
             </Link>
           </div>
@@ -131,10 +131,10 @@ const Navbar = () => {
           </form>
 
           {/* Action Icons */}
-          <div className="flex items-center gap-0.5 sm:gap-3">
+          <div className="flex shrink-0 items-center gap-1 sm:gap-3">
             
             {/* Wishlist Icon */}
-            <Link to="/wishlist" className="relative p-1.5 sm:p-2 text-neutral-800 hover:text-red-500 transition" title="Wishlist">
+            <Link to="/wishlist" className="relative flex h-9 w-9 items-center justify-center sm:h-auto sm:w-auto sm:p-2 text-neutral-800 hover:text-red-500 transition" title="Wishlist">
               <HeartIcon className="w-5 h-5" />
               {wishlistCount > 0 && (
                 <span className="absolute top-0 right-0 bg-red-500 text-white text-[10px] font-bold rounded-full h-4 w-4 flex items-center justify-center">
@@ -146,7 +146,7 @@ const Navbar = () => {
             <button
               type="button"
               onClick={() => setMobileSearchOpen((open) => !open)}
-              className="md:hidden flex h-8 w-8 items-center justify-center rounded-full text-neutral-800 hover:bg-neutral-100 transition"
+              className="md:hidden flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-neutral-800 hover:bg-neutral-100 transition"
               aria-label="Open search"
               aria-expanded={mobileSearchOpen}
             >
@@ -154,7 +154,7 @@ const Navbar = () => {
             </button>
 
             {/* Cart Icon */}
-            <Link to="/cart" className="relative p-1.5 sm:p-2 text-neutral-800 hover:text-black transition" title="Shopping Bag">
+            <Link to="/cart" className="relative flex h-9 w-9 items-center justify-center sm:h-auto sm:w-auto sm:p-2 text-neutral-800 hover:text-black transition" title="Shopping Bag">
               <ShoppingBagIcon className="w-5 h-5" />
               {cartCount > 0 && (
                 <span className="absolute top-0 right-0 bg-black text-white text-[10px] font-bold rounded-full h-4 w-4 flex items-center justify-center">
@@ -259,7 +259,7 @@ const Navbar = () => {
             ) : (
               <Link
                 to="/login"
-                className="flex h-9 w-9 items-center justify-center rounded-full bg-black p-0 text-white sm:w-auto sm:px-4 text-sm font-medium hover:bg-neutral-800 transition"
+                className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-black p-0 text-white sm:w-auto sm:px-4 text-sm font-medium hover:bg-neutral-800 transition"
               >
                 <UserIcon className="w-4 h-4" />
                 <span className="hidden sm:inline">Log In</span>
