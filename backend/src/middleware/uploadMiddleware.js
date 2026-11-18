@@ -43,4 +43,22 @@ const uploadToCloudinary = async (file, folder = 'shopco-products') => {
   });
 };
 
-module.exports = { upload, uploadToCloudinary };
+const uploadVideoToCloudinary = async (file) => {
+  if (!file) return null;
+  return new Promise((resolve, reject) => {
+    const stream = cloudinary.uploader.upload_stream(
+      {
+        folder: 'shopco-videos',
+        resource_type: 'video',
+        allowed_formats: ['mp4', 'webm'],
+      },
+      (error, result) => {
+        if (error) return reject(error);
+        resolve(result);
+      }
+    );
+    stream.end(file.buffer);
+  });
+};
+
+module.exports = { upload, uploadToCloudinary, uploadVideoToCloudinary };

@@ -112,7 +112,7 @@ const Navbar = () => {
           {/* Desktop Nav Links */}
           <nav className="hidden md:flex items-center space-x-6 text-sm font-medium text-neutral-700">
             <Link to="/new-arrivals" className="hover:text-black transition">New Arrivals</Link>
-            <Link to="/watches" className="hover:text-black transition">Watches</Link>
+            <Link to="/watches" className="hover:text-black transition">Videos</Link>
             <Link to="/developer" className="hover:text-black transition">Developer</Link>
             {isAdmin && (
               <Link to="/admin" className="hover:text-black transition text-emerald-700 font-bold">Admin</Link>
@@ -319,7 +319,7 @@ const Navbar = () => {
             <nav className="mt-5 flex flex-col gap-2">
               {[
                 ['/new-arrivals', 'New Arrivals'],
-                ['/watches', 'Watches'],
+                ['/watches', 'Videos'],
                 ['/developer', 'Developer'],
               ].map(([to, label]) => (
                 <Link
@@ -345,7 +345,7 @@ const Navbar = () => {
               <Link
                 to={isAuthenticated ? (isAdmin ? '/admin/profile' : '/profile') : '/login'}
                 onClick={() => setMobileMenuOpen(false)}
-                className="mb-2 flex items-center justify-between px-2 py-1 text-[11px] font-bold uppercase tracking-[0.18em] text-neutral-500"
+                className="mb-2 flex items-center justify-between rounded-xl px-3 py-3 text-sm font-black uppercase tracking-wide text-neutral-900 hover:bg-neutral-100"
               >
                 <span>Settings</span>
                 <span aria-hidden="true">›</span>

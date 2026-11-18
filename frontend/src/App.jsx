@@ -146,6 +146,10 @@ function App() {
                     path="/admin/users"
                     element={<AdminRoute><AdminDashboard /></AdminRoute>}
                   />
+                  <Route
+                    path="/admin/videos"
+                    element={<AdminRoute><AdminDashboard /></AdminRoute>}
+                  />
 
                   {/* Fallback */}
                   <Route path="*" element={<Navigate to="/" replace />} />

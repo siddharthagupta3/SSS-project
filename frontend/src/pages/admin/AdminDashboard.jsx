@@ -24,11 +24,22 @@ const CATEGORIES = [
 
 const AdminDashboard = () => {
   const location = useLocation();
-  const initialTab = location.pathname.includes('/admin/orders') ? 'orders' : location.pathname.includes('/admin/users') ? 'users' : 'products';
+  const initialTab = location.pathname.includes('/admin/orders')
+    ? 'orders'
+    : location.pathname.includes('/admin/users')
+      ? 'users'
+      : location.pathname.includes('/admin/videos')
+        ? 'videos'
+        : 'products';
   const [activeTab, setActiveTab] = useState(initialTab);
   const [products, setProducts] = useState([]);
   const [orders, setOrders] = useState([]);
   const [users, setUsers] = useState([]);
+  const [videos, setVideos] = useState([]);
+  const [videoForm, setVideoForm] = useState({ title: '', description: '', tags: '', youtubeUrl: '', thumbnailUrl: '', relatedProduct: '' });
+  const [videoFile, setVideoFile] = useState(null);
+  const [showVideoModal, setShowVideoModal] = useState(false);
+  const [editingVideo, setEditingVideo] = useState(null);
   const [loading, setLoading] = useState(true);
   const [productSearch, setProductSearch] = useState('');
   const [productFilter, setProductFilter] = useState('All');
@@ -59,10 +70,11 @@ const AdminDashboard = () => {
   const fetchData = async () => {
     setLoading(true);
     try {
-      const [prodRes, orderRes, userRes] = await Promise.all([
+      const [prodRes, orderRes, userRes, videoRes] = await Promise.all([
         api.get('/products?limit=100'),
         api.get('/orders'),
         api.get('/auth/admin/users'),
+        api.get('/videos/admin/all'),
       ]);
 
       if (prodRes.data.success) {
@@ -73,6 +85,9 @@ const AdminDashboard = () => {
       }
       if (userRes.data.success) {
         setUsers(userRes.data.data || []);
+      }
+      if (videoRes.data.success) {
+        setVideos(videoRes.data.data || []);
       }
     } catch (err) {
       console.error('Failed to load admin data:', err.message);
@@ -224,6 +239,50 @@ const AdminDashboard = () => {
     }
   };
 
+  const openVideoModal = (video = null) => {
+    setEditingVideo(video);
+    setVideoFile(null);
+    setVideoForm({
+      title: video?.title || '',
+      description: video?.description || '',
+      tags: (video?.tags || []).join(', '),
+      youtubeUrl: video?.videoUrl?.includes('youtube') ? video.videoUrl : '',
+      thumbnailUrl: video?.thumbnailUrl || '',
+      relatedProduct: video?.relatedProduct?._id || '',
+    });
+    setShowVideoModal(true);
+  };
+
+  const saveVideo = async (event) => {
+    event.preventDefault();
+    try {
+      if (editingVideo) {
+        await api.put(`/videos/${editingVideo._id}`, videoForm);
+      } else {
+        const form = new FormData();
+        Object.entries(videoForm).forEach(([key, value]) => form.append(key, value || ''));
+        if (videoFile) form.append('video', videoFile);
+        await api.post('/videos', form, {
+          headers: { 'Content-Type': 'multipart/form-data' },
+        });
+      }
+      setShowVideoModal(false);
+      fetchData();
+    } catch (err) {
+      alert(err.response?.data?.message || 'Unable to save video');
+    }
+  };
+
+  const deleteVideo = async (videoId) => {
+    if (!window.confirm('Delete this video?')) return;
+    try {
+      await api.delete(`/videos/${videoId}`);
+      fetchData();
+    } catch (err) {
+      alert(err.response?.data?.message || 'Unable to delete video');
+    }
+  };
+
   // Metrics
   const totalRevenue = orders
     .filter((o) => o.isPaid)
@@ -265,6 +324,15 @@ const AdminDashboard = () => {
               <span>Add New Product</span>
             </button>
           </div>
+        )}
+        {activeTab === 'videos' && (
+          <button
+            onClick={() => openVideoModal()}
+            className="flex items-center gap-2 bg-black text-white px-5 py-2.5 rounded-full text-xs font-semibold"
+          >
+            <PlusIcon className="w-4 h-4" />
+            Add Video
+          </button>
         )}
       </div>
 
@@ -327,6 +395,14 @@ const AdminDashboard = () => {
           }`}
         >
           Users ({users.length})
+        </button>
+        <button
+          onClick={() => setActiveTab('videos')}
+          className={`pb-3 border-b-2 transition ${
+            activeTab === 'videos' ? 'border-black text-black' : 'border-transparent text-neutral-400 hover:text-black'
+          }`}
+        >
+          Videos ({videos.length})
         </button>
       </div>
 
@@ -513,6 +589,47 @@ const AdminDashboard = () => {
         </div>
       )}
 
+      {activeTab === 'videos' && (
+        <div className="mt-6 overflow-x-auto rounded-2xl border border-neutral-200 bg-white">
+          <table className="w-full text-left text-sm text-neutral-600">
+            <thead className="border-b bg-neutral-50 text-xs uppercase text-neutral-400">
+              <tr>
+                <th className="px-6 py-4">Video</th>
+                <th className="px-6 py-4">Tags</th>
+                <th className="px-6 py-4">Source</th>
+                <th className="px-6 py-4 text-right">Actions</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-neutral-100">
+              {videos.map((video) => (
+                <tr key={video._id}>
+                  <td className="px-6 py-4">
+                    <div className="flex items-center gap-3">
+                      {video.thumbnailUrl ? (
+                        <img src={video.thumbnailUrl} alt="" className="h-14 w-20 rounded-lg object-cover" />
+                      ) : (
+                        <div className="flex h-14 w-20 items-center justify-center rounded-lg bg-neutral-100">▶</div>
+                      )}
+                      <div>
+                        <p className="font-bold text-neutral-900">{video.title}</p>
+                        <p className="max-w-xs truncate text-xs text-neutral-400">{video.description}</p>
+                      </div>
+                    </div>
+                  </td>
+                  <td className="px-6 py-4">{video.tags?.join(', ') || '-'}</td>
+                  <td className="px-6 py-4">{/youtube\.com|youtu\.be/i.test(video.videoUrl) ? 'YouTube' : 'Cloudinary'}</td>
+                  <td className="px-6 py-4 text-right">
+                    <button onClick={() => openVideoModal(video)} className="mr-2 rounded-md bg-neutral-100 px-2 py-1 text-xs font-bold">Edit</button>
+                    <button onClick={() => deleteVideo(video._id)} className="rounded-md bg-red-50 px-2 py-1 text-xs font-bold text-red-600">Delete</button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+          {videos.length === 0 && <p className="py-12 text-center text-sm text-neutral-500">No videos added yet.</p>}
+        </div>
+      )}
+
       {/* Add / Edit Product Modal */}
       {showProductModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-xs p-4">
@@ -632,6 +749,59 @@ const AdminDashboard = () => {
                     ))}
                   </div>
                 )}
+
+                {showVideoModal && (
+                  <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
+                    <div className="max-h-[90vh] w-full max-w-xl overflow-y-auto rounded-3xl bg-white p-6 shadow-2xl">
+                      <div className="mb-5 flex items-center justify-between border-b pb-4">
+                        <h2 className="text-xl font-black uppercase">{editingVideo ? 'Edit Video' : 'Add Video'}</h2>
+                        <button onClick={() => setShowVideoModal(false)} aria-label="Close"><CloseIcon className="h-5 w-5" /></button>
+                      </div>
+                      <form onSubmit={saveVideo} className="space-y-4">
+                        <div>
+                          <label className="mb-1 block text-xs font-bold">Title *</label>
+                          <input required value={videoForm.title} onChange={(e) => setVideoForm({ ...videoForm, title: e.target.value })} className="w-full rounded-xl bg-neutral-100 px-4 py-2.5 text-sm" />
+                        </div>
+                        <div>
+                          <label className="mb-1 block text-xs font-bold">Description</label>
+                          <textarea rows="3" value={videoForm.description} onChange={(e) => setVideoForm({ ...videoForm, description: e.target.value })} className="w-full rounded-xl bg-neutral-100 px-4 py-2.5 text-sm" />
+                        </div>
+                        <div>
+                          <label className="mb-1 block text-xs font-bold">Tags (comma separated)</label>
+                          <input value={videoForm.tags} onChange={(e) => setVideoForm({ ...videoForm, tags: e.target.value })} className="w-full rounded-xl bg-neutral-100 px-4 py-2.5 text-sm" placeholder="fashion, style, watch" />
+                        </div>
+                        {!editingVideo && (
+                          <>
+                            <div>
+                              <label className="mb-1 block text-xs font-bold">Cloudinary Video (MP4/WebM, max 100MB)</label>
+                              <input type="file" accept="video/mp4,video/webm" onChange={(e) => setVideoFile(e.target.files?.[0] || null)} className="w-full rounded-xl bg-neutral-100 px-4 py-2.5 text-sm" />
+                            </div>
+                            <div>
+                              <label className="mb-1 block text-xs font-bold">OR YouTube Link</label>
+                              <input type="url" value={videoForm.youtubeUrl} onChange={(e) => setVideoForm({ ...videoForm, youtubeUrl: e.target.value })} className="w-full rounded-xl bg-neutral-100 px-4 py-2.5 text-sm" placeholder="https://youtube.com/watch?v=..." />
+                            </div>
+                          </>
+                        )}
+                        <div>
+                          <label className="mb-1 block text-xs font-bold">Thumbnail URL</label>
+                          <input type="url" value={videoForm.thumbnailUrl} onChange={(e) => setVideoForm({ ...videoForm, thumbnailUrl: e.target.value })} className="w-full rounded-xl bg-neutral-100 px-4 py-2.5 text-sm" />
+                        </div>
+                        <div>
+                          <label className="mb-1 block text-xs font-bold">Related Product</label>
+                          <select value={videoForm.relatedProduct} onChange={(e) => setVideoForm({ ...videoForm, relatedProduct: e.target.value })} className="w-full rounded-xl bg-neutral-100 px-4 py-2.5 text-sm">
+                            <option value="">None</option>
+                            {products.map((product) => <option key={product._id} value={product._id}>{product.title}</option>)}
+                          </select>
+                        </div>
+                        <div className="flex justify-end gap-3 pt-2">
+                          <button type="button" onClick={() => setShowVideoModal(false)} className="rounded-full border px-5 py-2.5 text-xs font-bold">Cancel</button>
+                          <button type="submit" className="rounded-full bg-black px-5 py-2.5 text-xs font-bold text-white">{editingVideo ? 'Save Changes' : 'Add Video'}</button>
+                        </div>
+                      </form>
+                    </div>
+                  </div>
+                )}
+
               </div>
 
               <div>
