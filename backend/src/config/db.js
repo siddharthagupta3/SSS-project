@@ -8,10 +8,6 @@ const connectDB = async () => {
   try {
     const mongoURI = process.env.MONGO_URI;
 
-    if (!mongoURI) {
-      throw new Error('MONGO_URI environment variable is required in production');
-    }
-
     const conn = await mongoose.connect(mongoURI, {
       autoIndex: true, // Build indexes automatically in dev
     });

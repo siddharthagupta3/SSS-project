@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import api from '../api/client';
 import { useCart } from '../context/CartContext';
@@ -32,7 +32,7 @@ const loadRazorpayScript = () => {
 
 const CheckoutPage = () => {
   const { cartItems, cartSubtotal, clearCart } = useCart();
-  const { user, updateProfile } = useAuth();
+  const { user } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -57,6 +57,32 @@ const CheckoutPage = () => {
   const [saveAddressForFuture, setSaveAddressForFuture] = useState(true);
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
+  const [savedAddresses, setSavedAddresses] = useState([]);
+
+  useEffect(() => {
+    api.get('/users/profile')
+      .then((res) => {
+        const data = res.data.data;
+        const addressList = data.addresses || [];
+        setSavedAddresses(addressList);
+        const defaultAddress = addressList.find((item) => item.isDefault) || addressList[0];
+        if (defaultAddress) {
+          setAddress({
+            fullName: defaultAddress.fullName || '',
+            phone: defaultAddress.phone || '',
+            houseNumber: defaultAddress.houseNumber || '',
+            street: defaultAddress.street || '',
+            landmark: defaultAddress.landmark || '',
+            city: defaultAddress.city || '',
+            state: defaultAddress.state || 'Maharashtra',
+            postalCode: defaultAddress.postalCode || '',
+            addressType: defaultAddress.addressType || 'Home',
+            country: 'India',
+          });
+        }
+      })
+      .catch(() => {});
+  }, []);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -120,7 +146,8 @@ const CheckoutPage = () => {
     try {
       // Optionally save address to user profile
       if (saveAddressForFuture) {
-        updateProfile({ address }).catch((e) => console.warn('Could not save address to profile:', e.message));
+        api.post('/users/addresses', { ...address, isDefault: true })
+          .catch((e) => console.warn('Could not save address to profile:', e.response?.data?.message || e.message));
       }
 
       // 1. Prepare items payload
@@ -263,6 +290,37 @@ const CheckoutPage = () => {
       )}
 
       <form onSubmit={handleRazorpayPayment} className="grid grid-cols-1 lg:grid-cols-3 gap-10">
+        {savedAddresses.length > 0 && (
+          <div className="lg:col-span-2">
+            <label className="block text-xs font-semibold text-neutral-700 mb-2">Use a saved address</label>
+            <select
+              className="w-full bg-neutral-100 text-sm px-4 py-2.5 rounded-xl"
+              defaultValue=""
+              onChange={(e) => {
+                const selected = savedAddresses.find((item) => item._id === e.target.value);
+                if (selected) setAddress({
+                  fullName: selected.fullName,
+                  phone: selected.phone,
+                  houseNumber: selected.houseNumber,
+                  street: selected.street,
+                  landmark: selected.landmark || '',
+                  city: selected.city,
+                  state: selected.state,
+                  postalCode: selected.postalCode,
+                  addressType: selected.addressType || 'Home',
+                  country: 'India',
+                });
+              }}
+            >
+              <option value="" disabled>Select saved address</option>
+              {savedAddresses.map((item) => (
+                <option key={item._id} value={item._id}>
+                  {item.fullName} — {item.houseNumber}, {item.city} {item.postalCode}{item.isDefault ? ' (Default)' : ''}
+                </option>
+              ))}
+            </select>
+          </div>
+        )}
         
         {/* Full Indian Shipping Address Form */}
         <div className="lg:col-span-2 space-y-6 bg-white border border-neutral-200 p-6 sm:p-8 rounded-3xl shadow-xs">

@@ -41,7 +41,7 @@ const Navbar = () => {
   return (
     <header className="sticky top-0 z-50 bg-white border-b border-neutral-200">
       {/* Moving Announcement Ticker (Left to Right continuous marquee) */}
-      <div className="bg-black text-white text-xs py-2 overflow-hidden border-b border-neutral-900 select-none">
+      <div className="bg-black text-white text-xs py-2 overflow-hidden border-b border-neutral-900 select-none hidden sm:block">
         <div className="animate-marquee-ltr flex items-center space-x-12 whitespace-nowrap">
           <span className="flex items-center gap-2">
             <span className="text-amber-400">⚡</span>
@@ -99,13 +99,12 @@ const Navbar = () => {
 
           {/* Desktop Nav Links */}
           <nav className="hidden md:flex items-center space-x-6 text-sm font-medium text-neutral-700">
-            <Link to="/shop" className="hover:text-black transition">Shop</Link>
-            <Link to="/shop?category=T-Shirts" className="hover:text-black transition">T-Shirts</Link>
-            <Link to="/shop?category=Shirts" className="hover:text-black transition">Shirts</Link>
-            <Link to="/shop?category=Jeans" className="hover:text-black transition">Jeans</Link>
-            <Link to="/shop?category=Cargo Pants" className="hover:text-black transition">Cargo Pants</Link>
-            <Link to="/shop?category=Jackets" className="hover:text-black transition">Jackets</Link>
-            <Link to="/shop?category=Watches" className="hover:text-black transition">Watches</Link>
+            <Link to="/new-arrivals" className="hover:text-black transition">New Arrivals</Link>
+            <Link to="/watches" className="hover:text-black transition">Watches</Link>
+            <Link to="/developer" className="hover:text-black transition">Developer</Link>
+            {isAdmin && (
+              <Link to="/admin" className="hover:text-black transition text-emerald-700 font-bold">Admin</Link>
+            )}
           </nav>
 
           {/* Search Bar */}
@@ -188,11 +187,18 @@ const Navbar = () => {
                     </div>
 
                     <Link
+                      to={isAdmin ? '/admin/profile' : '/profile'}
+                      onClick={() => setUserDropdownOpen(false)}
+                      className="block px-4 py-2 text-sm text-neutral-700 hover:bg-neutral-50"
+                    >
+                      Profile
+                    </Link>
+                    <Link
                       to="/my-orders"
                       onClick={() => setUserDropdownOpen(false)}
                       className="block px-4 py-2 text-sm text-neutral-700 hover:bg-neutral-50"
                     >
-                      My Orders
+                      Orders
                     </Link>
 
                     <Link
@@ -204,13 +210,22 @@ const Navbar = () => {
                     </Link>
 
                     {isAdmin && (
-                      <Link
-                        to="/admin"
-                        onClick={() => setUserDropdownOpen(false)}
-                        className="block px-4 py-2 text-sm text-emerald-700 font-medium hover:bg-neutral-50"
-                      >
-                        ⚡ Admin Dashboard
-                      </Link>
+                      <>
+                        <Link
+                          to="/admin"
+                          onClick={() => setUserDropdownOpen(false)}
+                          className="block px-4 py-2 text-sm text-emerald-700 font-medium hover:bg-neutral-50"
+                        >
+                          ⚡ Admin Dashboard
+                        </Link>
+                        <Link
+                          to="/admin/profile"
+                          onClick={() => setUserDropdownOpen(false)}
+                          className="block px-4 py-2 text-sm text-neutral-700 hover:bg-neutral-50"
+                        >
+                          Admin Profile
+                        </Link>
+                      </>
                     )}
 
                     <button
@@ -225,10 +240,10 @@ const Navbar = () => {
             ) : (
               <Link
                 to="/login"
-                className="flex items-center gap-1.5 bg-black text-white px-4 py-2 rounded-full text-sm font-medium hover:bg-neutral-800 transition"
+                className="flex items-center gap-1.5 bg-black text-white px-3 sm:px-4 py-2 rounded-full text-sm font-medium hover:bg-neutral-800 transition"
               >
                 <UserIcon className="w-4 h-4" />
-                <span>Log In</span>
+                <span className="hidden sm:inline">Log In</span>
               </Link>
             )}
 
@@ -253,13 +268,9 @@ const Navbar = () => {
           </form>
 
           <nav className="flex flex-col space-y-3 font-medium text-neutral-700">
-            <Link to="/shop" onClick={() => setMobileMenuOpen(false)} className="hover:text-black">All Shop</Link>
-            <Link to="/shop?category=T-Shirts" onClick={() => setMobileMenuOpen(false)} className="hover:text-black">T-Shirts</Link>
-            <Link to="/shop?category=Shirts" onClick={() => setMobileMenuOpen(false)} className="hover:text-black">Shirts</Link>
-            <Link to="/shop?category=Jeans" onClick={() => setMobileMenuOpen(false)} className="hover:text-black">Jeans</Link>
-            <Link to="/shop?category=Cargo Pants" onClick={() => setMobileMenuOpen(false)} className="hover:text-black">Cargo Pants</Link>
-            <Link to="/shop?category=Jackets" onClick={() => setMobileMenuOpen(false)} className="hover:text-black">Jackets</Link>
-            <Link to="/shop?category=Watches" onClick={() => setMobileMenuOpen(false)} className="hover:text-black">Watches</Link>
+            <Link to="/new-arrivals" onClick={() => setMobileMenuOpen(false)} className="hover:text-black">New Arrivals</Link>
+            <Link to="/watches" onClick={() => setMobileMenuOpen(false)} className="hover:text-black">Watches</Link>
+            <Link to="/developer" onClick={() => setMobileMenuOpen(false)} className="hover:text-black">Developer</Link>
             {isAdmin && (
               <Link to="/admin" onClick={() => setMobileMenuOpen(false)} className="text-emerald-700 font-semibold">
                 Admin Panel

@@ -44,6 +44,54 @@ const userSchema = new mongoose.Schema(
       type: Date,
       select: false,
     },
+    totpSecret: {
+      type: String,
+      select: false,
+    },
+    totpEnabled: {
+      type: Boolean,
+      default: false,
+    },
+    backupCodes: {
+      type: [{ codeHash: { type: String }, used: { type: Boolean, default: false } }],
+      select: false,
+      default: [],
+    },
+    adminChallengeId: {
+      type: String,
+      select: false,
+    },
+    adminOtpHash: {
+      type: String,
+      select: false,
+    },
+    adminOtpExpires: {
+      type: Date,
+      select: false,
+    },
+    adminOtpAttempts: {
+      type: Number,
+      default: 0,
+      select: false,
+    },
+    adminOtpLastSent: {
+      type: Date,
+      select: false,
+    },
+    adminTotpAttempts: {
+      type: Number,
+      default: 0,
+      select: false,
+    },
+    adminPasswordAttempts: {
+      type: Number,
+      default: 0,
+      select: false,
+    },
+    adminLockUntil: {
+      type: Date,
+      select: false,
+    },
     // Google OAuth Fields
     googleId: {
       type: String,
@@ -53,6 +101,30 @@ const userSchema = new mongoose.Schema(
       type: String,
       default: '',
     },
+    dob: {
+      type: Date,
+      default: null,
+    },
+    gender: {
+      type: String,
+      enum: ['', 'Male', 'Female', 'Other', 'Prefer not to say'],
+      default: '',
+    },
+    addresses: [
+      {
+        fullName: { type: String, required: true, trim: true },
+        phone: { type: String, required: true, trim: true },
+        houseNumber: { type: String, required: true, trim: true },
+        street: { type: String, required: true, trim: true },
+        landmark: { type: String, default: '', trim: true },
+        city: { type: String, required: true, trim: true },
+        state: { type: String, required: true, trim: true },
+        postalCode: { type: String, required: true, trim: true },
+        addressType: { type: String, enum: ['Home', 'Work', 'Other'], default: 'Home' },
+        country: { type: String, default: 'India' },
+        isDefault: { type: Boolean, default: false },
+      },
+    ],
     // User Wishlist
     wishlist: [
       {
@@ -60,6 +132,23 @@ const userSchema = new mongoose.Schema(
         ref: 'Product',
       },
     ],
+    // Admin-only fields
+    storeName: {
+      type: String,
+      default: '',
+    },
+    storeAddress: {
+      type: String,
+      default: '',
+    },
+    supportEmail: {
+      type: String,
+      default: '',
+    },
+    profilePhoto: {
+      type: String,
+      default: '',
+    },
     // Detailed Indian Shipping Address
     address: {
       fullName: { type: String, default: '' },

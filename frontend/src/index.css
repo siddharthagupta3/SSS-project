@@ -12,6 +12,15 @@ html {
 body {
   @apply bg-neutral-50 text-neutral-900 antialiased;
   overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Mobile specific improvements */
+@media (max-width: 640px) {
+  body {
+    font-size: 14px;
+  }
 }
 
 /* Fade In Animation */
@@ -106,4 +115,22 @@ body {
 
 ::-webkit-scrollbar-thumb:hover {
   background: #555;
+}
+
+/* Mobile touch targets optimization */
+@media (max-width: 640px) {
+  button, a, .cursor-pointer {
+    min-height: 44px;
+    min-width: 44px;
+  }
+}
+
+/* Prevent zoom on iOS */
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="number"],
+textarea,
+select {
+  font-size: 16px;
 }

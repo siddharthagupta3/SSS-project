@@ -108,6 +108,14 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
+  const updateUser = (updatedUser) => {
+    setUser((current) => {
+      const next = { ...current, ...updatedUser };
+      localStorage.setItem('sss_user', JSON.stringify(next));
+      return next;
+    });
+  };
+
   return (
     <AuthContext.Provider
       value={{
@@ -124,6 +132,7 @@ export const AuthProvider = ({ children }) => {
         resendOTP,
         logout,
         updateProfile,
+        updateUser,
       }}
     >
       {children}

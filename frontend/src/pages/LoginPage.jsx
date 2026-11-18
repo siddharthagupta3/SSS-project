@@ -14,15 +14,20 @@ const LoginPage = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const from = location.state?.from?.pathname || '/';
+  const queryRedirect = new URLSearchParams(location.search).get('redirect');
+  const from = location.state?.from?.pathname || queryRedirect || '/';
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
     setLoading(true);
     try {
-      await login(email, password);
-      navigate(from, { replace: true });
+      const loggedInUser = await login(email, password);
+      if (loggedInUser.role === 'admin') {
+        navigate('/admin', { replace: true });
+      } else {
+        navigate(from, { replace: true });
+      }
     } catch (err) {
       setError(err.response?.data?.message || err.message || 'Invalid email or password');
     } finally {
@@ -138,6 +143,12 @@ const LoginPage = () => {
           New to SHOP.CO?{' '}
           <Link to="/register" className="font-bold text-black hover:underline">
             Create an account
+          </Link>
+        </p>
+        <p className="text-center text-xs text-neutral-500">
+          Store administrator?{' '}
+          <Link to="/admin/login" className="font-bold text-black hover:underline">
+            Secure Admin Login
           </Link>
         </p>
 

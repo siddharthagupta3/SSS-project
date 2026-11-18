@@ -25,28 +25,12 @@ export const WishlistProvider = ({ children }) => {
           setLoading(false);
         }
       } else {
-        const local = localStorage.getItem('sss_local_wishlist');
-        if (local) {
-          try {
-            setWishlist(JSON.parse(local));
-          } catch {
-            setWishlist([]);
-          }
-        } else {
-          setWishlist([]);
-        }
+        setWishlist([]);
       }
     };
 
     fetchWishlist();
   }, [isAuthenticated]);
-
-  // Sync guest wishlist to localStorage
-  useEffect(() => {
-    if (!isAuthenticated) {
-      localStorage.setItem('sss_local_wishlist', JSON.stringify(wishlist));
-    }
-  }, [wishlist, isAuthenticated]);
 
   const toggleWishlist = async (product) => {
     const productId = product._id || product;
@@ -67,13 +51,7 @@ export const WishlistProvider = ({ children }) => {
         console.error('Toggle wishlist failed:', err.message);
       }
     } else {
-      if (isPresent) {
-        setWishlist((prev) => prev.filter((item) => (item._id || item) !== productId));
-        return false;
-      } else {
-        setWishlist((prev) => [...prev, product]);
-        return true;
-      }
+      throw new Error('LOGIN_REQUIRED');
     }
   };
 

@@ -37,6 +37,7 @@ const productSchema = new mongoose.Schema(
         'Shoes',
         'Watches',
         'Accessories',
+        'Groceries',
       ],
       trim: true,
     },
@@ -55,6 +56,19 @@ const productSchema = new mongoose.Schema(
       type: Number,
       default: 0,
       min: [0, 'Sold count cannot be negative'],
+    },
+    isDummy: {
+      type: Boolean,
+      default: false,
+    },
+    source: {
+      type: String,
+      enum: ['seed', 'admin'],
+      default: 'admin',
+    },
+    createdBy: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'User',
     },
     images: {
       type: [String],

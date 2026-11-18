@@ -7,14 +7,17 @@ const dotenv = require('dotenv');
 // Load environment variables
 dotenv.config();
 
+const app = express();
+
+// Trust proxy for Render
+app.set('trust proxy', 1);
+
 // Connect to Database
 const connectDB = require('./config/db');
 connectDB();
 
 // Import error middleware
 const { notFound, errorHandler } = require('./middleware/errorMiddleware');
-
-const app = express();
 
 // Security Middlewares
 app.use(helmet());
@@ -82,12 +85,14 @@ const authRoutes = require('./routes/authRoutes');
 const productRoutes = require('./routes/productRoutes');
 const cartRoutes = require('./routes/cartRoutes');
 const orderRoutes = require('./routes/orderRoutes');
+const userRoutes = require('./routes/userRoutes');
 
 // Mount API Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/products', productRoutes);
 app.use('/api/cart', cartRoutes);
 app.use('/api/orders', orderRoutes);
+app.use('/api/users', userRoutes);
 
 // Error Handling Middlewares (must be registered after all routes)
 app.use(notFound);

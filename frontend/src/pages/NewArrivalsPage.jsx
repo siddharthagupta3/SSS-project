@@ -1,0 +1,60 @@
+import React, { useEffect, useState } from 'react';
+import ProductCard from '../components/products/ProductCard';
+import api from '../api/client';
+
+const NewArrivalsPage = () => {
+  const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchNewArrivals = async () => {
+      try {
+        const res = await api.get('/products/new-arrivals', {
+          params: { limit: 12, page: 1, t: Date.now() },
+        });
+        if (res.data.success) {
+          setProducts(res.data.data || []);
+        }
+      } catch (err) {
+        console.error('Failed to load new arrivals:', err.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchNewArrivals();
+  }, []);
+
+  return (
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <div className="text-center mb-12">
+        <h1 className="text-3xl sm:text-4xl font-black uppercase tracking-tight text-neutral-900 mb-4">
+          New Arrivals
+        </h1>
+        <p className="text-sm text-neutral-500 max-w-2xl mx-auto">
+          Discover the latest additions to our collection. Fresh styles just dropped.
+        </p>
+      </div>
+
+      {loading ? (
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 sm:gap-6">
+          {[...Array(10)].map((_, i) => (
+            <div key={i} className="animate-pulse bg-neutral-200 aspect-square rounded-2xl" />
+          ))}
+        </div>
+      ) : products.length > 0 ? (
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 sm:gap-6">
+          {products.map((product) => (
+            <ProductCard key={product._id} product={product} />
+          ))}
+        </div>
+      ) : (
+        <div className="text-center py-20">
+          <p className="text-neutral-500">No new arrivals found.</p>
+        </div>
+      )}
+    </div>
+  );
+};
+
+export default NewArrivalsPage;

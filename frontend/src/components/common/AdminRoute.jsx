@@ -14,7 +14,7 @@ const AdminRoute = ({ children }) => {
   }
 
   if (!isAuthenticated || !isAdmin) {
-    return <Navigate to="/" replace />;
+    return <Navigate to={!isAuthenticated ? "/admin/login" : "/"} replace />;
   }
 
   return children;

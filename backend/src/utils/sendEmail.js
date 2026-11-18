@@ -8,12 +8,6 @@ const sendEmailOTP = async ({ email, name, otp }) => {
   const emailUser = process.env.EMAIL_USER;
   const emailPass = process.env.EMAIL_PASS;
 
-  console.log('\n==================================================');
-  console.log(`📧 [GMAIL OTP DISPATCHED] To: ${email}`);
-  console.log(`🔐 Verification Code (OTP): [ ${otp} ]`);
-  console.log('Valid for 10 minutes.');
-  console.log('==================================================\n');
-
   // If credentials are configured in .env, attempt sending live email via Gmail SMTP
   if (emailUser && emailPass && !emailUser.includes('placeholder')) {
     try {
@@ -52,14 +46,13 @@ const sendEmailOTP = async ({ email, name, otp }) => {
       };
 
       const info = await transporter.sendMail(mailOptions);
-      return { success: true, messageId: info.messageId, otp };
+      return { success: true, messageId: info.messageId };
     } catch (err) {
       console.warn('Live Gmail SMTP sending failed, OTP is printed above for testing:', err.message);
-      return { success: false, fallbackOtp: otp, error: err.message };
+      return { success: false, error: err.message };
     }
   }
 
-  return { success: true, fallbackOtp: otp };
 };
 
 module.exports = sendEmailOTP;

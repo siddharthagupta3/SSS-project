@@ -3,10 +3,14 @@ import { Link } from 'react-router-dom';
 import { StarIcon, ShoppingBagIcon, HeartIcon } from '../common/Icons';
 import { useCart } from '../../context/CartContext';
 import { useWishlist } from '../../context/WishlistContext';
+import { useAuth } from '../../context/AuthContext';
+import { useNavigate } from 'react-router-dom';
 
 const ProductCard = ({ product }) => {
   const { addToCart } = useCart();
   const { toggleWishlist, isInWishlist } = useWishlist();
+  const { isAuthenticated } = useAuth();
+  const navigate = useNavigate();
 
   const effectivePrice = product.discountPrice > 0 ? product.discountPrice : product.price;
   const hasDiscount = product.discountPrice > 0 && product.discountPrice < product.price;
@@ -19,24 +23,42 @@ const ProductCard = ({ product }) => {
   const handleQuickAdd = (e) => {
     e.preventDefault();
     e.stopPropagation();
+    if (!isAuthenticated) {
+      navigate('/login', { state: { from: { pathname: `/product/${product._id}` } } });
+      return;
+    }
     addToCart(product, 1, product.sizes?.[0] || 'M', product.colors?.[0] || 'Standard');
   };
 
   const handleWishlistToggle = (e) => {
     e.preventDefault();
     e.stopPropagation();
+    if (!isAuthenticated) {
+      navigate('/login', { state: { from: { pathname: `/product/${product._id}` } } });
+      return;
+    }
     toggleWishlist(product);
   };
+
+  const handleImageError = (e) => {
+    e.target.onerror = null;
+    e.target.src = '/favicon.svg';
+  };
+  const rawImage = product.images?.[0] || product.image || '';
+  const imageUrl = rawImage
+    ? rawImage.replace(/^http:\/\//i, 'https://')
+    : '/favicon.svg';
 
   return (
     <div className="group relative flex flex-col rounded-2xl bg-white border border-neutral-200 p-3 shadow-sm hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
       {/* Image container */}
-      <Link to={`/product/${product._id}`} className="relative aspect-square overflow-hidden rounded-xl bg-neutral-100">
+      <Link to={`/product/${product._id}`} className="relative aspect-[3/4] w-full overflow-hidden rounded-xl bg-neutral-100">
         <img
-          src={product.images?.[0] || 'https://images.unsplash.com/photo-1521572267360-ee0c2909d518?w=800'}
+          src={imageUrl}
           alt={product.title}
           className="h-full w-full object-cover object-center group-hover:scale-110 transition-transform duration-500"
           loading="lazy"
+          onError={handleImageError}
         />
 
         {/* New Arrival Badge */}

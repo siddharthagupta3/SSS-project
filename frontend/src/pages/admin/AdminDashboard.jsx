@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 import api from '../../api/client';
 import {
   PlusIcon,
@@ -18,17 +19,25 @@ const CATEGORIES = [
   'Shoes',
   'Watches',
   'Accessories',
+  'Groceries',
 ];
 
 const AdminDashboard = () => {
-  const [activeTab, setActiveTab] = useState('products'); // 'products' | 'orders'
+  const location = useLocation();
+  const initialTab = location.pathname.includes('/admin/orders') ? 'orders' : location.pathname.includes('/admin/users') ? 'users' : 'products';
+  const [activeTab, setActiveTab] = useState(initialTab);
   const [products, setProducts] = useState([]);
   const [orders, setOrders] = useState([]);
+  const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [productSearch, setProductSearch] = useState('');
+  const [productFilter, setProductFilter] = useState('All');
 
   // Modal State for Product Create / Edit
   const [showProductModal, setShowProductModal] = useState(false);
   const [editingProduct, setEditingProduct] = useState(null);
+  const [imageFiles, setImageFiles] = useState([]);
+  const [imagePreviews, setImagePreviews] = useState([]);
   const [productForm, setProductForm] = useState({
     title: '',
     description: '',
@@ -50,9 +59,10 @@ const AdminDashboard = () => {
   const fetchData = async () => {
     setLoading(true);
     try {
-      const [prodRes, orderRes] = await Promise.all([
+      const [prodRes, orderRes, userRes] = await Promise.all([
         api.get('/products?limit=100'),
         api.get('/orders'),
+        api.get('/auth/admin/users'),
       ]);
 
       if (prodRes.data.success) {
@@ -60,6 +70,9 @@ const AdminDashboard = () => {
       }
       if (orderRes.data.success) {
         setOrders(orderRes.data.data || []);
+      }
+      if (userRes.data.success) {
+        setUsers(userRes.data.data || []);
       }
     } catch (err) {
       console.error('Failed to load admin data:', err.message);
@@ -74,6 +87,8 @@ const AdminDashboard = () => {
 
   const handleOpenAddModal = () => {
     setEditingProduct(null);
+    setImageFiles([]);
+    setImagePreviews([]);
     setProductForm({
       title: '',
       description: '',
@@ -96,6 +111,8 @@ const AdminDashboard = () => {
 
   const handleOpenEditModal = (product) => {
     setEditingProduct(product);
+    setImageFiles([]);
+    setImagePreviews(product.images || []);
     setProductForm({
       title: product.title,
       description: product.description,
@@ -119,9 +136,23 @@ const AdminDashboard = () => {
   const handleSaveProduct = async (e) => {
     e.preventDefault();
     try {
-      const images = [productForm.imageUrl || 'https://images.unsplash.com/photo-1521572267360-ee0c2909d518?w=800'];
+      let uploadedImages = [];
+      if (imageFiles.length > 0) {
+        const uploadForm = new FormData();
+        imageFiles.forEach((file) => uploadForm.append('images', file));
+        const uploadRes = await api.post('/products/upload', uploadForm, {
+          headers: { 'Content-Type': 'multipart/form-data' },
+        });
+        uploadedImages = uploadRes.data.data || [];
+      }
+
+      const images = [...uploadedImages];
+      if (productForm.imageUrl) images.push(productForm.imageUrl);
       if (productForm.imageUrl2) images.push(productForm.imageUrl2);
       if (productForm.imageUrl3) images.push(productForm.imageUrl3);
+      if (images.length === 0 && editingProduct) {
+        images.push(...(editingProduct.images || []));
+      }
 
       const payload = {
         title: productForm.title,
@@ -163,6 +194,18 @@ const AdminDashboard = () => {
     }
   };
 
+  const handleDeleteAllDemoProducts = async () => {
+    if (window.confirm('Are you sure you want to delete ALL demo products? This cannot be undone.')) {
+      try {
+        await api.delete('/products/demo/all');
+        fetchData();
+        alert('All demo products deleted successfully');
+      } catch (err) {
+        alert(err.response?.data?.message || 'Error deleting demo products');
+      }
+    }
+  };
+
   const handleStatusChange = async (orderId, newStatus) => {
     try {
       await api.put(`/orders/${orderId}/status`, { orderStatus: newStatus });
@@ -172,10 +215,26 @@ const AdminDashboard = () => {
     }
   };
 
+  const handleRoleChange = async (userId, role) => {
+    try {
+      await api.put(`/auth/admin/users/${userId}/role`, { role });
+      fetchData();
+    } catch (err) {
+      alert(err.response?.data?.message || 'Error changing user role');
+    }
+  };
+
   // Metrics
   const totalRevenue = orders
     .filter((o) => o.isPaid)
     .reduce((acc, curr) => acc + (curr.totalPrice || 0), 0);
+  const filteredProducts = products.filter((product) => {
+    const matchesSearch = product.title.toLowerCase().includes(productSearch.toLowerCase());
+    const matchesFilter = productFilter === 'All'
+      || (productFilter === 'Real' && !product.isDummy)
+      || (productFilter === 'Demo' && product.isDummy);
+    return matchesSearch && matchesFilter;
+  });
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
@@ -190,18 +249,27 @@ const AdminDashboard = () => {
         </div>
 
         {activeTab === 'products' && (
-          <button
-            onClick={handleOpenAddModal}
-            className="flex items-center gap-2 bg-black text-white px-5 py-2.5 rounded-full text-xs font-semibold hover:bg-neutral-800 transition"
-          >
-            <PlusIcon className="w-4 h-4" />
-            <span>Add New Product</span>
-          </button>
+          <div className="flex gap-3">
+            <button
+              onClick={handleDeleteAllDemoProducts}
+              className="flex items-center gap-2 bg-red-600 text-white px-5 py-2.5 rounded-full text-xs font-semibold hover:bg-red-700 transition"
+            >
+              <TrashIcon className="w-4 h-4" />
+              <span>Delete All Demo</span>
+            </button>
+            <button
+              onClick={handleOpenAddModal}
+              className="flex items-center gap-2 bg-black text-white px-5 py-2.5 rounded-full text-xs font-semibold hover:bg-neutral-800 transition"
+            >
+              <PlusIcon className="w-4 h-4" />
+              <span>Add New Product</span>
+            </button>
+          </div>
         )}
       </div>
 
       {/* Metrics Grid */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 my-8">
+      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 my-8">
         <div className="bg-white border border-neutral-200 rounded-2xl p-5 shadow-xs">
           <span className="text-xs text-neutral-400 font-semibold uppercase">Total Revenue</span>
           <p className="text-2xl font-black text-neutral-900 mt-1">₹{totalRevenue.toLocaleString('en-IN')}</p>
@@ -219,6 +287,18 @@ const AdminDashboard = () => {
           <p className="text-2xl font-black text-emerald-600 mt-1">
             {orders.filter((o) => o.isPaid).length}
           </p>
+        </div>
+        <div className="bg-white border border-neutral-200 rounded-2xl p-5 shadow-xs">
+          <span className="text-xs text-neutral-400 font-semibold uppercase">Users</span>
+          <p className="text-2xl font-black text-neutral-900 mt-1">{users.length}</p>
+        </div>
+        <div className="bg-white border border-neutral-200 rounded-2xl p-5 shadow-xs">
+          <span className="text-xs text-neutral-400 font-semibold uppercase">Real / Demo</span>
+          <p className="text-lg font-black text-neutral-900 mt-1">{products.filter((p) => !p.isDummy).length} / {products.filter((p) => p.isDummy).length}</p>
+        </div>
+        <div className="bg-white border border-neutral-200 rounded-2xl p-5 shadow-xs">
+          <span className="text-xs text-neutral-400 font-semibold uppercase">Low Stock</span>
+          <p className="text-2xl font-black text-red-600 mt-1">{products.filter((p) => p.stock < 5).length}</p>
         </div>
       </div>
 
@@ -240,11 +320,32 @@ const AdminDashboard = () => {
         >
           Customer Orders ({orders.length})
         </button>
+        <button
+          onClick={() => setActiveTab('users')}
+          className={`pb-3 border-b-2 transition ${
+            activeTab === 'users' ? 'border-black text-black' : 'border-transparent text-neutral-400 hover:text-black'
+          }`}
+        >
+          Users ({users.length})
+        </button>
       </div>
 
       {/* Tab 1: Products Table */}
       {activeTab === 'products' && (
         <div className="mt-6 bg-white border border-neutral-200 rounded-2xl overflow-hidden shadow-xs">
+          <div className="flex flex-col sm:flex-row gap-3 justify-between p-4 border-b">
+            <input
+              value={productSearch}
+              onChange={(e) => setProductSearch(e.target.value)}
+              placeholder="Search products..."
+              className="bg-neutral-100 px-4 py-2 rounded-lg text-sm sm:w-72"
+            />
+            <select value={productFilter} onChange={(e) => setProductFilter(e.target.value)} className="bg-neutral-100 px-4 py-2 rounded-lg text-sm">
+              <option value="All">All Products</option>
+              <option value="Real">Real</option>
+              <option value="Demo">Demo</option>
+            </select>
+          </div>
           <div className="overflow-x-auto">
             <table className="w-full text-left text-sm text-neutral-600">
               <thead className="bg-neutral-50 text-xs uppercase text-neutral-400 font-semibold border-b">
@@ -253,11 +354,12 @@ const AdminDashboard = () => {
                   <th className="px-6 py-4">Category</th>
                   <th className="px-6 py-4">Price</th>
                   <th className="px-6 py-4">Stock</th>
+                  <th className="px-6 py-4">Sold</th>
                   <th className="px-6 py-4 text-right">Actions</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-neutral-100">
-                {products.map((p) => (
+                {filteredProducts.map((p) => (
                   <tr key={p._id} className="hover:bg-neutral-50">
                     <td className="px-6 py-4 flex items-center gap-3">
                       <img
@@ -270,7 +372,12 @@ const AdminDashboard = () => {
                         <span className="text-xs text-neutral-400">{p.brand}</span>
                       </div>
                     </td>
-                    <td className="px-6 py-4">{p.category}</td>
+                    <td className="px-6 py-4">
+                      {p.category}
+                      <span className={`ml-2 inline-block text-[10px] font-bold px-2 py-0.5 rounded-full ${p.isDummy ? 'bg-amber-100 text-amber-800' : 'bg-emerald-100 text-emerald-800'}`}>
+                        {p.isDummy ? 'Demo' : 'Real'}
+                      </span>
+                    </td>
                     <td className="px-6 py-4 font-bold text-neutral-900">
                       ₹{p.price.toLocaleString('en-IN')}
                       {p.discountPrice > 0 && (
@@ -282,6 +389,7 @@ const AdminDashboard = () => {
                         {p.stock} units
                       </span>
                     </td>
+                    <td className="px-6 py-4 font-semibold">{p.soldCount || 0}</td>
                     <td className="px-6 py-4 text-right space-x-2">
                       <button
                         onClick={() => handleOpenEditModal(p)}
@@ -357,6 +465,44 @@ const AdminDashboard = () => {
                         <option value="Shipped">Shipped</option>
                         <option value="Delivered">Delivered</option>
                         <option value="Cancelled">Cancelled</option>
+                      </select>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      )}
+
+      {activeTab === 'users' && (
+        <div className="mt-6 bg-white border border-neutral-200 rounded-2xl overflow-hidden shadow-xs">
+          <div className="overflow-x-auto">
+            <table className="w-full text-left text-sm text-neutral-600">
+              <thead className="bg-neutral-50 text-xs uppercase text-neutral-400 font-semibold border-b">
+                <tr>
+                  <th className="px-6 py-4">User</th>
+                  <th className="px-6 py-4">Email</th>
+                  <th className="px-6 py-4">Verified</th>
+                  <th className="px-6 py-4">Joined</th>
+                  <th className="px-6 py-4">Role</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-neutral-100">
+                {users.map((listedUser) => (
+                  <tr key={listedUser._id} className="hover:bg-neutral-50">
+                    <td className="px-6 py-4 font-semibold text-neutral-900">{listedUser.name}</td>
+                    <td className="px-6 py-4">{listedUser.email}</td>
+                    <td className="px-6 py-4">{listedUser.isEmailVerified ? 'Yes' : 'No'}</td>
+                    <td className="px-6 py-4">{new Date(listedUser.createdAt).toLocaleDateString('en-IN')}</td>
+                    <td className="px-6 py-4">
+                      <select
+                        value={listedUser.role}
+                        onChange={(e) => handleRoleChange(listedUser._id, e.target.value)}
+                        className="bg-neutral-100 border border-neutral-300 text-xs font-semibold rounded-lg px-3 py-2"
+                      >
+                        <option value="user">User</option>
+                        <option value="admin">Admin</option>
                       </select>
                     </td>
                   </tr>
@@ -467,10 +613,31 @@ const AdminDashboard = () => {
               </div>
 
               <div>
-                <label className="block text-xs font-semibold text-neutral-700 mb-1">Primary Image URL *</label>
+                <label className="block text-xs font-semibold text-neutral-700 mb-2">Product Images (jpg/png/webp, max 5MB each)</label>
+                <input
+                  type="file"
+                  accept="image/jpeg,image/png,image/webp"
+                  multiple
+                  onChange={(e) => {
+                    const files = Array.from(e.target.files || []).slice(0, 5);
+                    setImageFiles(files);
+                    setImagePreviews(files.map((file) => URL.createObjectURL(file)));
+                  }}
+                  className="w-full bg-neutral-100 text-sm px-4 py-2 rounded-xl"
+                />
+                {imagePreviews.length > 0 && (
+                  <div className="grid grid-cols-5 gap-2 mt-3">
+                    {imagePreviews.map((preview, index) => (
+                      <img key={index} src={preview} alt={`Preview ${index + 1}`} className="w-full aspect-square object-cover rounded-lg border" />
+                    ))}
+                  </div>
+                )}
+              </div>
+
+              <div>
+                <label className="block text-xs font-semibold text-neutral-700 mb-1">Primary Image URL (Optional)</label>
                 <input
                   type="url"
-                  required
                   value={productForm.imageUrl}
                   onChange={(e) => setProductForm({ ...productForm, imageUrl: e.target.value })}
                   className="w-full bg-neutral-100 text-sm px-4 py-2 rounded-xl outline-none focus:ring-2 focus:ring-black"

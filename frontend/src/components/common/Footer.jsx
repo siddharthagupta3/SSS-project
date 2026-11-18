@@ -72,7 +72,7 @@ const Footer = () => {
         </div>
 
         <div className="mt-12 pt-8 border-t border-neutral-200 flex flex-col sm:flex-row items-center justify-between text-xs text-neutral-500 gap-4">
-          <p>© {new Date().getFullYear()} SHOP.CO. All Rights Reserved. Built with MERN Stack & Razorpay.</p>
+          <p>© {new Date().getFullYear()} SHOP.CO. All Rights Reserved. <Link to="/developer" className="hover:text-black underline">Built by Siddhartha Gupta</Link>.</p>
           <div className="flex gap-3 font-semibold text-neutral-700">
             <span>Visa</span>
             <span>Mastercard</span>

@@ -1,0 +1,31 @@
+export const developerConfig = {
+  name: 'Siddhartha Gupta',
+  title: 'Full Stack Developer (MERN)',
+  bio: 'Passionate developer building modern web applications with React, Node.js, and MongoDB. Love creating user-friendly e-commerce solutions.',
+  skills: [
+    { name: 'React', level: 90 },
+    { name: 'Node.js', level: 85 },
+    { name: 'Express', level: 85 },
+    { name: 'MongoDB', level: 80 },
+    { name: 'Tailwind CSS', level: 90 },
+    { name: 'JWT Authentication', level: 85 },
+    { name: 'Razorpay Integration', level: 75 },
+    { name: 'Cloudinary', level: 70 },
+  ],
+  projectFeatures: [
+    'Google OAuth Login',
+    'Email OTP Verification',
+    'Shopping Cart & Wishlist',
+    'Admin Dashboard',
+    'Razorpay Payment Integration',
+    'Responsive Mobile UI',
+    'Product Management System',
+  ],
+  social: {
+    github: '#3',
+    linkedin: '#3',
+    email: 'your-emailgupta617@gmail.com',
+    resume: '#',
+  },
+  profileImage: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=400&fit=crop&crop=face',
+};

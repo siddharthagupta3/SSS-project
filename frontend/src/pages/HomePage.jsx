@@ -13,7 +13,7 @@ const HomePage = () => {
     const fetchHomeData = async () => {
       try {
         const [newArrivalsRes, topSellingRes] = await Promise.all([
-          api.get('/products/new-arrivals?limit=10'),
+          api.get('/products/new-arrivals', { params: { limit: 12, t: Date.now() } }),
           api.get('/products/top-selling?limit=10'),
         ]);
 
@@ -60,7 +60,7 @@ const HomePage = () => {
             </p>
             <div className="flex flex-wrap gap-4">
               <Link
-                to="/shop"
+                to="/new-arrivals"
                 className="inline-flex items-center gap-2 bg-black text-white px-8 py-4 rounded-full font-semibold text-sm hover:bg-neutral-800 transition active:scale-95 shadow-xl"
               >
                 <span>Shop Now</span>
@@ -175,35 +175,35 @@ const HomePage = () => {
       </section>
 
       {/* New Arrivals */}
-      <section className="bg-gradient-to-br from-neutral-50 via-white to-neutral-100 py-16">
+      <section className="bg-gradient-to-br from-neutral-50 via-white to-neutral-100 py-12 sm:py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4 mb-10">
+          <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4 mb-8">
             <div>
-              <span className="inline-block bg-amber-100 text-amber-800 text-xs font-bold px-3 py-1 rounded-full mb-3 uppercase tracking-wider">
+              <span className="inline-block bg-amber-100 text-amber-800 text-[10px] sm:text-xs font-bold px-2 sm:px-3 py-1 rounded-full mb-2 sm:mb-3 uppercase tracking-wider">
                 ✨ Just Dropped
               </span>
-              <h2 className="text-3xl sm:text-4xl font-black uppercase tracking-tight text-neutral-900">
+              <h2 className="text-2xl sm:text-3xl lg:text-4xl font-black uppercase tracking-tight text-neutral-900">
                 NEW ARRIVALS
               </h2>
-              <p className="text-sm text-neutral-500 mt-2">The freshest styles added to our store this week</p>
+              <p className="text-xs sm:text-sm text-neutral-500 mt-1 sm:mt-2">The freshest styles added to our store this week</p>
             </div>
             <Link
-              to="/shop"
-              className="inline-flex items-center gap-2 bg-black text-white px-6 py-3 rounded-full text-sm font-semibold hover:bg-neutral-800 transition shadow-lg"
+              to="/new-arrivals"
+              className="inline-flex items-center gap-2 bg-black text-white px-4 sm:px-6 py-2.5 sm:py-3 rounded-full text-xs sm:text-sm font-semibold hover:bg-neutral-800 transition shadow-lg"
             >
               <span>View All</span>
-              <ArrowRightIcon className="w-4 h-4" />
+              <ArrowRightIcon className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
             </Link>
           </div>
 
           {loading ? (
-            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 sm:gap-6">
               {[...Array(10)].map((_, i) => (
                 <div key={i} className="animate-pulse bg-neutral-200 aspect-square rounded-2xl" />
               ))}
             </div>
           ) : (
-            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 sm:gap-6">
               {newArrivals.slice(0, 10).map((product) => (
                 <ProductCard key={product._id} product={product} />
               ))}
@@ -213,35 +213,35 @@ const HomePage = () => {
       </section>
 
       {/* Top Selling / Featured */}
-      <section className="bg-gradient-to-br from-black via-neutral-900 to-black py-16">
+      <section className="bg-gradient-to-br from-black via-neutral-900 to-black py-12 sm:py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4 mb-10">
+          <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4 mb-8">
             <div>
-              <span className="inline-block bg-amber-500 text-black text-xs font-bold px-3 py-1 rounded-full mb-3 uppercase tracking-wider">
+              <span className="inline-block bg-amber-500 text-black text-[10px] sm:text-xs font-bold px-2 sm:px-3 py-1 rounded-full mb-2 sm:mb-3 uppercase tracking-wider">
                 🔥 Trending Now
               </span>
-              <h2 className="text-3xl sm:text-4xl font-black uppercase tracking-tight text-white">
+              <h2 className="text-2xl sm:text-3xl lg:text-4xl font-black uppercase tracking-tight text-white">
                 TOP SELLING
               </h2>
-              <p className="text-sm text-neutral-400 mt-2">Our customer favorites loved across the country</p>
+              <p className="text-xs sm:text-sm text-neutral-400 mt-1 sm:mt-2">Our customer favorites loved across the country</p>
             </div>
             <Link
               to="/shop"
-              className="inline-flex items-center gap-2 bg-white text-black px-6 py-3 rounded-full text-sm font-semibold hover:bg-neutral-200 transition shadow-lg"
+              className="inline-flex items-center gap-2 bg-white text-black px-4 sm:px-6 py-2.5 sm:py-3 rounded-full text-xs sm:text-sm font-semibold hover:bg-neutral-200 transition shadow-lg"
             >
               <span>Explore Catalog</span>
-              <ArrowRightIcon className="w-4 h-4" />
+              <ArrowRightIcon className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
             </Link>
           </div>
 
           {loading ? (
-            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 sm:gap-6">
               {[...Array(10)].map((_, i) => (
                 <div key={i} className="animate-pulse bg-neutral-800 aspect-square rounded-2xl" />
               ))}
             </div>
           ) : (
-            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 sm:gap-6">
               {featuredProducts.slice(0, 10).map((product) => (
                 <ProductCard key={product._id} product={product} />
               ))}

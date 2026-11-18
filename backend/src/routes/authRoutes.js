@@ -11,14 +11,39 @@ const {
   updateUserProfile,
   toggleWishlist,
   getWishlist,
+  updateAdminProfile,
+  changeAdminPassword,
+  uploadAdminProfilePhoto,
+  getAdminUsers,
+  updateAdminUserRole,
 } = require('../controllers/authController');
 
-const { verifyToken } = require('../middleware/authMiddleware');
-const { authLimiter } = require('../middleware/rateLimiter');
+const { verifyToken, requireAdmin } = require('../middleware/authMiddleware');
+const { authLimiter, adminLimiter } = require('../middleware/rateLimiter');
+const { upload } = require('../middleware/uploadMiddleware');
+const { adminLoginLimiter } = require('../middleware/rateLimiter');
+const {
+  adminLoginStepOne,
+  resendAdminEmailOtp,
+  verifyAdminEmailOtp,
+  setupAdminTotp,
+  verifyAdminTotpSetup,
+  verifyAdminTotp,
+  resetAdminTotpRequest,
+  resetAdminTotpVerify,
+} = require('../controllers/adminAuthController');
 
 // Public routes with rate limiting
 router.post('/register', authLimiter, registerUser);
 router.post('/login', authLimiter, loginUser);
+router.post('/admin/login', adminLoginLimiter, adminLoginStepOne);
+router.post('/admin/email-otp/resend', adminLoginLimiter, resendAdminEmailOtp);
+router.post('/admin/email-otp/verify', adminLoginLimiter, verifyAdminEmailOtp);
+router.post('/admin/totp/setup', adminLoginLimiter, setupAdminTotp);
+router.post('/admin/totp/setup/verify', adminLoginLimiter, verifyAdminTotpSetup);
+router.post('/admin/totp/verify', adminLoginLimiter, verifyAdminTotp);
+router.post('/admin/totp/reset/request', verifyToken, requireAdmin, adminLimiter, resetAdminTotpRequest);
+router.post('/admin/totp/reset/verify', verifyToken, requireAdmin, adminLimiter, resetAdminTotpVerify);
 
 // Google Sign-In / Signup
 router.post('/google', authLimiter, googleAuth);
@@ -38,5 +63,11 @@ router.route('/wishlist')
 
 router.route('/wishlist/:productId')
   .post(verifyToken, toggleWishlist);
+
+router.put('/admin/profile', verifyToken, requireAdmin, adminLimiter, updateAdminProfile);
+router.put('/admin/password', verifyToken, requireAdmin, adminLimiter, changeAdminPassword);
+router.post('/admin/profile-photo', verifyToken, requireAdmin, adminLimiter, upload.single('photo'), uploadAdminProfilePhoto);
+router.get('/admin/users', verifyToken, requireAdmin, adminLimiter, getAdminUsers);
+router.put('/admin/users/:id/role', verifyToken, requireAdmin, adminLimiter, updateAdminUserRole);
 
 module.exports = router;

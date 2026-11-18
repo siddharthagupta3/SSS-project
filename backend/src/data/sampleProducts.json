@@ -120,7 +120,7 @@
     "brand": "Coastline",
     "stock": 20,
     "images": [
-      "https://images.unsplash.com/photo-1620012253295-c15c429f60e9?w=800&auto=format&fit=crop&q=80"
+      "https://images.unsplash.com/photo-1596755094514-f87e34085b2c?w=800&auto=format&fit=crop&q=80"
     ],
     "sizes": [
       "M",
@@ -146,7 +146,7 @@
     "brand": "Denim Lab",
     "stock": 30,
     "images": [
-      "https://images.unsplash.com/photo-1542272604-780c96856592?w=800&auto=format&fit=crop&q=80",
+      "https://images.unsplash.com/photo-1473966968600-fa801b869a1a?w=800&auto=format&fit=crop&q=80",
       "https://images.unsplash.com/photo-1541099649105-f69ad21f3246?w=800&auto=format&fit=crop&q=80"
     ],
     "sizes": [
@@ -591,7 +591,7 @@
     "brand": "SHOP.CO Classics",
     "stock": 40,
     "images": [
-      "https://images.unsplash.com/photo-1625910513413-5fc92651ee09?w=800&auto=format&fit=crop&q=80"
+      "https://images.unsplash.com/photo-1594633312681-425c7b97ccd1?w=800&auto=format&fit=crop&q=80"
     ],
     "sizes": [
       "S",
@@ -780,7 +780,7 @@
     "brand": "SHOP.CO Essentials",
     "stock": 100,
     "images": [
-      "https://images.unsplash.com/photo-1586350977774-bc4793b51e80?w=800&auto=format&fit=crop&q=80"
+      "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=800&auto=format&fit=crop&q=80"
     ],
     "sizes": [
       "One Size"
@@ -1258,7 +1258,7 @@
     "brand": "Coastline",
     "stock": 25,
     "images": [
-      "https://images.unsplash.com/photo-1620012253295-c15c429f60e9?w=800&auto=format&fit=crop&q=80"
+      "https://images.unsplash.com/photo-1596755094514-f87e34085b2c?w=800&auto=format&fit=crop&q=80"
     ],
     "sizes": [
       "S",
@@ -1287,7 +1287,7 @@
     "brand": "SHOP.CO Classics",
     "stock": 45,
     "images": [
-      "https://images.unsplash.com/photo-1625910513413-5fc92651ee09?w=800&auto=format&fit=crop&q=80"
+      "https://images.unsplash.com/photo-1594633312681-425c7b97ccd1?w=800&auto=format&fit=crop&q=80"
     ],
     "sizes": [
       "S",
@@ -1619,5 +1619,201 @@
     "isFeatured": false,
     "isNewArrival": true,
     "soldCount": 294
+  },
+  {
+    "title": "Organic Basmati Rice (5kg)",
+    "description": "Premium quality aged basmati rice with long grains. Perfect for biryani and daily cooking.",
+    "price": 599,
+    "discountPrice": 499,
+    "category": "Groceries",
+    "brand": "FarmFresh",
+    "stock": 100,
+    "soldCount": 89,
+    "images": [
+      "https://images.unsplash.com/photo-1586201375761-83865001e31c?w=800"
+    ],
+    "sizes": [
+      "5kg",
+      "10kg"
+    ],
+    "colors": [
+      "White"
+    ],
+    "rating": 4.7,
+    "numReviews": 156,
+    "isFeatured": true,
+    "isNewArrival": true
+  },
+  {
+    "title": "Whole Wheat Atta (10kg)",
+    "description": "Stone-ground whole wheat flour for rotis and chapatis. Rich in fiber and nutrients.",
+    "price": 349,
+    "discountPrice": 299,
+    "category": "Groceries",
+    "brand": "FarmFresh",
+    "stock": 80,
+    "soldCount": 234,
+    "images": [
+      "https://images.unsplash.com/photo-1574323347407-f5e1ad6d020b?w=800"
+    ],
+    "sizes": [
+      "5kg",
+      "10kg"
+    ],
+    "colors": [
+      "Brown"
+    ],
+    "rating": 4.8,
+    "numReviews": 289,
+    "isFeatured": true,
+    "isNewArrival": true
+  },
+  {
+    "title": "Pure Mustard Oil (1L)",
+    "description": "Cold-pressed pure mustard oil for cooking. Rich flavor and high smoking point.",
+    "price": 199,
+    "discountPrice": 169,
+    "category": "Groceries",
+    "brand": "FarmFresh",
+    "stock": 150,
+    "soldCount": 412,
+    "images": [
+      "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=800&auto=format&fit=crop&q=80"
+    ],
+    "sizes": [
+      "1L",
+      "2L",
+      "5L"
+    ],
+    "colors": [
+      "Golden"
+    ],
+    "rating": 4.6,
+    "numReviews": 178,
+    "isFeatured": true,
+    "isNewArrival": false
+  },
+  {
+    "title": "Premium Tea Leaves (500g)",
+    "description": "Assam tea leaves for perfect chai. Rich aroma and strong flavor.",
+    "price": 299,
+    "discountPrice": 249,
+    "category": "Groceries",
+    "brand": "TeaGarden",
+    "stock": 120,
+    "soldCount": 167,
+    "images": [
+      "https://images.unsplash.com/photo-1556679343-c7306c1976bc?w=800"
+    ],
+    "sizes": [
+      "250g",
+      "500g",
+      "1kg"
+    ],
+    "colors": [
+      "Dark Brown"
+    ],
+    "rating": 4.5,
+    "numReviews": 134,
+    "isFeatured": false,
+    "isNewArrival": true
+  },
+  {
+    "title": "Sugar (1kg)",
+    "description": "Refined white sugar for daily use. Crystal white and pure.",
+    "price": 49,
+    "discountPrice": 39,
+    "category": "Groceries",
+    "brand": "FarmFresh",
+    "stock": 200,
+    "soldCount": 567,
+    "images": [
+      "https://images.unsplash.com/photo-1556679343-c7306c1976bc?w=800&auto=format&fit=crop&q=80"
+    ],
+    "sizes": [
+      "500g",
+      "1kg",
+      "5kg"
+    ],
+    "colors": [
+      "White"
+    ],
+    "rating": 4.4,
+    "numReviews": 345,
+    "isFeatured": false,
+    "isNewArrival": false
+  },
+  {
+    "title": "Organic Pulses (1kg)",
+    "description": "Mix of organic lentils and pulses. Protein-rich and healthy.",
+    "price": 129,
+    "discountPrice": 109,
+    "category": "Groceries",
+    "brand": "FarmFresh",
+    "stock": 90,
+    "soldCount": 198,
+    "images": [
+      "https://images.unsplash.com/photo-1586201375761-83865001e31c?w=800"
+    ],
+    "sizes": [
+      "500g",
+      "1kg"
+    ],
+    "colors": [
+      "Mixed"
+    ],
+    "rating": 4.6,
+    "numReviews": 112,
+    "isFeatured": false,
+    "isNewArrival": true
+  },
+  {
+    "title": "Fresh Milk (1L)",
+    "description": "Pasteurized full cream milk. Fresh from farm to your doorstep.",
+    "price": 69,
+    "discountPrice": 59,
+    "category": "Groceries",
+    "brand": "DairyFresh",
+    "stock": 50,
+    "soldCount": 789,
+    "images": [
+      "https://images.unsplash.com/photo-1563636619-e9143da7973b?w=800"
+    ],
+    "sizes": [
+      "500ml",
+      "1L"
+    ],
+    "colors": [
+      "White"
+    ],
+    "rating": 4.8,
+    "numReviews": 423,
+    "isFeatured": true,
+    "isNewArrival": false
+  },
+  {
+    "title": "Cooking Oil (2L)",
+    "description": "Refined sunflower oil for healthy cooking. Cholesterol-free.",
+    "price": 249,
+    "discountPrice": 199,
+    "category": "Groceries",
+    "brand": "FarmFresh",
+    "stock": 110,
+    "soldCount": 345,
+    "images": [
+      "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=800&auto=format&fit=crop&q=80"
+    ],
+    "sizes": [
+      "1L",
+      "2L",
+      "5L"
+    ],
+    "colors": [
+      "Yellow"
+    ],
+    "rating": 4.5,
+    "numReviews": 234,
+    "isFeatured": false,
+    "isNewArrival": true
   }
 ]

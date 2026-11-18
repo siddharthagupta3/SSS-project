@@ -2,6 +2,7 @@ const { OAuth2Client } = require('google-auth-library');
 const User = require('../models/User');
 const generateToken = require('../utils/generateToken');
 const sendEmailOTP = require('../utils/sendEmail');
+const { uploadToCloudinary } = require('../middleware/uploadMiddleware');
 
 const googleClient = new OAuth2Client(process.env.GOOGLE_CLIENT_ID || '');
 
@@ -98,6 +99,10 @@ const loginUser = async (req, res, next) => {
     const user = await User.findOne({ email: email.toLowerCase() }).select('+password');
 
     if (user && (await user.matchPassword(password))) {
+      if (user.role === 'admin') {
+        res.status(401);
+        throw new Error('Invalid credentials');
+      }
       const token = generateToken(user._id, user.role);
 
       res.status(200).json({
@@ -111,6 +116,7 @@ const loginUser = async (req, res, next) => {
           isEmailVerified: user.isEmailVerified || false,
           address: user.address,
           token,
+          redirectTo: user.role === 'admin' ? '/admin' : null,
         },
       });
     } else {
@@ -245,6 +251,11 @@ const getUserProfile = async (req, res, next) => {
           role: user.role,
           isEmailVerified: user.isEmailVerified || false,
           address: user.address,
+          phone: user.address?.phone || '',
+          storeName: user.storeName || '',
+          storeAddress: user.storeAddress || '',
+          supportEmail: user.supportEmail || '',
+          profilePhoto: user.profilePhoto || '',
         },
       });
     } else {
@@ -478,6 +489,138 @@ const getWishlist = async (req, res, next) => {
   }
 };
 
+const updateAdminProfile = async (req, res, next) => {
+  try {
+    const user = await User.findById(req.user._id);
+    if (!user) {
+      res.status(404);
+      throw new Error('User not found');
+    }
+
+    if (typeof req.body.name === 'string') user.name = req.body.name.trim();
+    if (typeof req.body.storeName === 'string') user.storeName = req.body.storeName.trim();
+    if (typeof req.body.storeAddress === 'string') user.storeAddress = req.body.storeAddress.trim();
+    if (typeof req.body.supportEmail === 'string') user.supportEmail = req.body.supportEmail.trim();
+    if (typeof req.body.profilePhoto === 'string') user.profilePhoto = req.body.profilePhoto;
+    if (typeof req.body.phone === 'string') {
+      user.address = { ...(user.address?.toObject ? user.address.toObject() : user.address), phone: req.body.phone.trim() };
+    }
+
+    await user.save();
+    res.status(200).json({
+      success: true,
+      message: 'Admin profile updated successfully',
+      data: {
+        _id: user._id,
+        name: user.name,
+        email: user.email,
+        role: user.role,
+        phone: user.address?.phone || '',
+        storeName: user.storeName,
+        storeAddress: user.storeAddress,
+        supportEmail: user.supportEmail,
+        profilePhoto: user.profilePhoto,
+        address: user.address,
+      },
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+const changeAdminPassword = async (req, res, next) => {
+  try {
+    const { oldPassword, newPassword, confirmPassword } = req.body;
+    if (!oldPassword || !newPassword || newPassword !== (confirmPassword || newPassword)) {
+      res.status(400);
+      throw new Error('Old password is required and new passwords must match');
+    }
+    if (newPassword.length < 6) {
+      res.status(400);
+      throw new Error('New password must be at least 6 characters');
+    }
+
+    const user = await User.findById(req.user._id).select('+password');
+    if (!user || !(await user.matchPassword(oldPassword))) {
+      res.status(400);
+      throw new Error('Old password is incorrect');
+    }
+    user.password = newPassword;
+    await user.save();
+
+    res.status(200).json({ success: true, message: 'Password changed successfully' });
+  } catch (error) {
+    next(error);
+  }
+};
+
+const uploadAdminProfilePhoto = async (req, res, next) => {
+  try {
+    if (!req.file) {
+      res.status(400);
+      throw new Error('Profile photo file is required');
+    }
+    const upload = await uploadToCloudinary(req.file, 'shopco-admin');
+    await User.findByIdAndUpdate(req.user._id, { profilePhoto: upload.secure_url });
+    res.status(200).json({ success: true, data: { profilePhoto: upload.secure_url } });
+  } catch (error) {
+    next(error);
+  }
+};
+
+const getAdminUsers = async (req, res, next) => {
+  try {
+    const users = await User.find({})
+      .select('name email role isEmailVerified createdAt')
+      .sort({ createdAt: -1 })
+      .lean();
+    res.status(200).json({ success: true, data: users });
+  } catch (error) {
+    next(error);
+  }
+};
+
+const updateAdminUserRole = async (req, res, next) => {
+  try {
+    const { role } = req.body;
+    if (!['user', 'admin'].includes(role)) {
+      res.status(400);
+      throw new Error('Role must be user or admin');
+    }
+    if (req.user._id.toString() === req.params.id && role !== 'admin') {
+      res.status(400);
+      throw new Error('You cannot remove your own admin role');
+    }
+    if (role === 'admin') {
+      const target = await User.findById(req.params.id).select('email');
+      if (!target) {
+        res.status(404);
+        throw new Error('User not found');
+      }
+      const allowed = (process.env.ADMIN_EMAILS || '')
+        .split(',')
+        .map((email) => email.trim().toLowerCase())
+        .filter(Boolean);
+      if (!allowed.includes(target.email.toLowerCase())) {
+        res.status(403);
+        throw new Error('This email is not allowed to become an admin');
+      }
+    }
+    const user = await User.findByIdAndUpdate(
+      req.params.id,
+      { role },
+      { new: true, runValidators: true }
+    ).select('name email role isEmailVerified createdAt');
+    if (!user) {
+      res.status(404);
+      throw new Error('User not found');
+    }
+    res.status(200).json({ success: true, data: user });
+  } catch (error) {
+    next(error);
+  }
+};
+
 module.exports = {
   registerUser,
   loginUser,
@@ -488,4 +631,9 @@ module.exports = {
   updateUserProfile,
   toggleWishlist,
   getWishlist,
+  updateAdminProfile,
+  changeAdminPassword,
+  uploadAdminProfilePhoto,
+  getAdminUsers,
+  updateAdminUserRole,
 };

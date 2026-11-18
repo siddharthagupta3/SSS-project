@@ -22,7 +22,13 @@ import MyOrdersPage from './pages/MyOrdersPage';
 import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
 import VerifyEmailPage from './pages/VerifyEmailPage';
+import NewArrivalsPage from './pages/NewArrivalsPage';
+import WatchesPage from './pages/WatchesPage';
+import DeveloperPage from './pages/DeveloperPage';
 import AdminDashboard from './pages/admin/AdminDashboard';
+import AdminProfilePage from './pages/admin/AdminProfilePage';
+import ProfilePage from './pages/ProfilePage';
+import AdminLoginPage from './pages/admin/AdminLoginPage';
 
 function App() {
   return (
@@ -38,15 +44,35 @@ function App() {
                   <Route path="/" element={<HomePage />} />
                   <Route path="/shop" element={<ShopPage />} />
                   <Route path="/product/:id" element={<ProductDetailPage />} />
-                  <Route path="/cart" element={<CartPage />} />
-                  <Route path="/wishlist" element={<WishlistPage />} />
 
                   {/* Authentication Routes */}
                   <Route path="/login" element={<LoginPage />} />
+                  <Route path="/admin/login" element={<AdminLoginPage />} />
                   <Route path="/register" element={<RegisterPage />} />
                   <Route path="/verify-email" element={<VerifyEmailPage />} />
 
+                  {/* Other Pages */}
+                  <Route path="/new-arrivals" element={<NewArrivalsPage />} />
+                  <Route path="/watches" element={<WatchesPage />} />
+                  <Route path="/developer" element={<DeveloperPage />} />
+
                   {/* Protected Customer Routes */}
+                  <Route
+                    path="/cart"
+                    element={
+                      <ProtectedRoute>
+                        <CartPage />
+                      </ProtectedRoute>
+                    }
+                  />
+                  <Route
+                    path="/wishlist"
+                    element={
+                      <ProtectedRoute>
+                        <WishlistPage />
+                      </ProtectedRoute>
+                    }
+                  />
                   <Route
                     path="/checkout"
                     element={
@@ -71,6 +97,14 @@ function App() {
                       </ProtectedRoute>
                     }
                   />
+                  <Route
+                    path="/profile"
+                    element={
+                      <ProtectedRoute>
+                        <ProfilePage />
+                      </ProtectedRoute>
+                    }
+                  />
 
                   {/* Protected Admin Routes */}
                   <Route
@@ -80,6 +114,26 @@ function App() {
                         <AdminDashboard />
                       </AdminRoute>
                     }
+                  />
+                  <Route
+                    path="/admin/profile"
+                    element={
+                      <AdminRoute>
+                        <AdminProfilePage />
+                      </AdminRoute>
+                    }
+                  />
+                  <Route
+                    path="/admin/products"
+                    element={<AdminRoute><AdminDashboard /></AdminRoute>}
+                  />
+                  <Route
+                    path="/admin/orders"
+                    element={<AdminRoute><AdminDashboard /></AdminRoute>}
+                  />
+                  <Route
+                    path="/admin/users"
+                    element={<AdminRoute><AdminDashboard /></AdminRoute>}
                   />
 
                   {/* Fallback */}

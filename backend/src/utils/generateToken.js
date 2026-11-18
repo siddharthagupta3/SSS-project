@@ -6,9 +6,9 @@ const jwt = require('jsonwebtoken');
  * @param {string} role - User role ('user' or 'admin')
  * @returns {string} Signed JWT token
  */
-const generateToken = (id, role = 'user') => {
+const generateToken = (id, role = 'user', expiresInOverride) => {
   const secret = process.env.JWT_SECRET;
-  const expiresIn = process.env.JWT_EXPIRES_IN || '7d';
+  const expiresIn = expiresInOverride || process.env.JWT_EXPIRES_IN || '7d';
 
   if (!secret) {
     throw new Error('JWT_SECRET is not set in .env');

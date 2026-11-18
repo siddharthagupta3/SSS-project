@@ -31,7 +31,9 @@
     "morgan": "^1.10.0",
     "multer": "^2.5.0",
     "nodemailer": "^10.2.1",
-    "razorpay": "^2.9.4"
+    "qrcode": "^1.5.4",
+    "razorpay": "^2.9.4",
+    "speakeasy": "^2.0.0"
   },
   "devDependencies": {
     "nodemon": "^3.1.4"

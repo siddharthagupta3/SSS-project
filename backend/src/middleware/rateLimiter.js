@@ -15,6 +15,30 @@ const authLimiter = rateLimit({
   },
 });
 
+const adminLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 100,
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: {
+    success: false,
+    message: 'Too many admin requests. Please try again later.',
+  },
+});
+
+const adminLoginLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 5,
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: {
+    success: false,
+    message: 'Invalid credentials',
+  },
+});
+
 module.exports = {
   authLimiter,
+  adminLimiter,
+  adminLoginLimiter,
 };

@@ -1,22 +1,11 @@
 const multer = require('multer');
 const { v2: cloudinary } = require('cloudinary');
-const { CloudinaryStorage } = require('multer-storage-cloudinary');
 
 // Configure Cloudinary
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
   api_key: process.env.CLOUDINARY_API_KEY,
   api_secret: process.env.CLOUDINARY_API_SECRET,
-});
-
-// Configure Multer to use Cloudinary storage
-const storage = new CloudinaryStorage({
-  cloudinary: cloudinary,
-  params: {
-    folder: 'shopco-products',
-    allowed_formats: ['jpg', 'jpeg', 'png', 'webp'],
-    transformation: [{ width: 800, height: 800, crop: 'limit' }],
-  },
 });
 
 // File filter
@@ -30,9 +19,28 @@ const fileFilter = (req, file, cb) => {
 };
 
 const upload = multer({
-  storage: storage,
+  storage: multer.memoryStorage(),
   fileFilter: fileFilter,
   limits: { fileSize: 5 * 1024 * 1024 }, // 5MB limit
 });
 
-module.exports = upload;
+const uploadToCloudinary = async (file, folder = 'shopco-products') => {
+  if (!file) return null;
+
+  return new Promise((resolve, reject) => {
+    const stream = cloudinary.uploader.upload_stream(
+      {
+        folder,
+        allowed_formats: ['jpg', 'jpeg', 'png', 'webp'],
+        transformation: [{ width: 1600, height: 1600, crop: 'limit' }],
+      },
+      (error, result) => {
+        if (error) return reject(error);
+        resolve(result);
+      }
+    );
+    stream.end(file.buffer);
+  });
+};
+
+module.exports = { upload, uploadToCloudinary };

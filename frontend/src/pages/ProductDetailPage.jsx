@@ -72,6 +72,25 @@ const ProductDetailPage = () => {
     fetchProduct();
   }, [id]);
 
+  useEffect(() => {
+    if (!isAuthenticated || !product) return;
+    const pending = localStorage.getItem('sss_pending_buy');
+    if (!pending) return;
+    try {
+      const purchase = JSON.parse(pending);
+      if (purchase.productId !== product._id) return;
+      localStorage.removeItem('sss_pending_buy');
+      addToCart(
+        product,
+        purchase.quantity || 1,
+        purchase.size || product.sizes?.[0] || 'M',
+        purchase.color || product.colors?.[0] || 'Standard'
+      ).then(() => navigate('/cart', { replace: true })).catch((err) => alert(err.message));
+    } catch {
+      localStorage.removeItem('sss_pending_buy');
+    }
+  }, [isAuthenticated, product, addToCart, navigate]);
+
   const handleCheckPincode = (e) => {
     e.preventDefault();
     if (/^[1-9][0-9]{5}$/.test(pincode)) {
@@ -83,6 +102,10 @@ const ProductDetailPage = () => {
 
   const handleAddToCart = async () => {
     if (!product || product.stock === 0) return;
+    if (!isAuthenticated) {
+      navigate('/login', { state: { from: { pathname: `/product/${product._id}` } } });
+      return;
+    }
     setAdding(true);
     try {
       await addToCart(product, quantity, selectedSize, selectedColor);
@@ -96,6 +119,16 @@ const ProductDetailPage = () => {
   };
 
   const handleBuyNow = async () => {
+    if (!isAuthenticated) {
+      localStorage.setItem('sss_pending_buy', JSON.stringify({
+        productId: product._id,
+        quantity,
+        size: selectedSize,
+        color: selectedColor,
+      }));
+      navigate('/login', { state: { from: { pathname: `/product/${product._id}` } } });
+      return;
+    }
     await handleAddToCart();
     navigate('/cart');
   };
@@ -200,7 +233,13 @@ const ProductDetailPage = () => {
 
             {/* Wishlist Button (Flipkart Style) */}
             <button
-              onClick={() => toggleWishlist(product)}
+              onClick={() => {
+                if (!isAuthenticated) {
+                  navigate('/login', { state: { from: { pathname: `/product/${product._id}` } } });
+                  return;
+                }
+                toggleWishlist(product);
+              }}
               className="absolute top-4 right-4 bg-white/90 backdrop-blur-xs p-3 rounded-full shadow-md text-neutral-700 hover:text-red-500 hover:scale-110 active:scale-95 transition"
               title={isFav ? 'Remove from Wishlist' : 'Add to Wishlist'}
             >

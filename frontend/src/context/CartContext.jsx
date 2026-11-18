@@ -12,17 +12,7 @@ export const CartProvider = ({ children }) => {
   // Sync cart from backend when user logs in
   const fetchBackendCart = useCallback(async () => {
     if (!isAuthenticated) {
-      // Guest cart from localStorage
-      const localCart = localStorage.getItem('sss_local_cart');
-      if (localCart) {
-        try {
-          setCartItems(JSON.parse(localCart));
-        } catch {
-          setCartItems([]);
-        }
-      } else {
-        setCartItems([]);
-      }
+      setCartItems([]);
       return;
     }
 
@@ -43,16 +33,7 @@ export const CartProvider = ({ children }) => {
     fetchBackendCart();
   }, [fetchBackendCart]);
 
-  // Sync guest cart changes to localStorage
-  useEffect(() => {
-    if (!isAuthenticated) {
-      localStorage.setItem('sss_local_cart', JSON.stringify(cartItems));
-    }
-  }, [cartItems, isAuthenticated]);
-
   const addToCart = async (product, quantity = 1, size = 'M', color = 'Standard') => {
-    const effectivePrice = product.discountPrice > 0 ? product.discountPrice : product.price;
-
     if (isAuthenticated) {
       try {
         const res = await api.post('/cart', {
@@ -68,33 +49,7 @@ export const CartProvider = ({ children }) => {
         throw new Error(err.response?.data?.message || 'Could not add product to cart');
       }
     } else {
-      // Guest mode
-      setCartItems((prev) => {
-        const existingIdx = prev.findIndex(
-          (item) =>
-            (item.product?._id === product._id || item.product === product._id) &&
-            item.size === size &&
-            item.color === color
-        );
-
-        if (existingIdx > -1) {
-          const updated = [...prev];
-          updated[existingIdx].quantity += quantity;
-          return updated;
-        }
-
-        return [
-          ...prev,
-          {
-            _id: `guest_${Date.now()}_${Math.random()}`,
-            product,
-            quantity,
-            size,
-            color,
-            price: effectivePrice,
-          },
-        ];
-      });
+      throw new Error('LOGIN_REQUIRED');
     }
   };
 

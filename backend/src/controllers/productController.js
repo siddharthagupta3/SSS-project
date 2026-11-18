@@ -42,15 +42,19 @@ const getProducts = async (req, res, next) => {
       sortOptions = { price: -1 };
     } else if (req.query.sort === 'rating') {
       sortOptions = { rating: -1 };
+    } else if (req.query.sort === 'popular') {
+      sortOptions = { soldCount: -1 };
     } else if (req.query.sort === 'oldest') {
       sortOptions = { createdAt: 1 };
     }
 
     const count = await Product.countDocuments(filter);
     const products = await Product.find(filter)
+      .select('title description price discountPrice category brand stock soldCount images sizes colors rating numReviews isFeatured isDummy source createdAt')
       .sort(sortOptions)
       .limit(pageSize)
-      .skip(pageSize * (page - 1));
+      .skip(pageSize * (page - 1))
+      .lean();
 
     res.status(200).json({
       success: true,
@@ -89,21 +93,41 @@ const getFeaturedProducts = async (req, res, next) => {
 };
 
 /**
- * @desc    Get new arrivals (newest products)
+ * @desc    Get new arrivals (newest products) - Real products first, then dummy
  * @route   GET /api/products/new-arrivals
  * @access  Public
  */
 const getNewArrivals = async (req, res, next) => {
   try {
-    const limit = Number(req.query.limit) || 10;
-    const products = await Product.find({})
+    const limit = Math.min(Math.max(Number(req.query.limit) || 12, 1), 100);
+    const page = Math.max(Number(req.query.page) || 1, 1);
+
+    const allProducts = await Product.find({})
+      .select('title description price discountPrice category brand stock soldCount images sizes colors rating numReviews isFeatured isDummy source createdAt')
       .sort({ createdAt: -1 })
-      .limit(limit)
       .lean();
 
+    const realProducts = allProducts.filter((product) => product.isDummy === false);
+    const demoProducts = allProducts.filter((product) => product.isDummy !== false);
+    const ordered = [...realProducts, ...demoProducts].map((product) => ({
+      ...product,
+      images: Array.isArray(product.images) && product.images.length > 0
+        ? product.images.map((image) => String(image).trim().replace(/^http:\/\//i, 'https://'))
+        : ['https://images.unsplash.com/photo-1521572267360-ee0c2909d518?w=800&auto=format&fit=crop&q=80'],
+    }));
+
+    const start = (page - 1) * limit;
+    const products = ordered.slice(start, start + limit);
+    res.set('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
     res.status(200).json({
       success: true,
       data: products,
+      pagination: {
+        page,
+        limit,
+        total: ordered.length,
+        pages: Math.ceil(ordered.length / limit) || 1,
+      },
     });
   } catch (error) {
     next(error);
@@ -212,6 +236,9 @@ const createProduct = async (req, res, next) => {
       colors: colors && colors.length > 0 ? colors : ['Black', 'White'],
       isFeatured: Boolean(isFeatured),
       isNewArrival: Boolean(isNewArrival),
+      isDummy: false,
+      source: 'admin',
+      createdBy: req.user._id,
     });
 
     const createdProduct = await product.save();
@@ -291,6 +318,25 @@ const deleteProduct = async (req, res, next) => {
 };
 
 /**
+ * @desc    Delete all demo products (isDummy: true)
+ * @route   DELETE /api/products/demo/all
+ * @access  Private/Admin
+ */
+const deleteAllDemoProducts = async (req, res, next) => {
+  try {
+    const result = await Product.deleteMany({ isDummy: true });
+
+    res.status(200).json({
+      success: true,
+      message: `Deleted ${result.deletedCount} demo products`,
+      deletedCount: result.deletedCount,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+/**
  * @desc    Create a new product review & rating
  * @route   POST /api/products/:id/reviews
  * @access  Private (Authenticated)
@@ -356,5 +402,6 @@ module.exports = {
   createProduct,
   updateProduct,
   deleteProduct,
+  deleteAllDemoProducts,
   createProductReview,
 };
