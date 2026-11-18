@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import { useCart } from '../../context/CartContext';
 import { useWishlist } from '../../context/WishlistContext';
@@ -18,10 +18,16 @@ const Navbar = () => {
   const { cartCount } = useCart();
   const { wishlistCount } = useWishlist();
   const navigate = useNavigate();
+  const location = useLocation();
 
   const [keyword, setKeyword] = useState('');
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [userDropdownOpen, setUserDropdownOpen] = useState(false);
+
+  useEffect(() => {
+    setMobileMenuOpen(false);
+    setUserDropdownOpen(false);
+  }, [location.pathname]);
 
   const handleSearchSubmit = (e) => {
     e.preventDefault();
@@ -87,8 +93,9 @@ const Navbar = () => {
           <div className="flex items-center gap-3">
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="md:hidden p-2 text-neutral-700 hover:text-black focus:outline-none"
+              className="md:hidden flex h-10 w-10 items-center justify-center rounded-xl border border-neutral-200 bg-white text-neutral-800 shadow-sm hover:border-black hover:bg-neutral-50 active:scale-95 transition"
               aria-label="Toggle Menu"
+              aria-expanded={mobileMenuOpen}
             >
               {mobileMenuOpen ? <CloseIcon className="w-6 h-6" /> : <MenuIcon className="w-6 h-6" />}
             </button>
@@ -249,34 +256,69 @@ const Navbar = () => {
 
           </div>
         </div>
+        <form onSubmit={handleSearchSubmit} className="sm:hidden relative pb-3">
+          <input
+            type="search"
+            placeholder="Search products..."
+            value={keyword}
+            onChange={(e) => setKeyword(e.target.value)}
+            className="w-full rounded-full border border-neutral-200 bg-neutral-100 py-3 pl-11 pr-4 text-sm text-neutral-900 outline-none focus:border-black focus:ring-2 focus:ring-black/10"
+          />
+          <button type="submit" className="absolute left-4 top-3.5 text-neutral-500" aria-label="Search">
+            <SearchIcon className="h-5 w-5" />
+          </button>
+        </form>
       </div>
 
       {/* Mobile Drawer Menu */}
       {mobileMenuOpen && (
-        <div className="md:hidden border-t border-neutral-200 bg-white px-4 pt-4 pb-6 space-y-4">
-          <form onSubmit={handleSearchSubmit} className="relative">
-            <input
-              type="text"
-              placeholder="Search products..."
-              value={keyword}
-              onChange={(e) => setKeyword(e.target.value)}
-              className="w-full bg-neutral-100 text-sm rounded-full py-2.5 pl-10 pr-4"
-            />
-            <button type="submit" className="absolute left-3.5 top-3 text-neutral-400">
-              <SearchIcon className="w-4 h-4" />
-            </button>
-          </form>
-
-          <nav className="flex flex-col space-y-3 font-medium text-neutral-700">
-            <Link to="/new-arrivals" onClick={() => setMobileMenuOpen(false)} className="hover:text-black">New Arrivals</Link>
-            <Link to="/watches" onClick={() => setMobileMenuOpen(false)} className="hover:text-black">Watches</Link>
-            <Link to="/developer" onClick={() => setMobileMenuOpen(false)} className="hover:text-black">Developer</Link>
-            {isAdmin && (
-              <Link to="/admin" onClick={() => setMobileMenuOpen(false)} className="text-emerald-700 font-semibold">
-                Admin Panel
+        <div className="md:hidden fixed inset-0 z-[60]">
+          <button
+            type="button"
+            aria-label="Close menu"
+            className="absolute inset-0 bg-black/40 backdrop-blur-sm"
+            onClick={() => setMobileMenuOpen(false)}
+          />
+          <aside className="absolute left-0 top-0 h-full w-[82%] max-w-sm bg-white shadow-2xl p-5 flex flex-col">
+            <div className="flex items-center justify-between border-b border-neutral-100 pb-4">
+              <Link to="/" onClick={() => setMobileMenuOpen(false)} className="text-2xl font-black tracking-tighter">
+                SHOP.CO
               </Link>
-            )}
-          </nav>
+              <button
+                type="button"
+                onClick={() => setMobileMenuOpen(false)}
+                className="h-10 w-10 rounded-xl border border-neutral-200 flex items-center justify-center"
+                aria-label="Close menu"
+              >
+                <CloseIcon className="h-5 w-5" />
+              </button>
+            </div>
+            <nav className="mt-5 flex flex-col gap-2">
+              {[
+                ['/new-arrivals', 'New Arrivals'],
+                ['/watches', 'Watches'],
+                ['/developer', 'Developer'],
+              ].map(([to, label]) => (
+                <Link
+                  key={to}
+                  to={to}
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="rounded-2xl border border-neutral-100 px-4 py-3.5 text-sm font-bold text-neutral-800 hover:border-black hover:bg-neutral-50"
+                >
+                  {label}
+                </Link>
+              ))}
+              {isAdmin && (
+                <Link
+                  to="/admin"
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="mt-2 rounded-2xl bg-emerald-50 px-4 py-3.5 text-sm font-bold text-emerald-700"
+                >
+                  Admin
+                </Link>
+              )}
+            </nav>
+          </aside>
         </div>
       )}
     </header>

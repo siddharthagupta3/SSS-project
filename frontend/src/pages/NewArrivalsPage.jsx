@@ -3,17 +3,29 @@ import ProductCard from '../components/products/ProductCard';
 import api from '../api/client';
 
 const NewArrivalsPage = () => {
-  const [products, setProducts] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [products, setProducts] = useState(() => {
+    try {
+      const cached = JSON.parse(sessionStorage.getItem('new_arrivals_cache') || 'null');
+      return cached?.expiresAt > Date.now() ? cached.products : [];
+    } catch {
+      return [];
+    }
+  });
+  const [loading, setLoading] = useState(() => products.length === 0);
 
   useEffect(() => {
     const fetchNewArrivals = async () => {
       try {
         const res = await api.get('/products/new-arrivals', {
-          params: { limit: 12, page: 1, t: Date.now() },
+          params: { limit: 12, page: 1 },
         });
         if (res.data.success) {
-          setProducts(res.data.data || []);
+          const nextProducts = res.data.data || [];
+          setProducts(nextProducts);
+          sessionStorage.setItem('new_arrivals_cache', JSON.stringify({
+            products: nextProducts,
+            expiresAt: Date.now() + 10 * 1000,
+          }));
         }
       } catch (err) {
         console.error('Failed to load new arrivals:', err.message);

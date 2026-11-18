@@ -101,23 +101,35 @@ const getNewArrivals = async (req, res, next) => {
   try {
     const limit = Math.min(Math.max(Number(req.query.limit) || 12, 1), 100);
     const page = Math.max(Number(req.query.page) || 1, 1);
+    const fields = 'title description price discountPrice category brand stock soldCount images sizes colors rating numReviews isFeatured isDummy source createdAt';
 
-    const allProducts = await Product.find({})
-      .select('title description price discountPrice category brand stock soldCount images sizes colors rating numReviews isFeatured isDummy source createdAt')
+    const realProducts = await Product.find({ isDummy: false })
+      .select(fields)
       .sort({ createdAt: -1 })
+      .limit(limit)
       .lean();
 
-    const realProducts = allProducts.filter((product) => product.isDummy === false);
-    const demoProducts = allProducts.filter((product) => product.isDummy !== false);
+    const remaining = limit - realProducts.length;
+    const demoProducts = remaining > 0
+      ? await Product.find({ isDummy: true })
+          .select(fields)
+          .sort({ createdAt: -1 })
+          .limit(remaining)
+          .lean()
+      : [];
+
     const ordered = [...realProducts, ...demoProducts].map((product) => ({
       ...product,
       images: Array.isArray(product.images) && product.images.length > 0
         ? product.images.map((image) => String(image).trim().replace(/^http:\/\//i, 'https://'))
         : ['https://images.unsplash.com/photo-1521572267360-ee0c2909d518?w=800&auto=format&fit=crop&q=80'],
     }));
-
-    const start = (page - 1) * limit;
-    const products = ordered.slice(start, start + limit);
+    const products = ordered;
+    const [realCount, demoCount] = await Promise.all([
+      Product.countDocuments({ isDummy: false }),
+      Product.countDocuments({ isDummy: true }),
+    ]);
+    const total = realCount + demoCount;
     res.set('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
     res.status(200).json({
       success: true,
@@ -125,8 +137,8 @@ const getNewArrivals = async (req, res, next) => {
       pagination: {
         page,
         limit,
-        total: ordered.length,
-        pages: Math.ceil(ordered.length / limit) || 1,
+        total,
+        pages: Math.ceil(total / limit) || 1,
       },
     });
   } catch (error) {

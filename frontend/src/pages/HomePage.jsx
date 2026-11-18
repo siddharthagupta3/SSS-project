@@ -6,19 +6,31 @@ import { ArrowRightIcon, StarIcon, CheckIcon } from '../components/common/Icons'
 
 const HomePage = () => {
   const [featuredProducts, setFeaturedProducts] = useState([]);
-  const [newArrivals, setNewArrivals] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [newArrivals, setNewArrivals] = useState(() => {
+    try {
+      const cached = JSON.parse(sessionStorage.getItem('new_arrivals_cache') || 'null');
+      return cached?.expiresAt > Date.now() ? cached.products : [];
+    } catch {
+      return [];
+    }
+  });
+  const [loading, setLoading] = useState(() => newArrivals.length === 0);
 
   useEffect(() => {
     const fetchHomeData = async () => {
       try {
         const [newArrivalsRes, topSellingRes] = await Promise.all([
-          api.get('/products/new-arrivals', { params: { limit: 12, t: Date.now() } }),
+          api.get('/products/new-arrivals', { params: { limit: 12 } }),
           api.get('/products/top-selling?limit=10'),
         ]);
 
         if (newArrivalsRes.data.success) {
-          setNewArrivals(newArrivalsRes.data.data || []);
+          const nextProducts = newArrivalsRes.data.data || [];
+          setNewArrivals(nextProducts);
+          sessionStorage.setItem('new_arrivals_cache', JSON.stringify({
+            products: nextProducts,
+            expiresAt: Date.now() + 10 * 1000,
+          }));
         }
         if (topSellingRes.data.success) {
           setFeaturedProducts(topSellingRes.data.data || []);
