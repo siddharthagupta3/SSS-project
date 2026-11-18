@@ -48,6 +48,7 @@ export const serviceDetails = {
       ['Before contacting us', 'Keep your order ID and registered email address ready so the support team can assist quickly.'],
       ['Order help', 'For failed payments or order-status concerns, contact support from the account used to place the order.'],
       ['Response time', 'Support requests are generally reviewed during normal business hours.'],
+      ['Support email', 'Write to supportdeveloper.sid@gmail.com for account, order, payment or technical support.'],
     ],
   },
   'delivery-details': {

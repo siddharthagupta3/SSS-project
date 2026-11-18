@@ -81,7 +81,16 @@ const ServiceDetailPage = () => {
                     </span>
                     <div>
                       <h2 className="text-base font-black text-neutral-900 sm:text-lg">{heading}</h2>
-                      <p className="mt-2 text-sm leading-7 text-neutral-600">{text}</p>
+                      {heading === 'Support email' ? (
+                        <a
+                          href="mailto:supportdeveloper.sid@gmail.com"
+                          className="mt-2 inline-block text-sm font-bold leading-7 text-neutral-900 underline decoration-amber-400 decoration-2 underline-offset-4"
+                        >
+                          supportdeveloper.sid@gmail.com
+                        </a>
+                      ) : (
+                        <p className="mt-2 text-sm leading-7 text-neutral-600">{text}</p>
+                      )}
                     </div>
                   </div>
                 </section>

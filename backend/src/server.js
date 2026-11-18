@@ -87,6 +87,7 @@ const cartRoutes = require('./routes/cartRoutes');
 const orderRoutes = require('./routes/orderRoutes');
 const userRoutes = require('./routes/userRoutes');
 const videoRoutes = require('./routes/videoRoutes');
+const newsletterRoutes = require('./routes/newsletterRoutes');
 
 // Mount API Routes
 app.use('/api/auth', authRoutes);
@@ -95,6 +96,7 @@ app.use('/api/cart', cartRoutes);
 app.use('/api/orders', orderRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/videos', videoRoutes);
+app.use('/api/newsletter', newsletterRoutes);
 
 // Error Handling Middlewares (must be registered after all routes)
 app.use(notFound);

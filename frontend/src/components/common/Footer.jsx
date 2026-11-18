@@ -1,27 +1,59 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import api from '../../api/client';
 
 const Footer = () => {
+  const [email, setEmail] = useState('');
+  const [newsletterLoading, setNewsletterLoading] = useState(false);
+  const [newsletterMessage, setNewsletterMessage] = useState('');
+
+  const handleSubscribe = async (event) => {
+    event.preventDefault();
+    setNewsletterMessage('');
+    setNewsletterLoading(true);
+    try {
+      const res = await api.post('/newsletter/subscribe', { email });
+      setNewsletterMessage(res.data.message);
+      setEmail('');
+    } catch (error) {
+      setNewsletterMessage(error.response?.data?.message || 'Unable to subscribe');
+    } finally {
+      setNewsletterLoading(false);
+    }
+  };
+
   return (
     <footer className="bg-neutral-100 border-t border-neutral-200 mt-20">
       {/* Newsletter Section */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -translate-y-12">
-        <div className="bg-black text-white rounded-3xl p-8 sm:p-12 flex flex-col md:flex-row items-center justify-between gap-6 shadow-xl">
+        <div className="relative bg-black text-white rounded-3xl p-8 sm:p-12 flex flex-col md:flex-row items-center justify-between gap-6 shadow-xl">
           <div className="max-w-md">
             <h3 className="text-2xl sm:text-3xl font-black uppercase tracking-tight">
               STAY UP TO DATE ABOUT OUR LATEST OFFERS
             </h3>
           </div>
-          <div className="w-full md:w-auto flex flex-col sm:flex-row gap-3">
+          <form onSubmit={handleSubscribe} className="w-full md:w-auto flex flex-col sm:flex-row gap-3">
             <input
               type="email"
+              required
+              value={email}
+              onChange={(event) => setEmail(event.target.value)}
               placeholder="Enter your email address"
               className="bg-white text-black text-sm px-5 py-3 rounded-full outline-none w-full sm:w-72"
             />
-            <button className="bg-white text-black font-semibold text-sm px-6 py-3 rounded-full hover:bg-neutral-200 transition">
-              Subscribe
+            <button
+              type="submit"
+              disabled={newsletterLoading}
+              className="bg-white text-black font-semibold text-sm px-6 py-3 rounded-full hover:bg-neutral-200 transition disabled:opacity-60"
+            >
+              {newsletterLoading ? 'Subscribing...' : 'Subscribe'}
             </button>
-          </div>
+          </form>
+          {newsletterMessage && (
+            <p className="w-full text-center text-xs font-semibold text-amber-300 md:absolute md:bottom-5 md:left-0">
+              {newsletterMessage}
+            </p>
+          )}
         </div>
       </div>
 
