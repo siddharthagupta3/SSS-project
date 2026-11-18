@@ -23,10 +23,12 @@ const Navbar = () => {
   const [keyword, setKeyword] = useState('');
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [userDropdownOpen, setUserDropdownOpen] = useState(false);
+  const [mobileSearchOpen, setMobileSearchOpen] = useState(false);
 
   useEffect(() => {
     setMobileMenuOpen(false);
     setUserDropdownOpen(false);
+    setMobileSearchOpen(false);
   }, [location.pathname]);
 
   const handleSearchSubmit = (e) => {
@@ -129,10 +131,10 @@ const Navbar = () => {
           </form>
 
           {/* Action Icons */}
-          <div className="flex items-center space-x-3">
+          <div className="flex items-center gap-0.5 sm:gap-3">
             
             {/* Wishlist Icon */}
-            <Link to="/wishlist" className="relative p-2 text-neutral-800 hover:text-red-500 transition" title="Wishlist">
+            <Link to="/wishlist" className="relative p-1.5 sm:p-2 text-neutral-800 hover:text-red-500 transition" title="Wishlist">
               <HeartIcon className="w-5 h-5" />
               {wishlistCount > 0 && (
                 <span className="absolute top-0 right-0 bg-red-500 text-white text-[10px] font-bold rounded-full h-4 w-4 flex items-center justify-center">
@@ -141,8 +143,18 @@ const Navbar = () => {
               )}
             </Link>
 
+            <button
+              type="button"
+              onClick={() => setMobileSearchOpen((open) => !open)}
+              className="md:hidden flex h-8 w-8 items-center justify-center rounded-full text-neutral-800 hover:bg-neutral-100 transition"
+              aria-label="Open search"
+              aria-expanded={mobileSearchOpen}
+            >
+              <SearchIcon className="h-5 w-5" />
+            </button>
+
             {/* Cart Icon */}
-            <Link to="/cart" className="relative p-2 text-neutral-800 hover:text-black transition" title="Shopping Bag">
+            <Link to="/cart" className="relative p-1.5 sm:p-2 text-neutral-800 hover:text-black transition" title="Shopping Bag">
               <ShoppingBagIcon className="w-5 h-5" />
               {cartCount > 0 && (
                 <span className="absolute top-0 right-0 bg-black text-white text-[10px] font-bold rounded-full h-4 w-4 flex items-center justify-center">
@@ -247,7 +259,7 @@ const Navbar = () => {
             ) : (
               <Link
                 to="/login"
-                className="flex items-center gap-1.5 bg-black text-white px-3 sm:px-4 py-2 rounded-full text-sm font-medium hover:bg-neutral-800 transition"
+                className="flex h-9 w-9 items-center justify-center rounded-full bg-black p-0 text-white sm:w-auto sm:px-4 text-sm font-medium hover:bg-neutral-800 transition"
               >
                 <UserIcon className="w-4 h-4" />
                 <span className="hidden sm:inline">Log In</span>
@@ -256,18 +268,26 @@ const Navbar = () => {
 
           </div>
         </div>
-        <form onSubmit={handleSearchSubmit} className="sm:hidden relative pb-3">
-          <input
-            type="search"
-            placeholder="Search products..."
-            value={keyword}
-            onChange={(e) => setKeyword(e.target.value)}
-            className="w-full rounded-full border border-neutral-200 bg-neutral-100 py-3 pl-11 pr-4 text-sm text-neutral-900 outline-none focus:border-black focus:ring-2 focus:ring-black/10"
-          />
-          <button type="submit" className="absolute left-4 top-3.5 text-neutral-500" aria-label="Search">
-            <SearchIcon className="h-5 w-5" />
-          </button>
-        </form>
+        {mobileSearchOpen && (
+          <form
+            onSubmit={handleSearchSubmit}
+            className="sm:hidden absolute left-4 right-4 top-[64px] z-[55] rounded-2xl border border-neutral-200 bg-white p-2 shadow-xl"
+          >
+            <div className="relative">
+              <input
+                type="search"
+                autoFocus
+                placeholder="Search products..."
+                value={keyword}
+                onChange={(e) => setKeyword(e.target.value)}
+                className="w-full rounded-xl border border-neutral-200 bg-neutral-100 py-3 pl-11 pr-4 text-sm text-neutral-900 outline-none focus:border-black focus:ring-2 focus:ring-black/10"
+              />
+              <button type="submit" className="absolute left-4 top-3.5 text-neutral-500" aria-label="Search">
+                <SearchIcon className="h-5 w-5" />
+              </button>
+            </div>
+          </form>
+        )}
       </div>
 
       {/* Mobile Drawer Menu */}
