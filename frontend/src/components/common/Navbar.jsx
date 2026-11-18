@@ -169,20 +169,40 @@ const Navbar = () => {
             {/* User Profile / Login */}
             {isAuthenticated ? (
               <div className="relative">
-                <button
-                  onClick={() => setUserDropdownOpen(!userDropdownOpen)}
-                  className="flex items-center gap-2 p-1.5 rounded-full hover:bg-neutral-100 transition"
+                <Link
+                  to={isAdmin ? '/admin/profile' : '/profile'}
+                  className="md:hidden flex h-9 w-9 items-center justify-center rounded-full transition"
+                  aria-label="Open profile"
                 >
-                  <div className="relative">
-                    <div className="w-8 h-8 rounded-full bg-neutral-900 text-white flex items-center justify-center font-bold text-sm">
+                  {user?.avatar || user?.profilePhoto ? (
+                    <img
+                      src={user.avatar || user.profilePhoto}
+                      alt={user.name || 'Profile'}
+                      className="h-9 w-9 rounded-full object-cover ring-1 ring-neutral-200"
+                    />
+                  ) : (
+                    <div className="flex h-9 w-9 items-center justify-center rounded-full bg-neutral-900 text-sm font-bold text-white">
                       {user?.name?.charAt(0).toUpperCase() || 'U'}
                     </div>
-                    {user?.isEmailVerified && (
-                      <span className="absolute -bottom-1 -right-1 bg-emerald-500 text-white rounded-full p-0.5" title="Verified Gmail Account">
-                        <CheckIcon className="w-2.5 h-2.5" />
-                      </span>
-                    )}
-                  </div>
+                  )}
+                </Link>
+
+                <button
+                  onClick={() => setUserDropdownOpen(!userDropdownOpen)}
+                  className="hidden items-center gap-2 rounded-full p-1.5 hover:bg-neutral-100 transition md:flex"
+                  aria-label="Open account menu"
+                >
+                  {user?.avatar || user?.profilePhoto ? (
+                    <img
+                      src={user.avatar || user.profilePhoto}
+                      alt={user.name || 'Profile'}
+                      className="h-8 w-8 rounded-full object-cover ring-1 ring-neutral-200"
+                    />
+                  ) : (
+                    <div className="flex h-8 w-8 items-center justify-center rounded-full bg-neutral-900 text-sm font-bold text-white">
+                      {user?.name?.charAt(0).toUpperCase() || 'U'}
+                    </div>
+                  )}
                 </button>
 
                 {userDropdownOpen && (
