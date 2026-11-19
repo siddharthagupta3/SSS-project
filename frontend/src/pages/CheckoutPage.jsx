@@ -58,6 +58,8 @@ const CheckoutPage = () => {
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
   const [savedAddresses, setSavedAddresses] = useState([]);
+  const [pendingPayment, setPendingPayment] = useState(null);
+  const [paymentMethod, setPaymentMethod] = useState('UPI');
 
   useEffect(() => {
     api.get('/users/profile')
@@ -169,6 +171,7 @@ const CheckoutPage = () => {
       const res = await api.post('/orders/create-razorpay-order', {
         orderItems,
         shippingAddress: fullShippingAddress,
+        promoDiscount,
       });
 
       if (!res.data.success) {
@@ -181,20 +184,9 @@ const CheckoutPage = () => {
       const scriptLoaded = await loadRazorpayScript();
 
       if (!scriptLoaded || keyId.includes('placeholder')) {
-        // Fallback simulation mode for testing when test key or script is restricted
-        console.log('Simulating payment verification in sandbox mode...');
-        const verifyRes = await api.post('/orders/verify-payment', {
-          orderId: order._id,
-          razorpay_order_id: razorpayOrderId,
-          razorpay_payment_id: `pay_test_${Date.now()}`,
-          razorpay_signature: 'test_signature_verified',
-        });
-
-        if (verifyRes.data.success) {
-          await clearCart();
-          navigate(`/order-success/${order._id}`);
-          return;
-        }
+        setPendingPayment({ order, razorpayOrderId });
+        setLoading(false);
+        return;
       }
 
       // 4. Open Razorpay Checkout modal
@@ -552,6 +544,73 @@ const CheckoutPage = () => {
         </div>
 
       </form>
+
+      {pendingPayment && (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/60 p-4 backdrop-blur-sm" onClick={() => setPendingPayment(null)}>
+          <div className="w-full max-w-md overflow-hidden rounded-3xl bg-white shadow-2xl" onClick={(event) => event.stopPropagation()}>
+            <div className="flex items-center justify-between border-b border-neutral-100 px-5 py-4">
+              <div>
+                <p className="text-[10px] font-black uppercase tracking-[0.2em] text-blue-600">Razorpay Secure Checkout</p>
+                <h2 className="mt-1 text-lg font-black">₹{total.toLocaleString('en-IN')}</h2>
+              </div>
+              <button type="button" onClick={() => setPendingPayment(null)} className="h-10 w-10 rounded-full border border-neutral-200 text-xl">×</button>
+            </div>
+            <div className="p-5">
+              <p className="mb-3 text-xs font-bold text-neutral-500">Choose payment method</p>
+              <div className="grid grid-cols-3 gap-2">
+                {['UPI', 'Card', 'Netbanking'].map((method) => (
+                  <button
+                    key={method}
+                    type="button"
+                    onClick={() => setPaymentMethod(method)}
+                    className={`rounded-2xl border px-2 py-3 text-xs font-black ${
+                      paymentMethod === method ? 'border-blue-600 bg-blue-50 text-blue-700' : 'border-neutral-200 text-neutral-600'
+                    }`}
+                  >
+                    {method}
+                  </button>
+                ))}
+              </div>
+              {paymentMethod === 'UPI' && (
+                <input required placeholder="yourname@upi" className="mt-4 w-full rounded-xl bg-neutral-100 px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-blue-600" />
+              )}
+              {paymentMethod === 'Card' && (
+                <input required inputMode="numeric" maxLength="16" placeholder="Card number" className="mt-4 w-full rounded-xl bg-neutral-100 px-4 py-3 text-sm font-mono outline-none focus:ring-2 focus:ring-blue-600" />
+              )}
+              {paymentMethod === 'Netbanking' && (
+                <select className="mt-4 w-full rounded-xl bg-neutral-100 px-4 py-3 text-sm"><option>SBI</option><option>HDFC Bank</option><option>ICICI Bank</option></select>
+              )}
+              <button
+                type="button"
+                onClick={async () => {
+                  try {
+                    setLoading(true);
+                    const verifyRes = await api.post('/orders/verify-payment', {
+                      orderId: pendingPayment.order._id,
+                      razorpay_order_id: pendingPayment.razorpayOrderId,
+                      razorpay_payment_id: `pay_test_${Date.now()}`,
+                      razorpay_signature: 'test_signature_verified',
+                    });
+                    if (verifyRes.data.success) {
+                      await clearCart();
+                      setPendingPayment(null);
+                      navigate(`/order-success/${pendingPayment.order._id}`);
+                    }
+                  } catch (err) {
+                    setErrorMessage(err.response?.data?.message || 'Payment could not be completed.');
+                  } finally {
+                    setLoading(false);
+                  }
+                }}
+                className="mt-5 w-full rounded-full bg-blue-600 py-3.5 text-sm font-black text-white hover:bg-blue-700"
+              >
+                Pay ₹{total.toLocaleString('en-IN')}
+              </button>
+              <p className="mt-3 text-center text-[10px] text-neutral-400">Test checkout UI — configure live Razorpay keys for real payments.</p>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

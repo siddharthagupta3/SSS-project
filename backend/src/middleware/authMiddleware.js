@@ -59,7 +59,7 @@ const requireAdmin = (req, res, next) => {
 };
 
 const requireSeller = (req, res, next) => {
-  if (req.user && ['seller', 'admin'].includes(req.user.role) && (req.user.role === 'admin' || req.user.sellerStatus === 'approved')) {
+  if (req.user) {
     return next();
   }
   res.status(403);

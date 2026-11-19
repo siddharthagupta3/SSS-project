@@ -23,8 +23,12 @@ export const AuthProvider = ({ children }) => {
             localStorage.setItem('sss_user', JSON.stringify(res.data.data));
           }
         } catch (err) {
-          console.warn('Session verification failed:', err.message);
-          logout();
+          const status = err.response?.status;
+          if (status === 401 || status === 403) {
+            logout();
+          } else {
+            console.warn('Session verification unavailable:', err.message);
+          }
         }
       }
       setLoading(false);

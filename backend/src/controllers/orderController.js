@@ -11,7 +11,7 @@ const getRazorpayInstance = require('../config/razorpay');
  */
 const createRazorpayOrder = async (req, res, next) => {
   try {
-    const { orderItems, shippingAddress } = req.body;
+    const { orderItems, shippingAddress, promoDiscount: requestedPromoDiscount = 0 } = req.body;
 
     if (!orderItems || orderItems.length === 0) {
       res.status(400);
@@ -53,10 +53,15 @@ const createRazorpayOrder = async (req, res, next) => {
       });
     }
 
-    // Calculate free shipping over ₹999, otherwise ₹99 delivery charge
-    const shippingPrice = itemsPrice > 999 ? 0 : 99;
-    const taxPrice = Math.round(itemsPrice * 0.05); // 5% GST
-    const totalPrice = itemsPrice + shippingPrice + taxPrice;
+    // Calculate delivery and tax after validating the order-level discount
+    const promoDiscount = Math.min(
+      Math.max(0, Number(requestedPromoDiscount) || 0),
+      Math.round(itemsPrice * 0.1)
+    );
+    const discountedItemsPrice = itemsPrice - promoDiscount;
+    const shippingPrice = discountedItemsPrice > 999 ? 0 : 99;
+    const taxPrice = Math.round(discountedItemsPrice * 0.05); // 5% GST
+    const totalPrice = discountedItemsPrice + shippingPrice + taxPrice;
 
     // Create Razorpay Order
     let razorpayOrderId = `test_order_${Date.now()}`;

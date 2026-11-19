@@ -254,10 +254,10 @@ const createProduct = async (req, res, next) => {
       sizes: sizes && sizes.length > 0 ? sizes : ['S', 'M', 'L', 'XL'],
       colors: colors && colors.length > 0 ? colors : ['Black', 'White'],
       isFeatured: Boolean(isFeatured),
-      isNewArrival: req.user.role === 'seller' ? true : Boolean(isNewArrival),
+      isNewArrival: req.user.role !== 'admin' ? true : Boolean(isNewArrival),
       videoUrl: typeof videoUrl === 'string' ? videoUrl.trim() : '',
       isDummy: false,
-      source: req.user.role === 'seller' ? 'seller' : 'admin',
+      source: req.user.role === 'admin' ? 'admin' : 'seller',
       createdBy: req.user._id,
     });
 
@@ -285,7 +285,7 @@ const updateProduct = async (req, res, next) => {
       res.status(404);
       throw new Error('Product not found');
     }
-    if (req.user.role === 'seller' && product.createdBy?.toString() !== req.user._id.toString()) {
+    if (req.user.role !== 'admin' && product.createdBy?.toString() !== req.user._id.toString()) {
       res.status(403);
       throw new Error('You can only modify your own products');
     }
@@ -330,7 +330,7 @@ const deleteProduct = async (req, res, next) => {
       res.status(404);
       throw new Error('Product not found');
     }
-    if (req.user.role === 'seller' && product.createdBy?.toString() !== req.user._id.toString()) {
+    if (req.user.role !== 'admin' && product.createdBy?.toString() !== req.user._id.toString()) {
       res.status(403);
       throw new Error('You can only delete your own products');
     }

@@ -8,7 +8,7 @@ const jwt = require('jsonwebtoken');
  */
 const generateToken = (id, role = 'user', expiresInOverride, authVersion = 0) => {
   const secret = process.env.JWT_SECRET;
-  const expiresIn = expiresInOverride || process.env.JWT_EXPIRES_IN || '7d';
+  const expiresIn = expiresInOverride || process.env.JWT_EXPIRES_IN || '30d';
 
   if (!secret) {
     throw new Error('JWT_SECRET is not set in .env');
