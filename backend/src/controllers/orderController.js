@@ -197,6 +197,31 @@ const getMyOrders = async (req, res, next) => {
   }
 };
 
+const getSellerOrders = async (req, res, next) => {
+  try {
+    const sellerProductIds = await Product.find({ createdBy: req.user._id }).distinct('_id');
+    const idSet = new Set(sellerProductIds.map((id) => id.toString()));
+    const orders = await Order.find({
+      'orderItems.product': { $in: sellerProductIds },
+    })
+      .populate('user', 'name email')
+      .populate('orderItems.product', 'title price discountPrice images createdBy soldCount views')
+      .sort({ createdAt: -1 })
+      .lean();
+
+    const filtered = orders.map((order) => ({
+      ...order,
+      orderItems: order.orderItems.filter((item) =>
+        item.product && idSet.has(item.product._id?.toString() || item.product.toString())
+      ),
+    })).filter((order) => order.orderItems.length > 0);
+
+    res.status(200).json({ success: true, data: filtered });
+  } catch (error) {
+    next(error);
+  }
+};
+
 /**
  * @desc    Get order details by ID
  * @route   GET /api/orders/:id
@@ -286,6 +311,7 @@ module.exports = {
   createRazorpayOrder,
   verifyPayment,
   getMyOrders,
+  getSellerOrders,
   getOrderById,
   getAllOrders,
   updateOrderStatus,

@@ -132,10 +132,7 @@ const LoginPage = () => {
           </div>
 
           <div>
-            <div className="flex justify-between items-center mb-1">
-              <label className="block text-xs font-semibold text-neutral-700">Password</label>
-              <Link to="/forgot-password" className="text-xs font-semibold text-neutral-600 hover:text-black">Forgot password?</Link>
-            </div>
+            <label className="block text-xs font-semibold text-neutral-700 mb-1">Password</label>
             <input
               type="password"
               required
@@ -144,6 +141,12 @@ const LoginPage = () => {
               className="w-full bg-neutral-100 text-sm px-4 py-2.5 rounded-xl outline-none focus:ring-2 focus:ring-black"
               placeholder="••••••••"
             />
+          </div>
+
+          <div className="flex justify-end">
+            <Link to="/forgot-password" className="text-xs font-semibold text-neutral-600 hover:text-black">
+              Forgot password?
+            </Link>
           </div>
 
           <label className="flex items-center gap-2 text-xs text-neutral-600">
@@ -166,13 +169,6 @@ const LoginPage = () => {
             Create an account
           </Link>
         </p>
-        <p className="text-center text-xs text-neutral-500">
-          Store administrator?{' '}
-          <Link to="/admin/login" className="font-bold text-black hover:underline">
-            Secure Admin Login
-          </Link>
-        </p>
-
       </div>
     </div>
   );

@@ -50,7 +50,7 @@ const getProducts = async (req, res, next) => {
 
     const count = await Product.countDocuments(filter);
     const products = await Product.find(filter)
-      .select('title description price discountPrice category brand stock soldCount images sizes colors rating numReviews isFeatured isDummy source createdAt')
+      .select('title description price discountPrice category brand stock soldCount views images sizes colors rating numReviews isFeatured isNewArrival isDummy source createdBy createdAt')
       .sort(sortOptions)
       .limit(pageSize)
       .skip(pageSize * (page - 1))
@@ -101,7 +101,7 @@ const getNewArrivals = async (req, res, next) => {
   try {
     const limit = Math.min(Math.max(Number(req.query.limit) || 12, 1), 100);
     const page = Math.max(Number(req.query.page) || 1, 1);
-    const fields = 'title description price discountPrice category brand stock soldCount images sizes colors rating numReviews isFeatured isDummy source createdAt';
+    const fields = 'title description price discountPrice category brand stock soldCount views images sizes colors rating numReviews isFeatured isNewArrival isDummy source createdBy createdAt';
 
     const realProducts = await Product.find({ isDummy: false })
       .select(fields)
@@ -192,7 +192,11 @@ const getProductCategories = async (req, res, next) => {
  */
 const getProductById = async (req, res, next) => {
   try {
-    const product = await Product.findById(req.params.id);
+    const product = await Product.findByIdAndUpdate(
+      req.params.id,
+      { $inc: { views: 1 } },
+      { new: true }
+    );
 
     if (product) {
       res.status(200).json({
@@ -228,6 +232,7 @@ const createProduct = async (req, res, next) => {
       colors,
       isFeatured,
       isNewArrival,
+      videoUrl,
     } = req.body;
 
     if (!title || !description || !price || !category || !images || images.length === 0) {
@@ -242,14 +247,17 @@ const createProduct = async (req, res, next) => {
       discountPrice: discountPrice ? Number(discountPrice) : 0,
       category,
       brand: brand || 'SHOP.CO',
-      stock: stock !== undefined ? Number(stock) : 10,
+      stock: req.user.role === 'seller'
+        ? (Number(stock) > 0 ? Number(stock) : 20)
+        : (stock !== undefined ? Number(stock) : 10),
       images: Array.isArray(images) ? images : [images],
       sizes: sizes && sizes.length > 0 ? sizes : ['S', 'M', 'L', 'XL'],
       colors: colors && colors.length > 0 ? colors : ['Black', 'White'],
       isFeatured: Boolean(isFeatured),
-      isNewArrival: Boolean(isNewArrival),
+      isNewArrival: req.user.role === 'seller' ? true : Boolean(isNewArrival),
+      videoUrl: typeof videoUrl === 'string' ? videoUrl.trim() : '',
       isDummy: false,
-      source: 'admin',
+      source: req.user.role === 'seller' ? 'seller' : 'admin',
       createdBy: req.user._id,
     });
 
@@ -277,6 +285,10 @@ const updateProduct = async (req, res, next) => {
       res.status(404);
       throw new Error('Product not found');
     }
+    if (req.user.role === 'seller' && product.createdBy?.toString() !== req.user._id.toString()) {
+      res.status(403);
+      throw new Error('You can only modify your own products');
+    }
 
     product.title = req.body.title || product.title;
     product.description = req.body.description || product.description;
@@ -292,6 +304,7 @@ const updateProduct = async (req, res, next) => {
     if (req.body.colors) product.colors = req.body.colors;
     if (req.body.isFeatured !== undefined) product.isFeatured = req.body.isFeatured;
     if (req.body.isNewArrival !== undefined) product.isNewArrival = req.body.isNewArrival;
+    if (req.body.videoUrl !== undefined) product.videoUrl = String(req.body.videoUrl).trim();
 
     const updatedProduct = await product.save();
     res.status(200).json({
@@ -316,6 +329,10 @@ const deleteProduct = async (req, res, next) => {
     if (!product) {
       res.status(404);
       throw new Error('Product not found');
+    }
+    if (req.user.role === 'seller' && product.createdBy?.toString() !== req.user._id.toString()) {
+      res.status(403);
+      throw new Error('You can only delete your own products');
     }
 
     await Product.findByIdAndDelete(req.params.id);

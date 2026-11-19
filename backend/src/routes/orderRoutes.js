@@ -5,17 +5,19 @@ const {
   createRazorpayOrder,
   verifyPayment,
   getMyOrders,
+  getSellerOrders,
   getOrderById,
   getAllOrders,
   updateOrderStatus,
 } = require('../controllers/orderController');
 
-const { verifyToken, requireAdmin } = require('../middleware/authMiddleware');
+const { verifyToken, requireAdmin, requireSeller } = require('../middleware/authMiddleware');
 
 // User authenticated endpoints
 router.post('/create-razorpay-order', verifyToken, createRazorpayOrder);
 router.post('/verify-payment', verifyToken, verifyPayment);
 router.get('/my-orders', verifyToken, getMyOrders);
+router.get('/seller/orders', verifyToken, requireSeller, getSellerOrders);
 router.get('/:id', verifyToken, getOrderById);
 
 // Admin-only endpoints

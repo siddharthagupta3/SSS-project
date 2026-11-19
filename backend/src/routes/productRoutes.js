@@ -15,7 +15,7 @@ const {
   createProductReview,
 } = require('../controllers/productController');
 
-const { verifyToken, requireAdmin } = require('../middleware/authMiddleware');
+const { verifyToken, requireAdmin, requireSeller } = require('../middleware/authMiddleware');
 const { adminLimiter } = require('../middleware/rateLimiter');
 const { upload, uploadToCloudinary } = require('../middleware/uploadMiddleware');
 
@@ -31,8 +31,8 @@ router.get('/:id', getProductById);
 router.post('/:id/reviews', verifyToken, createProductReview);
 
 // Admin-only management routes
-router.post('/', verifyToken, requireAdmin, adminLimiter, createProduct);
-router.post('/upload', verifyToken, requireAdmin, adminLimiter, upload.array('images', 5), async (req, res, next) => {
+router.post('/', verifyToken, requireSeller, adminLimiter, createProduct);
+router.post('/upload', verifyToken, requireSeller, adminLimiter, upload.array('images', 5), async (req, res, next) => {
   try {
     const uploads = await Promise.all((req.files || []).map((file) => uploadToCloudinary(file)));
     res.status(200).json({
@@ -44,7 +44,7 @@ router.post('/upload', verifyToken, requireAdmin, adminLimiter, upload.array('im
   }
 });
 router.delete('/demo/all', verifyToken, requireAdmin, adminLimiter, deleteAllDemoProducts);
-router.put('/:id', verifyToken, requireAdmin, adminLimiter, updateProduct);
-router.delete('/:id', verifyToken, requireAdmin, adminLimiter, deleteProduct);
+router.put('/:id', verifyToken, requireSeller, adminLimiter, updateProduct);
+router.delete('/:id', verifyToken, requireSeller, adminLimiter, deleteProduct);
 
 module.exports = router;

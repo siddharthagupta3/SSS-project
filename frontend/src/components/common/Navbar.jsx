@@ -31,6 +31,15 @@ const Navbar = () => {
     setMobileSearchOpen(false);
   }, [location.pathname]);
 
+  useEffect(() => {
+    if (!mobileMenuOpen) return undefined;
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    return () => {
+      document.body.style.overflow = previousOverflow;
+    };
+  }, [mobileMenuOpen]);
+
   const handleSearchSubmit = (e) => {
     e.preventDefault();
     if (keyword.trim()) {
@@ -113,6 +122,7 @@ const Navbar = () => {
           <nav className="hidden md:flex items-center space-x-6 text-sm font-medium text-neutral-700">
             <Link to="/new-arrivals" className="hover:text-black transition">New Arrivals</Link>
             <Link to="/watches" className="hover:text-black transition">Videos</Link>
+            <Link to="/sellers" className="hover:text-black transition">Sellers</Link>
             <Link to="/developer" className="hover:text-black transition">Developer</Link>
             {isAdmin && (
               <Link to="/admin" className="hover:text-black transition text-emerald-700 font-bold">Admin</Link>
@@ -322,7 +332,7 @@ const Navbar = () => {
             className="absolute inset-0 bg-black/40 backdrop-blur-sm"
             onClick={() => setMobileMenuOpen(false)}
           />
-          <aside className="absolute left-0 top-0 h-[100dvh] max-h-[100dvh] w-[82%] max-w-sm overflow-y-auto bg-white shadow-2xl p-5 pb-[env(safe-area-inset-bottom)] flex flex-col">
+          <aside className="fixed left-0 top-0 h-[100dvh] w-[82%] max-w-sm overscroll-contain overflow-y-auto bg-white shadow-2xl p-5 pb-[env(safe-area-inset-bottom)] flex flex-col touch-pan-y">
             <div className="flex items-center justify-between border-b border-neutral-100 pb-4">
               <Link to="/" onClick={() => setMobileMenuOpen(false)} className="text-2xl font-black tracking-tighter">
                 SHOP.CO
@@ -340,6 +350,7 @@ const Navbar = () => {
               {[
                 ['/new-arrivals', 'New Arrivals'],
                 ['/watches', 'Videos'],
+                ['/sellers', 'Sellers'],
                 ['/developer', 'Developer'],
               ].map(([to, label]) => (
                 <Link

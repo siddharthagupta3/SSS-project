@@ -38,7 +38,7 @@ const userSchema = new mongoose.Schema(
     },
     role: {
       type: String,
-      enum: ['user', 'admin'],
+      enum: ['user', 'seller', 'admin'],
       default: 'user',
     },
     // Gmail / Email Verification Fields
@@ -173,6 +173,30 @@ const userSchema = new mongoose.Schema(
     storeAddress: {
       type: String,
       default: '',
+    },
+    storeDescription: {
+      type: String,
+      default: '',
+      maxlength: 1000,
+    },
+    storeLogo: {
+      type: String,
+      default: '',
+    },
+    sellerStatus: {
+      type: String,
+      enum: ['not_applied', 'pending', 'approved', 'rejected'],
+      default: 'not_applied',
+    },
+    sellerPhone: {
+      type: String,
+      default: '',
+      trim: true,
+    },
+    sellerAddress: {
+      type: String,
+      default: '',
+      trim: true,
     },
     supportEmail: {
       type: String,

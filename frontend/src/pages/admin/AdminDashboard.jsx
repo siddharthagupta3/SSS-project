@@ -578,6 +578,7 @@ const AdminDashboard = () => {
                         className="bg-neutral-100 border border-neutral-300 text-xs font-semibold rounded-lg px-3 py-2"
                       >
                         <option value="user">User</option>
+                        <option value="seller">Seller</option>
                         <option value="admin">Admin</option>
                       </select>
                     </td>

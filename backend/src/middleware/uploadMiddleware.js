@@ -26,11 +26,14 @@ const upload = multer({
 
 const uploadToCloudinary = async (file, folder = 'shopco-products') => {
   if (!file) return null;
+  const targetFolder = folder === 'shopco-products'
+    ? (process.env.CLOUDINARY_PRODUCT_FOLDER || folder)
+    : folder;
 
   return new Promise((resolve, reject) => {
     const stream = cloudinary.uploader.upload_stream(
       {
-        folder,
+        folder: targetFolder,
         allowed_formats: ['jpg', 'jpeg', 'png', 'webp'],
         transformation: [{ width: 1600, height: 1600, crop: 'limit' }],
       },
@@ -45,10 +48,11 @@ const uploadToCloudinary = async (file, folder = 'shopco-products') => {
 
 const uploadVideoToCloudinary = async (file) => {
   if (!file) return null;
+  const targetFolder = process.env.CLOUDINARY_VIDEO_FOLDER || 'shopco-videos';
   return new Promise((resolve, reject) => {
     const stream = cloudinary.uploader.upload_stream(
       {
-        folder: 'shopco-videos',
+        folder: targetFolder,
         resource_type: 'video',
         allowed_formats: ['mp4', 'webm'],
       },

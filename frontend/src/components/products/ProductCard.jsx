@@ -30,6 +30,18 @@ const ProductCard = ({ product }) => {
     addToCart(product, 1, product.sizes?.[0] || 'M', product.colors?.[0] || 'Standard');
   };
 
+  const handleBuyNow = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (!isAuthenticated) {
+      navigate('/login', { state: { from: { pathname: `/product/${product._id}` } } });
+      return;
+    }
+    addToCart(product, 1, product.sizes?.[0] || 'M', product.colors?.[0] || 'Standard')
+      .then(() => navigate('/cart'))
+      .catch((err) => window.alert(err.message || 'Could not start checkout'));
+  };
+
   const handleWishlistToggle = (e) => {
     e.preventDefault();
     e.stopPropagation();
@@ -44,9 +56,13 @@ const ProductCard = ({ product }) => {
     e.target.onerror = null;
     e.target.src = '/favicon.svg';
   };
-  const rawImage = product.images?.[0] || product.image || '';
+  const rawImages = [
+    ...(Array.isArray(product.images) ? product.images : []),
+    product.image,
+  ].filter((image) => typeof image === 'string' && image.trim());
+  const rawImage = rawImages[0] || '';
   const imageUrl = rawImage
-    ? rawImage.replace(/^http:\/\//i, 'https://')
+    ? rawImage.trim().replace(/^http:\/\//i, 'https://')
     : '/favicon.svg';
 
   return (
@@ -93,9 +109,9 @@ const ProductCard = ({ product }) => {
 
         {/* Out of Stock */}
         {product.stock === 0 && (
-          <div className="absolute inset-0 bg-white/80 backdrop-blur-sm flex items-center justify-center font-bold text-xs uppercase tracking-wider text-red-600">
+          <span className="absolute bottom-2 left-2 bg-red-600 text-white text-[10px] font-bold px-2 py-1 rounded-full shadow-md uppercase tracking-wide">
             Out of Stock
-          </div>
+          </span>
         )}
 
         {/* Quick Add Button */}
@@ -147,6 +163,23 @@ const ProductCard = ({ product }) => {
             </span>
           )}
         </div>
+        {product.stock > 0 ? (
+          <button
+            type="button"
+            onClick={handleBuyNow}
+            className="mt-3 w-full rounded-full bg-emerald-600 py-2.5 text-xs font-black text-white hover:bg-emerald-700 active:scale-[0.98]"
+          >
+            Buy Now
+          </button>
+        ) : (
+          <button
+            type="button"
+            disabled
+            className="mt-3 w-full rounded-full bg-neutral-200 py-2.5 text-xs font-black text-neutral-500"
+          >
+            Out of Stock
+          </button>
+        )}
       </div>
     </div>
   );

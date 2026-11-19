@@ -18,9 +18,10 @@ const {
   uploadAdminProfilePhoto,
   getAdminUsers,
   updateAdminUserRole,
+  applySeller,
 } = require('../controllers/authController');
 
-const { verifyToken, requireAdmin } = require('../middleware/authMiddleware');
+const { verifyToken, requireAdmin, optionalVerifyToken } = require('../middleware/authMiddleware');
 const { authLimiter, adminLimiter } = require('../middleware/rateLimiter');
 const { upload } = require('../middleware/uploadMiddleware');
 const { adminLoginLimiter } = require('../middleware/rateLimiter');
@@ -71,6 +72,7 @@ router.route('/wishlist/:productId')
 router.put('/admin/profile', verifyToken, requireAdmin, adminLimiter, updateAdminProfile);
 router.put('/admin/password', verifyToken, requireAdmin, adminLimiter, changeAdminPassword);
 router.post('/admin/profile-photo', verifyToken, requireAdmin, adminLimiter, upload.single('photo'), uploadAdminProfilePhoto);
+router.post('/seller/apply', authLimiter, optionalVerifyToken, upload.single('logo'), applySeller);
 router.get('/admin/users', verifyToken, requireAdmin, adminLimiter, getAdminUsers);
 router.put('/admin/users/:id/role', verifyToken, requireAdmin, adminLimiter, updateAdminUserRole);
 

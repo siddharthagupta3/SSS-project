@@ -58,8 +58,8 @@ const createVideo = async (req, res, next) => {
       throw new Error('Video title is required');
     }
 
-    let videoUrl = youtubeUrl.trim();
-    let finalThumbnail = thumbnailUrl.trim();
+    let videoUrl = String(youtubeUrl || '').trim();
+    let finalThumbnail = String(thumbnailUrl || '').trim();
     let uploadedDuration = Number(duration) || 0;
 
     if (req.file) {

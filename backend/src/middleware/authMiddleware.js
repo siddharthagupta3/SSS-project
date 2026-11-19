@@ -58,7 +58,37 @@ const requireAdmin = (req, res, next) => {
   return next(new Error('Access forbidden. Admin role required for this action.'));
 };
 
+const requireSeller = (req, res, next) => {
+  if (req.user && ['seller', 'admin'].includes(req.user.role) && (req.user.role === 'admin' || req.user.sellerStatus === 'approved')) {
+    return next();
+  }
+  res.status(403);
+  return next(new Error('Seller access required for this action.'));
+};
+
+const optionalVerifyToken = async (req, res, next) => {
+  const authorization = req.headers.authorization;
+  if (!authorization?.startsWith('Bearer ')) return next();
+
+  try {
+    const token = authorization.split(' ')[1];
+    const jwtSecret = process.env.JWT_SECRET;
+    if (!jwtSecret) return next();
+    const decoded = jwt.verify(token, jwtSecret);
+    const user = await User.findById(decoded.id).select('-password +authVersion');
+    if (user) {
+      const currentVersion = Number(user.authVersion || 0);
+      if (Number(decoded.tokenVersion) === currentVersion) req.user = user;
+    }
+  } catch {
+    // Public seller setup may continue without a valid optional session.
+  }
+  return next();
+};
+
 module.exports = {
   verifyToken,
   requireAdmin,
+  requireSeller,
+  optionalVerifyToken,
 };

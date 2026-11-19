@@ -146,6 +146,12 @@ const loginUser = async (req, res, next) => {
         role: user.role,
         isEmailVerified: true,
         address: user.address,
+        sellerStatus: user.sellerStatus || 'not_applied',
+        storeName: user.storeName || '',
+        storeDescription: user.storeDescription || '',
+        storeLogo: user.storeLogo || '',
+        sellerPhone: user.sellerPhone || '',
+        sellerAddress: user.sellerAddress || '',
         token,
       },
     });
@@ -261,6 +267,7 @@ const verifyEmailOTP = async (req, res, next) => {
         role: user.role,
         isEmailVerified: true,
         token,
+        sellerStatus: user.sellerStatus || 'not_applied',
       },
     });
   } catch (error) {
@@ -394,6 +401,11 @@ const getUserProfile = async (req, res, next) => {
           phone: user.address?.phone || '',
           storeName: user.storeName || '',
           storeAddress: user.storeAddress || '',
+          storeDescription: user.storeDescription || '',
+          storeLogo: user.storeLogo || '',
+          sellerStatus: user.sellerStatus || 'not_applied',
+          sellerPhone: user.sellerPhone || '',
+          sellerAddress: user.sellerAddress || '',
           supportEmail: user.supportEmail || '',
           profilePhoto: user.profilePhoto || '',
         },
@@ -470,6 +482,12 @@ const updateUserProfile = async (req, res, next) => {
         isEmailVerified: updatedUser.isEmailVerified,
         address: updatedUser.address,
         token,
+        sellerStatus: updatedUser.sellerStatus || 'not_applied',
+        storeName: updatedUser.storeName || '',
+        storeDescription: updatedUser.storeDescription || '',
+        storeLogo: updatedUser.storeLogo || '',
+        sellerPhone: updatedUser.sellerPhone || '',
+        sellerAddress: updatedUser.sellerAddress || '',
       },
     });
   } catch (error) {
@@ -557,6 +575,7 @@ const googleAuth = async (req, res, next) => {
         isEmailVerified: true,
         address: user.address,
         token,
+        sellerStatus: user.sellerStatus || 'not_applied',
       },
     });
   } catch (error) {
@@ -696,9 +715,108 @@ const uploadAdminProfilePhoto = async (req, res, next) => {
       res.status(400);
       throw new Error('Profile photo file is required');
     }
-    const upload = await uploadToCloudinary(req.file, 'shopco-admin');
+    const upload = await uploadToCloudinary(
+      req.file,
+      process.env.CLOUDINARY_ADMIN_FOLDER || 'shopco-admin'
+    );
     await User.findByIdAndUpdate(req.user._id, { profilePhoto: upload.secure_url });
     res.status(200).json({ success: true, data: { profilePhoto: upload.secure_url } });
+  } catch (error) {
+    next(error);
+  }
+};
+
+const applySeller = async (req, res, next) => {
+  try {
+    const { name, email, password, storeName, storeDescription, sellerPhone, sellerAddress } = req.body;
+    if (!storeName?.trim() || !storeDescription?.trim() || !sellerPhone?.trim() || !sellerAddress?.trim()) {
+      res.status(400);
+      throw new Error('Store name, description, phone number and address are required');
+    }
+
+    let user;
+    if (req.user) {
+      user = await User.findById(req.user._id).select('+password');
+      if (!user) {
+        res.status(401);
+        throw new Error('Your session is no longer valid');
+      }
+      if (user.role === 'admin') {
+        res.status(403);
+        throw new Error('Admin accounts cannot be converted to seller accounts');
+      }
+    } else {
+      const normalizedEmail = String(email || '').trim().toLowerCase();
+      if (!name?.trim() || !normalizedEmail || !password) {
+        res.status(400);
+        throw new Error('Name, email and password are required');
+      }
+      if (!passwordIsValid(password)) {
+        res.status(400);
+        throw new Error('Password must be at least 8 characters and include at least one number');
+      }
+
+      user = await User.findOne({ email: normalizedEmail }).select('+password');
+      if (user) {
+        if (user.role === 'admin') {
+          res.status(403);
+          throw new Error('Admin accounts cannot be converted to seller accounts');
+        }
+        if (!(await user.matchPassword(password))) {
+          res.status(401);
+          throw new Error('An account with this email already exists. Use the correct password');
+        }
+      } else {
+        user = await User.create({
+          name: name.trim(),
+          email: normalizedEmail,
+          password,
+          role: 'seller',
+          status: 'active',
+          isEmailVerified: true,
+        });
+      }
+    }
+
+    let storeLogo = '';
+    if (req.file) {
+      const upload = await uploadToCloudinary(
+        req.file,
+        process.env.CLOUDINARY_SELLER_LOGO_FOLDER || 'shopco-seller-logos'
+      );
+      storeLogo = upload.secure_url;
+    }
+
+    user.name = (typeof name === 'string' && name.trim()) || user.name;
+    user.role = 'seller';
+    user.storeName = storeName.trim();
+    user.storeDescription = storeDescription.trim();
+    user.storeLogo = storeLogo || user.storeLogo;
+    user.sellerPhone = sellerPhone.trim();
+    user.sellerAddress = sellerAddress.trim();
+    user.sellerStatus = 'approved';
+    await user.save();
+
+    const token = generateToken(user._id, 'seller', undefined, user.authVersion || 0);
+
+    res.status(200).json({
+      success: true,
+      message: 'Seller setup complete',
+      data: {
+        _id: user._id,
+        name: user.name,
+        email: user.email,
+        role: 'seller',
+        isEmailVerified: true,
+        sellerStatus: 'approved',
+        storeName: user.storeName,
+        storeDescription: user.storeDescription,
+        storeLogo: user.storeLogo,
+        sellerPhone: user.sellerPhone,
+        sellerAddress: user.sellerAddress,
+        token,
+      },
+    });
   } catch (error) {
     next(error);
   }
@@ -719,7 +837,7 @@ const getAdminUsers = async (req, res, next) => {
 const updateAdminUserRole = async (req, res, next) => {
   try {
     const { role } = req.body;
-    if (!['user', 'admin'].includes(role)) {
+    if (!['user', 'seller', 'admin'].includes(role)) {
       res.status(400);
       throw new Error('Role must be user or admin');
     }
@@ -744,7 +862,7 @@ const updateAdminUserRole = async (req, res, next) => {
     }
     const user = await User.findByIdAndUpdate(
       req.params.id,
-      { role },
+      { role, ...(role === 'seller' ? { sellerStatus: 'pending' } : {}) },
       { new: true, runValidators: true }
     ).select('name email role isEmailVerified createdAt');
     if (!user) {
@@ -772,6 +890,7 @@ module.exports = {
   updateAdminProfile,
   changeAdminPassword,
   uploadAdminProfilePhoto,
+  applySeller,
   getAdminUsers,
   updateAdminUserRole,
 };

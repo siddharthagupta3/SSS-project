@@ -57,13 +57,18 @@ const productSchema = new mongoose.Schema(
       default: 0,
       min: [0, 'Sold count cannot be negative'],
     },
+    views: {
+      type: Number,
+      default: 0,
+      min: [0, 'Views cannot be negative'],
+    },
     isDummy: {
       type: Boolean,
       default: false,
     },
     source: {
       type: String,
-      enum: ['seed', 'admin'],
+      enum: ['seed', 'admin', 'seller'],
       default: 'admin',
     },
     createdBy: {
@@ -79,6 +84,11 @@ const productSchema = new mongoose.Schema(
         },
         message: 'A product must have at least one image',
       },
+    },
+    videoUrl: {
+      type: String,
+      default: '',
+      trim: true,
     },
     sizes: {
       type: [String],

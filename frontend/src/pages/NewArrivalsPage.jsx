@@ -21,6 +21,13 @@ const NewArrivalsPage = () => {
         });
         if (res.data.success) {
           const nextProducts = res.data.data || [];
+          nextProducts.forEach((product) => {
+            if (Array.isArray(product.images)) {
+              product.images = product.images
+                .filter((image) => typeof image === 'string' && image.trim())
+                .map((image) => image.trim().replace(/^http:\/\//i, 'https://'));
+            }
+          });
           setProducts(nextProducts);
           sessionStorage.setItem('new_arrivals_cache', JSON.stringify({
             products: nextProducts,
