@@ -22,7 +22,7 @@ const {
 } = require('../controllers/authController');
 
 const { verifyToken, requireAdmin, optionalVerifyToken } = require('../middleware/authMiddleware');
-const { authLimiter, adminLimiter } = require('../middleware/rateLimiter');
+const { adminLimiter } = require('../middleware/rateLimiter');
 const { upload } = require('../middleware/uploadMiddleware');
 const { adminLoginLimiter } = require('../middleware/rateLimiter');
 const {
@@ -37,10 +37,10 @@ const {
 } = require('../controllers/adminAuthController');
 
 // Public routes with rate limiting
-router.post('/register', authLimiter, registerUser);
-router.post('/login', authLimiter, loginUser);
-router.post('/forgot-password', authLimiter, forgotPassword);
-router.post('/reset-password', authLimiter, resetPassword);
+router.post('/register', registerUser);
+router.post('/login', loginUser);
+router.post('/forgot-password', forgotPassword);
+router.post('/reset-password', resetPassword);
 router.post('/admin/login', adminLoginLimiter, adminLoginStepOne);
 router.post('/admin/email-otp/resend', adminLoginLimiter, resendAdminEmailOtp);
 router.post('/admin/email-otp/verify', adminLoginLimiter, verifyAdminEmailOtp);
@@ -51,11 +51,11 @@ router.post('/admin/totp/reset/request', verifyToken, requireAdmin, adminLimiter
 router.post('/admin/totp/reset/verify', verifyToken, requireAdmin, adminLimiter, resetAdminTotpVerify);
 
 // Google Sign-In / Signup
-router.post('/google', authLimiter, googleAuth);
+router.post('/google', googleAuth);
 
 // Gmail OTP Verification
-router.post('/send-otp', authLimiter, sendVerificationOTP);
-router.post('/verify-otp', authLimiter, verifyEmailOTP);
+router.post('/send-otp', sendVerificationOTP);
+router.post('/verify-otp', verifyEmailOTP);
 
 // Protected routes (require JWT)
 router.route('/profile')
@@ -72,7 +72,7 @@ router.route('/wishlist/:productId')
 router.put('/admin/profile', verifyToken, requireAdmin, adminLimiter, updateAdminProfile);
 router.put('/admin/password', verifyToken, requireAdmin, adminLimiter, changeAdminPassword);
 router.post('/admin/profile-photo', verifyToken, requireAdmin, adminLimiter, upload.single('photo'), uploadAdminProfilePhoto);
-router.post('/seller/apply', authLimiter, optionalVerifyToken, upload.single('logo'), applySeller);
+router.post('/seller/apply', optionalVerifyToken, upload.single('logo'), applySeller);
 router.get('/admin/users', verifyToken, requireAdmin, adminLimiter, getAdminUsers);
 router.put('/admin/users/:id/role', verifyToken, requireAdmin, adminLimiter, updateAdminUserRole);
 

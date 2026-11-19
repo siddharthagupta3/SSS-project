@@ -2,16 +2,18 @@ const rateLimit = require('express-rate-limit');
 
 /**
  * Rate Limiter for Authentication endpoints (login, register)
- * Limits each IP to 20 requests per 15-minute window
+ * Keeps abuse protection without blocking normal Google/email sign-ins.
  */
 const authLimiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 5,
+  max: 100,
+  skipSuccessfulRequests: true,
+  requestPropertyName: 'rateLimit',
   standardHeaders: true, // Return rate limit info in `RateLimit-*` headers
   legacyHeaders: false, // Disable `X-RateLimit-*` headers
   message: {
     success: false,
-    message: 'Too many authentication attempts from this IP. Please try again after 15 minutes.',
+    message: 'Too many authentication attempts. Please wait a few minutes and try again.',
   },
 });
 
