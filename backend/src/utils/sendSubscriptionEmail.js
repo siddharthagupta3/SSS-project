@@ -1,41 +1,33 @@
-const nodemailer = require('nodemailer');
+const https = require('https');
 
 const sendSubscriptionEmail = async (email) => {
-  const emailUser = process.env.EMAIL_USER;
-  const emailPass = process.env.EMAIL_PASS;
-
-  if (!emailUser || !emailPass) {
+  const apiKey = process.env.BREVO_API_KEY;
+  const sender = process.env.EMAIL_FROM;
+  if (!apiKey || !sender) {
     return { success: false, error: 'Email service is not configured' };
   }
-
-  try {
-    const transporter = nodemailer.createTransport({
-      service: 'gmail',
-      auth: { user: emailUser, pass: emailPass },
+  const body = JSON.stringify({
+    sender: { name: 'SHOP.CO', email: sender },
+    to: [{ email }],
+    subject: 'Thanks for subscribing to SHOP.CO',
+    htmlContent: '<h1>SHOP.CO</h1><p>Thank you for subscribing! You will receive updates about new arrivals and offers.</p>',
+  });
+  return new Promise((resolve) => {
+    const request = https.request({
+      hostname: 'api.brevo.com',
+      path: '/v3/smtp/email',
+      method: 'POST',
+      headers: { 'api-key': apiKey, 'content-type': 'application/json', 'content-length': Buffer.byteLength(body) },
+    }, (response) => {
+      response.resume();
+      response.on('end', () => resolve(response.statusCode >= 200 && response.statusCode < 300
+        ? { success: true }
+        : { success: false, error: 'Email delivery failed' }));
     });
-
-    await transporter.sendMail({
-      from: `"SHOP.CO" <${emailUser}>`,
-      to: email,
-      subject: 'Thanks for subscribing to SHOP.CO',
-      html: `
-        <div style="font-family:Arial,sans-serif;max-width:560px;margin:auto;padding:28px;border:1px solid #e5e5e5;border-radius:18px">
-          <h1 style="margin:0;font-size:28px;letter-spacing:-1px;color:#111">SHOP.CO</h1>
-          <p style="margin-top:24px;font-size:15px;color:#333">Thank you for subscribing!</p>
-          <p style="font-size:14px;line-height:1.7;color:#555">
-            You will now receive updates about new arrivals, exclusive offers and the latest SHOP.CO collections.
-          </p>
-          <div style="margin-top:24px;padding:14px;border-radius:12px;background:#111;color:#fff;text-align:center;font-weight:700">
-            Welcome to SHOP.CO
-          </div>
-        </div>
-      `,
-    });
-
-    return { success: true };
-  } catch (error) {
-    return { success: false, error: error.message };
-  }
+    request.on('error', (error) => resolve({ success: false, error: error.message }));
+    request.write(body);
+    request.end();
+  });
 };
 
 module.exports = sendSubscriptionEmail;

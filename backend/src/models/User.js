@@ -22,9 +22,19 @@ const userSchema = new mongoose.Schema(
     },
     password: {
       type: String,
-      required: [true, 'Please provide a password'],
-      minlength: [6, 'Password must be at least 6 characters long'],
+      required: false,
+      minlength: [8, 'Password must be at least 8 characters long'],
       select: false, // Don't return password in queries by default
+    },
+    status: {
+      type: String,
+      enum: ['pending', 'active'],
+      default: 'active',
+    },
+    authVersion: {
+      type: Number,
+      default: 0,
+      select: false,
     },
     role: {
       type: String,
@@ -42,6 +52,29 @@ const userSchema = new mongoose.Schema(
     },
     emailVerificationExpires: {
       type: Date,
+      select: false,
+    },
+    otpHash: {
+      type: String,
+      select: false,
+    },
+    otpExpires: {
+      type: Date,
+      select: false,
+    },
+    otpAttempts: {
+      type: Number,
+      default: 0,
+      select: false,
+    },
+    otpLastSent: {
+      type: Date,
+      select: false,
+    },
+    otpPurpose: {
+      type: String,
+      enum: ['', 'register', 'reset'],
+      default: '',
       select: false,
     },
     totpSecret: {

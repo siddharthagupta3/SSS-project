@@ -64,22 +64,21 @@ export const AuthProvider = ({ children }) => {
     }
   }, []);
 
-  const register = async (name, email, password) => {
-    const res = await api.post('/auth/register', { name, email, password });
+  const register = async (name, email, password, confirmPassword) => {
+    const res = await api.post('/auth/register', { name, email, password, confirmPassword: confirmPassword ?? password });
     if (res.data.success) {
-      const userData = res.data.data;
-      setUser(userData);
-      setToken(userData.token);
-      localStorage.setItem('sss_token', userData.token);
-      localStorage.setItem('sss_user', JSON.stringify(userData));
-      return userData;
+      return res.data.data;
     }
   };
 
   const verifyOTP = async (email, otp) => {
     const res = await api.post('/auth/verify-otp', { email, otp });
     if (res.data.success) {
-      const updatedUser = { ...user, isEmailVerified: true };
+      const updatedUser = res.data.data;
+      if (updatedUser.token) {
+        setToken(updatedUser.token);
+        localStorage.setItem('sss_token', updatedUser.token);
+      }
       setUser(updatedUser);
       localStorage.setItem('sss_user', JSON.stringify(updatedUser));
       return res.data;
@@ -88,6 +87,16 @@ export const AuthProvider = ({ children }) => {
 
   const resendOTP = async (email) => {
     const res = await api.post('/auth/send-otp', { email: email || user?.email });
+    return res.data;
+  };
+
+  const forgotPassword = async (email) => {
+    const res = await api.post('/auth/forgot-password', { email });
+    return res.data;
+  };
+
+  const resetPassword = async (email, otp, password, confirmPassword) => {
+    const res = await api.post('/auth/reset-password', { email, otp, password, confirmPassword });
     return res.data;
   };
 
@@ -130,6 +139,8 @@ export const AuthProvider = ({ children }) => {
         register,
         verifyOTP,
         resendOTP,
+        forgotPassword,
+        resetPassword,
         logout,
         updateProfile,
         updateUser,

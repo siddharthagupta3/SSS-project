@@ -202,7 +202,7 @@ const verifyAdminTotpSetup = async (req, res, next) => {
     user.adminTotpAttempts = 0;
     await user.save();
 
-    const token = generateToken(user._id, 'admin', '12h');
+    const token = generateToken(user._id, 'admin', '12h', user.authVersion || 0);
     res.status(200).json({
       success: true,
       data: {
@@ -255,7 +255,7 @@ const verifyAdminTotp = async (req, res, next) => {
     user.adminTotpAttempts = 0;
     user.adminChallengeId = undefined;
     await user.save();
-    const token = generateToken(user._id, 'admin', '12h');
+    const token = generateToken(user._id, 'admin', '12h', user.authVersion || 0);
     res.status(200).json({
       success: true,
       data: {

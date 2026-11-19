@@ -22,6 +22,8 @@ import MyOrdersPage from './pages/MyOrdersPage';
 import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
 import VerifyEmailPage from './pages/VerifyEmailPage';
+import ForgotPasswordPage from './pages/ForgotPasswordPage';
+import ResetPasswordPage from './pages/ResetPasswordPage';
 import NewArrivalsPage from './pages/NewArrivalsPage';
 import WatchesPage from './pages/WatchesPage';
 import DeveloperPage from './pages/DeveloperPage';
@@ -62,6 +64,8 @@ function App() {
                   <Route path="/admin/login" element={<AdminLoginPage />} />
                   <Route path="/register" element={<RegisterPage />} />
                   <Route path="/verify-email" element={<VerifyEmailPage />} />
+                  <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+                  <Route path="/reset-password" element={<ResetPasswordPage />} />
 
                   {/* Other Pages */}
                   <Route path="/new-arrivals" element={<NewArrivalsPage />} />

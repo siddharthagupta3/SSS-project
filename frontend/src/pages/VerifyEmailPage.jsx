@@ -12,6 +12,7 @@ const VerifyEmailPage = () => {
   const initialDevOtp = location.state?.devOtp || '';
 
   const [otp, setOtp] = useState(initialDevOtp);
+  const [digits, setDigits] = useState(() => Array.from({ length: 6 }, (_, i) => initialDevOtp[i] || ''));
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [successMsg, setSuccessMsg] = useState('');
@@ -57,9 +58,7 @@ const VerifyEmailPage = () => {
     try {
       const res = await resendOTP(email);
       setSuccessMsg('A new 6-digit verification code has been dispatched.');
-      if (res.devOtp) {
-        setOtp(res.devOtp);
-      }
+      if (res.devOtp) setOtp(res.devOtp);
       setTimer(30);
       setCanResend(false);
     } catch (err) {
@@ -104,15 +103,35 @@ const VerifyEmailPage = () => {
             <label className="block text-xs font-semibold text-neutral-600 mb-2">
               Enter 6-Digit Code
             </label>
-            <input
-              type="text"
-              maxLength="6"
-              autoFocus
-              value={otp}
-              onChange={(e) => setOtp(e.target.value.replace(/\D/g, ''))}
-              placeholder="••••••"
-              className="w-full text-center tracking-[12px] text-2xl font-mono font-black py-3 rounded-2xl bg-neutral-100 border border-neutral-200 outline-none focus:ring-2 focus:ring-black"
-            />
+            <div className="flex justify-center gap-2">
+              {digits.map((digit, index) => (
+                <input
+                  key={index}
+                  id={`otp-${index}`}
+                  type="text"
+                  inputMode="numeric"
+                  maxLength={1}
+                  autoFocus={index === 0}
+                  value={digit}
+                  onChange={(e) => {
+                    const value = e.target.value.replace(/\D/g, '').slice(-1);
+                    const next = [...digits];
+                    next[index] = value;
+                    setDigits(next);
+                    setOtp(next.join(''));
+                    if (value && index < 5) document.getElementById(`otp-${index + 1}`)?.focus();
+                  }}
+                  onPaste={(e) => {
+                    const pasted = e.clipboardData.getData('text').replace(/\D/g, '').slice(0, 6);
+                    if (pasted) {
+                      setDigits(Array.from({ length: 6 }, (_, i) => pasted[i] || ''));
+                      setOtp(pasted);
+                    }
+                  }}
+                  className="w-11 h-12 sm:w-12 sm:h-14 text-center text-xl font-bold rounded-xl bg-neutral-100 border border-neutral-200 outline-none focus:ring-2 focus:ring-black"
+                />
+              ))}
+            </div>
           </div>
 
           <button

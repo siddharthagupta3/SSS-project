@@ -1,16 +1,45 @@
 const { OAuth2Client } = require('google-auth-library');
+const crypto = require('crypto');
+const bcrypt = require('bcryptjs');
 const User = require('../models/User');
 const generateToken = require('../utils/generateToken');
 const sendEmailOTP = require('../utils/sendEmail');
 const { uploadToCloudinary } = require('../middleware/uploadMiddleware');
 
 const googleClient = new OAuth2Client(process.env.GOOGLE_CLIENT_ID || '');
+const emailRateMap = new Map();
 
-/**
- * Generate a 6-digit numeric OTP
- */
-const generate6DigitOTP = () => {
-  return Math.floor(100000 + Math.random() * 900000).toString();
+const passwordIsValid = (password) =>
+  typeof password === 'string' &&
+  password.length >= 8 &&
+  /\d/.test(password);
+
+const checkEmailRateLimit = (email) => {
+  const now = Date.now();
+  const key = email.toLowerCase();
+  const entry = emailRateMap.get(key) || [];
+  const recent = entry.filter((timestamp) => now - timestamp < 15 * 60 * 1000);
+  if (recent.length >= 5) return false;
+  recent.push(now);
+  emailRateMap.set(key, recent);
+  return true;
+};
+
+const issueOTP = async (user, purpose, force = false) => {
+  if (!force && user.otpLastSent && Date.now() - user.otpLastSent.getTime() < 30 * 1000) {
+    const wait = Math.ceil((30 * 1000 - (Date.now() - user.otpLastSent.getTime())) / 1000);
+    const error = new Error(`Please wait ${wait} seconds before requesting another OTP`);
+    error.statusCode = 429;
+    throw error;
+  }
+  const otp = crypto.randomInt(100000, 1000000).toString();
+  user.otpHash = await bcrypt.hash(otp, 10);
+  user.otpExpires = new Date(Date.now() + 5 * 60 * 1000);
+  user.otpAttempts = 0;
+  user.otpLastSent = new Date();
+  user.otpPurpose = purpose;
+  await user.save();
+  await sendEmailOTP({ email: user.email, name: user.name, otp, purpose });
 };
 
 /**
@@ -20,63 +49,49 @@ const generate6DigitOTP = () => {
  */
 const registerUser = async (req, res, next) => {
   try {
-    const { name, email, password } = req.body;
-
-    if (!name || !email || !password) {
+    const { name, email, password, confirmPassword } = req.body;
+    const normalizedEmail = String(email || '').trim().toLowerCase();
+    if (!name || !normalizedEmail || !password) {
       res.status(400);
       throw new Error('Please fill in all required fields (name, email, password)');
     }
-
-    if (password.length < 6) {
+    if (!passwordIsValid(password)) {
       res.status(400);
-      throw new Error('Password must be at least 6 characters long');
+      throw new Error('Password must be at least 8 characters and include at least one number');
     }
-
-    // Check if user already exists
-    const existingUser = await User.findOne({ email: email.toLowerCase() });
-    if (existingUser) {
+    if (confirmPassword !== undefined && password !== confirmPassword) {
+      res.status(400);
+      throw new Error('Passwords do not match');
+    }
+    if (!checkEmailRateLimit(normalizedEmail)) {
+      res.status(429);
+      throw new Error('Too many requests for this email. Please try again later.');
+    }
+    const existingUser = await User.findOne({ email: normalizedEmail });
+    if (existingUser && existingUser.status !== 'pending') {
       res.status(400);
       throw new Error('An account with this email already exists');
     }
-
-    // Generate 6-digit OTP for email verification
-    const otp = generate6DigitOTP();
-    const otpExpires = new Date(Date.now() + 10 * 60 * 1000); // 10 minutes
-
-    // Create user with OTP
-    const user = await User.create({
-      name,
-      email: email.toLowerCase(),
-      password,
-      role: 'user',
-      isEmailVerified: false,
-      emailVerificationOTP: otp,
-      emailVerificationExpires: otpExpires,
-    });
-
-    // Send OTP via Gmail / Email service
-    await sendEmailOTP({ email: user.email, name: user.name, otp });
-
+    let user = existingUser;
     if (user) {
-      const token = generateToken(user._id, user.role);
-
-      res.status(201).json({
-        success: true,
-        message: 'Account created! Verification OTP sent to your Gmail.',
-        data: {
-          _id: user._id,
-          name: user.name,
-          email: user.email,
-          role: user.role,
-          isEmailVerified: user.isEmailVerified,
-          address: user.address,
-          token,
-        },
-      });
+      user.name = name.trim();
+      user.password = password;
     } else {
-      res.status(400);
-      throw new Error('Invalid user data provided');
+      user = await User.create({
+        name: name.trim(),
+        email: normalizedEmail,
+        password,
+        role: 'user',
+        status: 'pending',
+        isEmailVerified: false,
+      });
     }
+    await issueOTP(user, 'register');
+    res.status(201).json({
+      success: true,
+      message: 'Verification OTP sent to your email',
+      data: { email: user.email, status: 'pending', isEmailVerified: false },
+    });
   } catch (error) {
     next(error);
   }
@@ -90,39 +105,50 @@ const registerUser = async (req, res, next) => {
 const loginUser = async (req, res, next) => {
   try {
     const { email, password } = req.body;
+    const normalizedEmail = String(email || '').trim().toLowerCase();
 
-    if (!email || !password) {
+    if (!normalizedEmail || !password) {
       res.status(400);
       throw new Error('Please provide email and password');
     }
 
-    const user = await User.findOne({ email: email.toLowerCase() }).select('+password');
-
-    if (user && (await user.matchPassword(password))) {
-      if (user.role === 'admin') {
-        res.status(401);
-        throw new Error('Invalid credentials');
-      }
-      const token = generateToken(user._id, user.role);
-
-      res.status(200).json({
-        success: true,
-        message: 'Logged in successfully',
-        data: {
-          _id: user._id,
-          name: user.name,
-          email: user.email,
-          role: user.role,
-          isEmailVerified: user.isEmailVerified || false,
-          address: user.address,
-          token,
-          redirectTo: user.role === 'admin' ? '/admin' : null,
-        },
-      });
-    } else {
+    const user = await User.findOne({ email: normalizedEmail }).select('+password +googleId +authVersion');
+    if (!user || user.role === 'admin') {
       res.status(401);
       throw new Error('Invalid email or password');
     }
+    if (user.googleId && !user.password) {
+      res.status(400);
+      throw new Error('Please use Google login');
+    }
+    if (!(await user.matchPassword(password))) {
+      res.status(401);
+      throw new Error('Invalid email or password');
+    }
+    if (user.status === 'pending' || !user.isEmailVerified) {
+      await issueOTP(user, 'register');
+      res.status(403).json({
+        success: false,
+        message: 'Email not verified',
+        requiresVerification: true,
+        data: { email: user.email },
+      });
+      return;
+    }
+    const token = generateToken(user._id, user.role, undefined, user.authVersion || 0);
+    res.status(200).json({
+      success: true,
+      message: 'Logged in successfully',
+      data: {
+        _id: user._id,
+        name: user.name,
+        email: user.email,
+        role: user.role,
+        isEmailVerified: true,
+        address: user.address,
+        token,
+      },
+    });
   } catch (error) {
     next(error);
   }
@@ -135,14 +161,18 @@ const loginUser = async (req, res, next) => {
  */
 const sendVerificationOTP = async (req, res, next) => {
   try {
-    const email = req.body.email || req.user?.email;
+    const email = String(req.body.email || req.user?.email || '').trim().toLowerCase();
 
     if (!email) {
       res.status(400);
       throw new Error('Email address is required');
     }
 
-    const user = await User.findOne({ email: email.toLowerCase() });
+    if (!checkEmailRateLimit(email)) {
+      res.status(429);
+      throw new Error('Too many requests for this email. Please try again later.');
+    }
+    const user = await User.findOne({ email }).select('+otpLastSent');
     if (!user) {
       res.status(404);
       throw new Error('No account found with this email');
@@ -155,12 +185,7 @@ const sendVerificationOTP = async (req, res, next) => {
       });
     }
 
-    const otp = generate6DigitOTP();
-    user.emailVerificationOTP = otp;
-    user.emailVerificationExpires = new Date(Date.now() + 10 * 60 * 1000);
-    await user.save();
-
-    await sendEmailOTP({ email: user.email, name: user.name, otp });
+    await issueOTP(user, 'register');
 
     res.status(200).json({
       success: true,
@@ -179,53 +204,168 @@ const sendVerificationOTP = async (req, res, next) => {
 const verifyEmailOTP = async (req, res, next) => {
   try {
     const { email, otp } = req.body;
-
-    if (!email || !otp) {
+    const normalizedEmail = String(email || '').trim().toLowerCase();
+    if (!normalizedEmail || !/^\d{6}$/.test(String(otp || ''))) {
       res.status(400);
       throw new Error('Email and 6-digit OTP code are required');
     }
 
-    const user = await User.findOne({ email: email.toLowerCase() })
-      .select('+emailVerificationOTP +emailVerificationExpires');
+    const user = await User.findOne({ email: normalizedEmail })
+      .select('+otpHash +otpExpires +otpAttempts +otpPurpose +authVersion');
 
     if (!user) {
       res.status(404);
       throw new Error('User account not found');
     }
 
-    if (user.isEmailVerified) {
+    if (user.isEmailVerified && user.status !== 'pending') {
       return res.status(200).json({
         success: true,
         message: 'Email is already verified',
         data: { isEmailVerified: true },
       });
     }
-
-    if (!user.emailVerificationOTP || user.emailVerificationOTP !== otp.trim()) {
-      res.status(400);
-      throw new Error('Invalid verification code entered');
-    }
-
-    if (new Date() > user.emailVerificationExpires) {
+    if (user.otpPurpose !== 'register' || !user.otpHash || !user.otpExpires || user.otpExpires < new Date()) {
       res.status(400);
       throw new Error('Verification code has expired. Please request a new one.');
     }
-
-    // Mark email as verified
+    const valid = await bcrypt.compare(String(otp), user.otpHash);
+    if (!valid) {
+      user.otpAttempts = (user.otpAttempts || 0) + 1;
+      if (user.otpAttempts >= 3) {
+        await issueOTP(user, 'register', true);
+        await user.save();
+        res.status(400);
+        throw new Error('Too many wrong attempts. A new OTP was sent.');
+      }
+      await user.save();
+      res.status(400);
+      throw new Error('Invalid verification code');
+    }
     user.isEmailVerified = true;
-    user.emailVerificationOTP = undefined;
-    user.emailVerificationExpires = undefined;
+    user.status = 'active';
+    user.otpHash = undefined;
+    user.otpExpires = undefined;
+    user.otpAttempts = 0;
+    user.otpPurpose = '';
+    user.otpLastSent = undefined;
     await user.save();
-
+    const token = generateToken(user._id, user.role, undefined, user.authVersion || 0);
     res.status(200).json({
       success: true,
-      message: 'Gmail address verified successfully! 🎉',
+      message: 'Email verified successfully',
       data: {
         _id: user._id,
         name: user.name,
         email: user.email,
+        role: user.role,
         isEmailVerified: true,
+        token,
       },
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+/**
+ * @desc    Request a password reset OTP
+ * @route   POST /api/auth/forgot-password
+ * @access  Public
+ */
+const forgotPassword = async (req, res, next) => {
+  try {
+    const email = String(req.body.email || '').trim().toLowerCase();
+    if (!email) {
+      res.status(400);
+      throw new Error('Email address is required');
+    }
+    if (!checkEmailRateLimit(email)) {
+      res.status(429);
+      throw new Error('Too many requests for this email. Please try again later.');
+    }
+
+    const user = await User.findOne({ email }).select('+otpLastSent');
+    if (user && user.status !== 'pending') {
+      try {
+        await issueOTP(user, 'reset');
+      } catch (error) {
+        if (error.statusCode !== 429) throw error;
+      }
+    }
+
+    res.status(200).json({
+      success: true,
+      message: 'If an account exists for this email, a password reset code has been sent.',
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+/**
+ * @desc    Verify reset OTP and set a new password
+ * @route   POST /api/auth/reset-password
+ * @access  Public
+ */
+const resetPassword = async (req, res, next) => {
+  try {
+    const email = String(req.body.email || '').trim().toLowerCase();
+    const otp = String(req.body.otp || '').trim();
+    const password = String(req.body.password || '');
+    const confirmPassword = String(req.body.confirmPassword || '');
+
+    if (!email || !/^\d{6}$/.test(otp) || !password) {
+      res.status(400);
+      throw new Error('Email, 6-digit OTP and new password are required');
+    }
+    if (password !== confirmPassword) {
+      res.status(400);
+      throw new Error('Passwords do not match');
+    }
+    if (!passwordIsValid(password)) {
+      res.status(400);
+      throw new Error('Password must be at least 8 characters and include at least one number');
+    }
+
+    const user = await User.findOne({ email })
+      .select('+password +otpHash +otpExpires +otpAttempts +otpPurpose +otpLastSent +authVersion');
+    if (!user) {
+      res.status(400);
+      throw new Error('Invalid or expired reset code');
+    }
+    if (user.otpPurpose !== 'reset' || !user.otpHash || !user.otpExpires || user.otpExpires < new Date()) {
+      res.status(400);
+      throw new Error('Reset code has expired. Please request a new one.');
+    }
+
+    const valid = await bcrypt.compare(otp, user.otpHash);
+    if (!valid) {
+      user.otpAttempts = (user.otpAttempts || 0) + 1;
+      if (user.otpAttempts >= 3) {
+        await issueOTP(user, 'reset', true);
+        res.status(400);
+        throw new Error('Too many wrong attempts. A new OTP was sent.');
+      }
+      await user.save();
+      res.status(400);
+      throw new Error('Invalid reset code');
+    }
+
+    user.password = password;
+    user.isEmailVerified = true;
+    user.status = 'active';
+    user.authVersion = (user.authVersion || 0) + 1;
+    user.otpHash = undefined;
+    user.otpExpires = undefined;
+    user.otpAttempts = 0;
+    user.otpPurpose = '';
+    user.otpLastSent = undefined;
+    await user.save();
+
+    res.status(200).json({
+      success: true,
+      message: 'Password updated successfully. Please log in again.',
     });
   } catch (error) {
     next(error);
@@ -274,7 +414,7 @@ const getUserProfile = async (req, res, next) => {
  */
 const updateUserProfile = async (req, res, next) => {
   try {
-    const user = await User.findById(req.user._id).select('+password');
+    const user = await User.findById(req.user._id).select('+password +authVersion');
 
     if (!user) {
       res.status(404);
@@ -294,9 +434,9 @@ const updateUserProfile = async (req, res, next) => {
     }
 
     if (req.body.password) {
-      if (req.body.password.length < 6) {
+      if (!passwordIsValid(req.body.password)) {
         res.status(400);
-        throw new Error('New password must be at least 6 characters');
+        throw new Error('New password must be at least 8 characters and include at least one number');
       }
       user.password = req.body.password;
     }
@@ -317,7 +457,7 @@ const updateUserProfile = async (req, res, next) => {
     }
 
     const updatedUser = await user.save();
-    const token = generateToken(updatedUser._id, updatedUser.role);
+    const token = generateToken(updatedUser._id, updatedUser.role, undefined, updatedUser.authVersion || 0);
 
     res.status(200).json({
       success: true,
@@ -395,7 +535,7 @@ const googleAuth = async (req, res, next) => {
       user = await User.create({
         name: googleName || 'Google User',
         email: googleEmail.toLowerCase(),
-        password: `G_${Date.now()}_${Math.random().toString(36).substring(7)}!`,
+        password: undefined,
         isEmailVerified: true, // Google has cryptographically verified this Gmail address
         avatar: googlePicture || '',
         googleId: googleSub || '',
@@ -403,7 +543,7 @@ const googleAuth = async (req, res, next) => {
       });
     }
 
-    const token = generateToken(user._id, user.role);
+    const token = generateToken(user._id, user.role, undefined, user.authVersion || 0);
 
     res.status(200).json({
       success: true,
@@ -620,6 +760,8 @@ const updateAdminUserRole = async (req, res, next) => {
 module.exports = {
   registerUser,
   loginUser,
+  forgotPassword,
+  resetPassword,
   googleAuth,
   sendVerificationOTP,
   verifyEmailOTP,

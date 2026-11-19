@@ -22,11 +22,16 @@ const verifyToken = async (req, res, next) => {
       const decoded = jwt.verify(token, jwtSecret);
 
       // Fetch user from database excluding password
-      req.user = await User.findById(decoded.id).select('-password');
+      req.user = await User.findById(decoded.id).select('-password +authVersion');
 
       if (!req.user) {
         res.status(401);
         throw new Error('User no longer exists. Authorization denied.');
+      }
+      const currentVersion = Number(req.user.authVersion || 0);
+      if (Number(decoded.tokenVersion) !== currentVersion) {
+        res.status(401);
+        throw new Error('Session has been invalidated');
       }
 
       return next();

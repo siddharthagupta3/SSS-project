@@ -27,14 +27,14 @@ const RegisterPage = () => {
       return;
     }
 
-    if (password.length < 6) {
-      setError('Password must be at least 6 characters long');
+    if (password.length < 8 || !/\d/.test(password)) {
+      setError('Password must be at least 8 characters and include at least one number');
       return;
     }
 
     setLoading(true);
     try {
-      const userData = await register(name, email, password);
+      const userData = await register(name, email, password, confirmPassword);
       // Navigate to Gmail OTP verification
       navigate('/verify-email', {
         state: {
@@ -144,7 +144,7 @@ const RegisterPage = () => {
           </div>
 
           <div>
-            <label className="block text-xs font-semibold text-neutral-700 mb-1">Password (min 6 characters)</label>
+            <label className="block text-xs font-semibold text-neutral-700 mb-1">Password (min 8 characters, 1 number)</label>
             <input
               type="password"
               required

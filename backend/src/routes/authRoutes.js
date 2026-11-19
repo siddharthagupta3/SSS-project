@@ -4,6 +4,8 @@ const router = express.Router();
 const {
   registerUser,
   loginUser,
+  forgotPassword,
+  resetPassword,
   googleAuth,
   sendVerificationOTP,
   verifyEmailOTP,
@@ -36,6 +38,8 @@ const {
 // Public routes with rate limiting
 router.post('/register', authLimiter, registerUser);
 router.post('/login', authLimiter, loginUser);
+router.post('/forgot-password', authLimiter, forgotPassword);
+router.post('/reset-password', authLimiter, resetPassword);
 router.post('/admin/login', adminLoginLimiter, adminLoginStepOne);
 router.post('/admin/email-otp/resend', adminLoginLimiter, resendAdminEmailOtp);
 router.post('/admin/email-otp/verify', adminLoginLimiter, verifyAdminEmailOtp);

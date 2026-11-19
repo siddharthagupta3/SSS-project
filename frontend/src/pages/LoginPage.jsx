@@ -5,10 +5,11 @@ import { UserIcon } from '../components/common/Icons';
 import { loadGoogleIdentityServices } from '../utils/googleAuth';
 
 const LoginPage = () => {
-  const [email, setEmail] = useState('');
+  const [email, setEmail] = useState(() => localStorage.getItem('sss_remember_email') || '');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [googleLoading, setGoogleLoading] = useState(false);
+  const [rememberMe, setRememberMe] = useState(false);
   const [error, setError] = useState('');
   const googleButtonRef = useRef(null);
 
@@ -68,12 +69,18 @@ const LoginPage = () => {
     setLoading(true);
     try {
       const loggedInUser = await login(email, password);
+      if (rememberMe) localStorage.setItem('sss_remember_email', email.trim().toLowerCase());
+      else localStorage.removeItem('sss_remember_email');
       if (loggedInUser.role === 'admin') {
         navigate('/admin', { replace: true });
       } else {
         navigate(from, { replace: true });
       }
     } catch (err) {
+      if (err.response?.status === 403 && err.response?.data?.requiresVerification) {
+        navigate('/verify-email', { state: { email: email.trim().toLowerCase(), purpose: 'register' } });
+        return;
+      }
       setError(err.response?.data?.message || err.message || 'Invalid email or password');
     } finally {
       setLoading(false);
@@ -127,6 +134,7 @@ const LoginPage = () => {
           <div>
             <div className="flex justify-between items-center mb-1">
               <label className="block text-xs font-semibold text-neutral-700">Password</label>
+              <Link to="/forgot-password" className="text-xs font-semibold text-neutral-600 hover:text-black">Forgot password?</Link>
             </div>
             <input
               type="password"
@@ -137,6 +145,11 @@ const LoginPage = () => {
               placeholder="••••••••"
             />
           </div>
+
+          <label className="flex items-center gap-2 text-xs text-neutral-600">
+            <input type="checkbox" checked={rememberMe} onChange={(e) => setRememberMe(e.target.checked)} />
+            Remember me
+          </label>
 
           <button
             type="submit"
