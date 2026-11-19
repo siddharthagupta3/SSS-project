@@ -34,6 +34,12 @@ const ProductCard = ({ product }) => {
     e.preventDefault();
     e.stopPropagation();
     if (!isAuthenticated) {
+      localStorage.setItem('sss_pending_buy', JSON.stringify({
+        productId: product._id,
+        quantity: 1,
+        size: product.sizes?.[0] || 'M',
+        color: product.colors?.[0] || 'Standard',
+      }));
       navigate('/login', { state: { from: { pathname: `/product/${product._id}` } } });
       return;
     }

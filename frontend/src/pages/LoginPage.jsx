@@ -20,14 +20,16 @@ const LoginPage = () => {
   const queryRedirect = new URLSearchParams(location.search).get('redirect');
   const from = location.state?.from?.pathname || queryRedirect || '/';
   const googleClientId = import.meta.env.VITE_GOOGLE_CLIENT_ID;
+  const [googleReady, setGoogleReady] = useState(false);
 
-  useEffect(() => {
-    if (!googleClientId || !googleButtonRef.current) return undefined;
-
-    let active = true;
+  const initializeGoogle = () => {
+    if (!googleClientId) return;
+    setGoogleReady(false);
+    setError('');
     loadGoogleIdentityServices()
       .then((googleIdentity) => {
-        if (!active || !googleButtonRef.current) return;
+        if (!googleButtonRef.current) return;
+        googleButtonRef.current.replaceChildren();
         googleIdentity.initialize({
           client_id: googleClientId,
           callback: async (response) => {
@@ -52,15 +54,16 @@ const LoginPage = () => {
           theme: 'outline',
           size: 'large',
           text: 'continue_with',
-          shape: 'pill',
-          width: 320,
+          shape: 'rectangular',
+          width: Math.min(320, googleButtonRef.current.clientWidth || 320),
         });
+        setGoogleReady(true);
       })
       .catch((err) => setError(err.message));
+  };
 
-    return () => {
-      active = false;
-    };
+  useEffect(() => {
+    initializeGoogle();
   }, [googleClientId, from, loginWithGoogle, navigate]);
 
   const handleSubmit = async (e) => {
@@ -107,8 +110,18 @@ const LoginPage = () => {
           </div>
         )}
 
-        <div className="w-full flex justify-center min-h-[44px]" ref={googleButtonRef}>
-          {!googleClientId && <span className="text-xs text-neutral-500">Google Sign-In is not configured.</span>}
+        <div className="w-full">
+          <div className="flex min-h-[44px] w-full justify-center overflow-hidden" ref={googleButtonRef} />
+          {!googleClientId && <p className="text-center text-xs text-red-600">Google Sign-In is not configured.</p>}
+          {googleClientId && !googleReady && !googleLoading && (
+            <button
+              type="button"
+              onClick={initializeGoogle}
+              className="mt-2 w-full rounded-full border border-neutral-300 py-2.5 text-sm font-bold text-neutral-800 hover:bg-neutral-50"
+            >
+              Retry Google Sign-In
+            </button>
+          )}
         </div>
 
         <div className="relative flex items-center justify-center">

@@ -101,18 +101,20 @@ const ProductDetailPage = () => {
   };
 
   const handleAddToCart = async () => {
-    if (!product || product.stock === 0) return;
+    if (!product || product.stock === 0) return false;
     if (!isAuthenticated) {
       navigate('/login', { state: { from: { pathname: `/product/${product._id}` } } });
-      return;
+      return false;
     }
     setAdding(true);
     try {
       await addToCart(product, quantity, selectedSize, selectedColor);
       setToastMessage('Added to cart!');
       setTimeout(() => setToastMessage(''), 2500);
+      return true;
     } catch (err) {
       alert(err.message || 'Could not add to cart');
+      return false;
     } finally {
       setAdding(false);
     }
@@ -129,8 +131,8 @@ const ProductDetailPage = () => {
       navigate('/login', { state: { from: { pathname: `/product/${product._id}` } } });
       return;
     }
-    await handleAddToCart();
-    navigate('/cart');
+    const added = await handleAddToCart();
+    if (added) navigate('/cart');
   };
 
   const handleReviewSubmit = async (e) => {
