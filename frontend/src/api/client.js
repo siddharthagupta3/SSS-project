@@ -1,6 +1,10 @@
 import axios from "axios";
 
-const apiUrl = import.meta.env.VITE_API_URL || "http://localhost:5000";
+const configuredApiUrl = import.meta.env.VITE_API_URL?.trim();
+const apiUrl = configuredApiUrl ||
+  (import.meta.env.PROD
+    ? "https://sss-project-3.onrender.com"
+    : "http://localhost:5000");
 
 const api = axios.create({
   baseURL: `${apiUrl}/api`,
@@ -16,6 +20,11 @@ api.interceptors.request.use(
     const token = localStorage.getItem("sss_token");
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
+      config.headers["x-auth-token"] = token;
+    }
+    if (!config.headers.Authorization) {
+      delete config.headers.Authorization;
+      delete config.headers["x-auth-token"];
     }
     return config;
   },
@@ -31,14 +40,6 @@ api.interceptors.response.use(
         "Unable to connect to the server. Please try again in a moment.";
     }
 
-    if (error.response && error.response.status === 401) {
-      // Clear token if invalid or expired
-      if (localStorage.getItem("sss_token")) {
-        localStorage.removeItem("sss_token");
-        localStorage.removeItem("sss_user");
-        // Optionally redirect or allow user context to handle
-      }
-    }
     return Promise.reject(error);
   }
 );

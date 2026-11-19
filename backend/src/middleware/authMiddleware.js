@@ -8,12 +8,14 @@ const User = require('../models/User');
 const verifyToken = async (req, res, next) => {
   let token;
 
-  if (
-    req.headers.authorization &&
-    req.headers.authorization.startsWith('Bearer')
-  ) {
+  if (req.headers.authorization?.startsWith('Bearer ')) {
+    token = req.headers.authorization.split(' ')[1];
+  } else if (req.headers['x-auth-token']) {
+    token = req.headers['x-auth-token'];
+  }
+
+  if (token) {
     try {
-      token = req.headers.authorization.split(' ')[1];
       const jwtSecret = process.env.JWT_SECRET;
       if (!jwtSecret) {
         throw new Error('JWT_SECRET is not set in .env');
