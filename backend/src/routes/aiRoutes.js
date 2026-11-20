@@ -20,8 +20,9 @@ router.post('/generate-description', verifyToken, requireSeller, async (req, res
 
     const groq = new Groq({ apiKey: process.env.GROQ_API_KEY });
     const completion = await groq.chat.completions.create({
-      model: 'llama-3.3-70b-versatile',
+      model: 'openai/gpt-oss-120b',
       temperature: 0.7,
+      max_tokens: 800,
       response_format: { type: 'json_object' },
       messages: [
         {
