@@ -15,6 +15,7 @@ import {
 
 const Navbar = () => {
   const { user, isAuthenticated, isAdmin, logout } = useAuth();
+  const profileImage = user?.photoURL || user?.picture || user?.avatar || user?.profilePhoto || '';
   const { cartCount } = useCart();
   const { wishlistCount } = useWishlist();
   const navigate = useNavigate();
@@ -184,11 +185,12 @@ const Navbar = () => {
                   className="md:hidden flex h-9 w-9 items-center justify-center rounded-full transition"
                   aria-label="Open profile"
                 >
-                  {user?.avatar || user?.profilePhoto ? (
+                  {profileImage ? (
                     <img
-                      src={user.avatar || user.profilePhoto}
+                      src={profileImage}
                       alt={user.name || 'Profile'}
                       className="h-9 w-9 rounded-full object-cover ring-1 ring-neutral-200"
+                      onError={(event) => { event.currentTarget.style.display = 'none'; }}
                     />
                   ) : (
                     <div className="flex h-9 w-9 items-center justify-center rounded-full bg-neutral-900 text-sm font-bold text-white">
@@ -202,11 +204,12 @@ const Navbar = () => {
                   className="hidden items-center gap-2 rounded-full p-1.5 hover:bg-neutral-100 transition md:flex"
                   aria-label="Open account menu"
                 >
-                  {user?.avatar || user?.profilePhoto ? (
+                  {profileImage ? (
                     <img
-                      src={user.avatar || user.profilePhoto}
+                      src={profileImage}
                       alt={user.name || 'Profile'}
                       className="h-8 w-8 rounded-full object-cover ring-1 ring-neutral-200"
+                      onError={(event) => { event.currentTarget.style.display = 'none'; }}
                     />
                   ) : (
                     <div className="flex h-8 w-8 items-center justify-center rounded-full bg-neutral-900 text-sm font-bold text-white">

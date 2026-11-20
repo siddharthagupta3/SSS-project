@@ -44,7 +44,7 @@ const ProfilePage = () => {
           phone: data.phone || '',
           dob: data.dob ? data.dob.substring(0, 10) : '',
           gender: data.gender || '',
-          avatar: data.avatar || '',
+          avatar: data.avatar || data.profilePhoto || data.picture || data.photoURL || '',
         });
         setAddresses(data.addresses || []);
       } catch (error) {
@@ -210,7 +210,12 @@ const ProfilePage = () => {
         <form onSubmit={saveProfile} className="max-w-3xl bg-white border rounded-2xl p-6 space-y-6">
           <div className="flex items-center gap-5">
             {avatarPreview || profile.avatar ? (
-              <img src={avatarPreview || profile.avatar} alt="Profile" className="w-24 h-24 rounded-full object-cover border" />
+              <img
+                src={avatarPreview || profile.avatar}
+                alt="Profile"
+                className="w-24 h-24 rounded-full object-cover border"
+                onError={(event) => { event.currentTarget.style.display = 'none'; }}
+              />
             ) : (
               <div className="w-24 h-24 rounded-full bg-neutral-900 text-white flex items-center justify-center text-3xl font-bold">
                 {profile.name?.charAt(0).toUpperCase() || 'U'}

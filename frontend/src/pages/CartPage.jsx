@@ -186,18 +186,18 @@ const CartPage = () => {
             </div>
 
             {/* Promo Code Form */}
-            <form onSubmit={handleApplyPromo} className="space-y-2">
-              <div className="flex gap-2">
+            <form onSubmit={handleApplyPromo} className="min-w-0 space-y-2">
+              <div className="flex min-w-0 gap-2">
                 <input
                   type="text"
                   placeholder="Add promo code"
                   value={promoCode}
                   onChange={(e) => setPromoCode(e.target.value)}
-                  className="flex-1 bg-neutral-100 text-xs font-semibold px-4 py-2.5 rounded-full outline-none uppercase focus:ring-1 focus:ring-black"
+                  className="min-w-0 flex-1 basis-0 bg-neutral-100 text-xs font-semibold px-3 sm:px-4 py-2.5 rounded-full outline-none uppercase focus:ring-1 focus:ring-black"
                 />
                 <button
                   type="submit"
-                  className="bg-black text-white px-5 py-2.5 rounded-full text-xs font-semibold hover:bg-neutral-800"
+                  className="shrink-0 bg-black text-white px-4 sm:px-5 py-2.5 rounded-full text-xs font-semibold hover:bg-neutral-800"
                 >
                   Apply
                 </button>

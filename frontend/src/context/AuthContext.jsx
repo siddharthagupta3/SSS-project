@@ -10,6 +10,14 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
+  const normalizeUser = (userData) => {
+    if (!userData) return userData;
+    return {
+      ...userData,
+      avatar: userData.avatar || userData.profilePhoto || userData.picture || userData.photoURL || '',
+    };
+  };
+
   // Helper: Get user from storage
   const getStoredUser = () => {
     try {
@@ -49,8 +57,9 @@ export const AuthProvider = ({ children }) => {
         try {
           const res = await api.get('/auth/me');
           if (res.data.success) {
-            setUser(res.data.data);
-            setUserInStorage(res.data.data);
+            const normalizedUser = normalizeUser(res.data.data);
+            setUser(normalizedUser);
+            setUserInStorage(normalizedUser);
           }
         } catch (err) {
           const status = err.response?.status;
@@ -79,7 +88,7 @@ export const AuthProvider = ({ children }) => {
       throw new Error(res.data.message || 'Login failed. Please try again.');
     }
 
-    const userData = res.data.data;
+    const userData = normalizeUser(res.data.data);
     setUser(userData);
     setToken(userData.token);
     setUserInStorage(userData);
@@ -89,7 +98,7 @@ export const AuthProvider = ({ children }) => {
   const loginWithGoogle = useCallback(async (googlePayload) => {
     const res = await api.post('/auth/google', googlePayload);
     if (res.data.success) {
-      const userData = res.data.data;
+      const userData = normalizeUser(res.data.data);
       setUser(userData);
       setToken(userData.token);
       setUserInStorage(userData);
@@ -107,7 +116,7 @@ export const AuthProvider = ({ children }) => {
   const verifyOTP = async (email, otp) => {
     const res = await api.post('/auth/verify-otp', { email, otp });
     if (res.data.success) {
-      const updatedUser = res.data.data;
+      const updatedUser = normalizeUser(res.data.data);
       if (updatedUser.token) {
         setToken(updatedUser.token);
       }
@@ -141,7 +150,7 @@ export const AuthProvider = ({ children }) => {
   const updateProfile = async (profileData) => {
     const res = await api.put('/auth/profile', profileData);
     if (res.data.success) {
-      const updatedUser = res.data.data;
+      const updatedUser = normalizeUser(res.data.data);
       setUser(updatedUser);
       setUserInStorage(updatedUser);
       return updatedUser;
@@ -150,7 +159,7 @@ export const AuthProvider = ({ children }) => {
 
   const updateUser = (updatedUser) => {
     setUser((current) => {
-      const next = { ...current, ...updatedUser };
+      const next = normalizeUser({ ...current, ...updatedUser });
       setUserInStorage(next);
       return next;
     });

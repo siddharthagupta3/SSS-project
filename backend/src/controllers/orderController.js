@@ -284,7 +284,7 @@ const getAllOrders = async (req, res, next) => {
 const updateOrderStatus = async (req, res, next) => {
   try {
     const { orderStatus } = req.body;
-    if (!['Pending', 'Processing', 'Shipped', 'Delivered', 'Cancelled'].includes(orderStatus)) {
+    if (!['Pending', 'Processing', 'Packed', 'Shipped', 'Delivered', 'Cancelled'].includes(orderStatus)) {
       res.status(400);
       throw new Error('Invalid order status');
     }
@@ -312,6 +312,39 @@ const updateOrderStatus = async (req, res, next) => {
   }
 };
 
+const updateSellerOrderStatus = async (req, res, next) => {
+  try {
+    const { orderStatus } = req.body;
+    if (!['Pending', 'Processing', 'Packed', 'Shipped', 'Delivered', 'Cancelled'].includes(orderStatus)) {
+      res.status(400);
+      throw new Error('Invalid order status');
+    }
+
+    const sellerProductIds = await Product.find({ createdBy: req.user._id }).distinct('_id');
+    const order = await Order.findOne({
+      _id: req.params.id,
+      'orderItems.product': { $in: sellerProductIds },
+    });
+
+    if (!order) {
+      res.status(404);
+      throw new Error('Order not found or does not contain your products');
+    }
+
+    order.orderStatus = orderStatus;
+    if (orderStatus === 'Delivered') order.deliveredAt = Date.now();
+    await order.save();
+
+    res.status(200).json({
+      success: true,
+      message: `Order status updated to ${orderStatus}`,
+      data: order,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
 module.exports = {
   createRazorpayOrder,
   verifyPayment,
@@ -320,4 +353,5 @@ module.exports = {
   getOrderById,
   getAllOrders,
   updateOrderStatus,
+  updateSellerOrderStatus,
 };

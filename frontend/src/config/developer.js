@@ -22,8 +22,9 @@ export const developerConfig = {
     'Product Management System',
   ],
   social: {
-    github: '#3',
-    linkedin: '#3',
+    github: 'https://github.com/Siddharthagupta3',
+    linkedin: 'https://www.linkedin.com/in/Siddharthagupta3',
+    portfolio: 'https://Siddharthagupta.vercel.app',
     email: 'your-emailgupta617@gmail.com',
     resume: '#',
   },
