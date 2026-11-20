@@ -4,6 +4,8 @@ const router = express.Router();
 const {
   registerUser,
   loginUser,
+  verifyLoginOTP,
+  sendLoginOTP,
   forgotPassword,
   resetPassword,
   googleAuth,
@@ -25,6 +27,7 @@ const { verifyToken, requireAdmin, optionalVerifyToken } = require('../middlewar
 const { adminLimiter } = require('../middleware/rateLimiter');
 const { upload } = require('../middleware/uploadMiddleware');
 const { adminLoginLimiter } = require('../middleware/rateLimiter');
+const { verifyTurnstile } = require('../middleware/turnstile');
 const {
   adminLoginStepOne,
   resendAdminEmailOtp,
@@ -37,8 +40,9 @@ const {
 } = require('../controllers/adminAuthController');
 
 // Public routes with rate limiting
-router.post('/register', registerUser);
-router.post('/login', loginUser);
+router.post('/register', verifyTurnstile, registerUser);
+router.post('/login', verifyTurnstile, loginUser);
+router.post('/verify-login-otp', verifyLoginOTP);
 router.post('/forgot-password', forgotPassword);
 router.post('/reset-password', resetPassword);
 router.post('/admin/login', adminLoginLimiter, adminLoginStepOne);
@@ -56,6 +60,7 @@ router.post('/google', googleAuth);
 // Gmail OTP Verification
 router.post('/send-otp', sendVerificationOTP);
 router.post('/verify-otp', verifyEmailOTP);
+router.post('/login-otp/resend', sendLoginOTP);
 
 // Protected routes (require JWT)
 router.route('/profile')

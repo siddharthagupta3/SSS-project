@@ -98,7 +98,7 @@ const registerUser = async (req, res, next) => {
 };
 
 /**
- * @desc    Authenticate user & return JWT token
+ * @desc    Authenticate user — send login OTP instead of immediate JWT
  * @route   POST /api/auth/login
  * @access  Public
  */
@@ -135,6 +135,76 @@ const loginUser = async (req, res, next) => {
       });
       return;
     }
+
+    // ✅ Task 3: Send login OTP instead of immediate JWT
+    if (!checkEmailRateLimit(normalizedEmail)) {
+      res.status(429);
+      throw new Error('Too many login attempts. Please try again later.');
+    }
+    await issueOTP(user, 'login');
+    res.status(200).json({
+      success: true,
+      requiresOtp: true,
+      message: `A login verification code has been sent to ${user.email}`,
+      data: { email: user.email },
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+/**
+ * @desc    Verify login OTP and return JWT token
+ * @route   POST /api/auth/verify-login-otp
+ * @access  Public
+ */
+const verifyLoginOTP = async (req, res, next) => {
+  try {
+    const { email, otp } = req.body;
+    const normalizedEmail = String(email || '').trim().toLowerCase();
+    if (!normalizedEmail || !/^\d{6}$/.test(String(otp || ''))) {
+      res.status(400);
+      throw new Error('Email and 6-digit OTP are required');
+    }
+
+    const user = await User.findOne({ email: normalizedEmail })
+      .select('+otpHash +otpExpires +otpAttempts +otpPurpose +authVersion');
+
+    if (!user) {
+      res.status(404);
+      throw new Error('User account not found');
+    }
+
+    if (user.otpPurpose !== 'login' || !user.otpHash || !user.otpExpires || user.otpExpires < new Date()) {
+      res.status(400);
+      throw new Error('Login code has expired. Please try logging in again.');
+    }
+
+    const valid = await bcrypt.compare(String(otp), user.otpHash);
+    if (!valid) {
+      user.otpAttempts = (user.otpAttempts || 0) + 1;
+      if (user.otpAttempts >= 3) {
+        user.otpHash = undefined;
+        user.otpExpires = undefined;
+        user.otpAttempts = 0;
+        user.otpPurpose = '';
+        await user.save();
+        res.status(400);
+        throw new Error('Too many wrong attempts. Please log in again.');
+      }
+      await user.save();
+      res.status(400);
+      throw new Error(`Invalid login code. ${3 - user.otpAttempts} attempt(s) remaining.`);
+    }
+
+    // Clear OTP fields
+    user.otpHash = undefined;
+    user.otpExpires = undefined;
+    user.otpAttempts = 0;
+    user.otpPurpose = '';
+    user.otpLastSent = undefined;
+    await user.save();
+
     const token = generateToken(user._id, user.role, undefined, user.authVersion || 0);
     res.status(200).json({
       success: true,
@@ -155,6 +225,34 @@ const loginUser = async (req, res, next) => {
         token,
       },
     });
+  } catch (error) {
+    next(error);
+  }
+};
+
+/**
+ * @desc    Resend Login OTP
+ * @route   POST /api/auth/login-otp/resend
+ * @access  Public
+ */
+const sendLoginOTP = async (req, res, next) => {
+  try {
+    const email = String(req.body.email || '').trim().toLowerCase();
+    if (!email) {
+      res.status(400);
+      throw new Error('Email is required');
+    }
+    if (!checkEmailRateLimit(email)) {
+      res.status(429);
+      throw new Error('Too many requests. Please try again later.');
+    }
+    const user = await User.findOne({ email, status: 'active', isEmailVerified: true });
+    if (!user) {
+      // Don't reveal user existence
+      return res.status(200).json({ success: true, message: 'If an account exists, a code has been sent.' });
+    }
+    await issueOTP(user, 'login');
+    res.status(200).json({ success: true, message: `Login code sent to ${user.email}` });
   } catch (error) {
     next(error);
   }
@@ -878,6 +976,8 @@ const updateAdminUserRole = async (req, res, next) => {
 module.exports = {
   registerUser,
   loginUser,
+  verifyLoginOTP,
+  sendLoginOTP,
   forgotPassword,
   resetPassword,
   googleAuth,

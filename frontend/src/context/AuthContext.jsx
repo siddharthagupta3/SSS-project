@@ -77,12 +77,17 @@ export const AuthProvider = ({ children }) => {
     verifyUserSession();
   }, []);
 
-  const login = async (email, password) => {
+  const login = async (email, password, turnstileToken) => {
     const normalizedEmail = email.trim().toLowerCase();
-    const res = await api.post('/auth/login', {
-      email: normalizedEmail,
-      password,
-    });
+    const body = { email: normalizedEmail, password };
+    if (turnstileToken) body['cf-turnstile-response'] = turnstileToken;
+
+    const res = await api.post('/auth/login', body);
+
+    // Task 3: Backend returns requiresOtp instead of immediate token
+    if (res.data.requiresOtp) {
+      return { requiresOtp: true, email: res.data.data?.email || normalizedEmail };
+    }
 
     if (!res.data.success || !res.data.data?.token) {
       throw new Error(res.data.message || 'Login failed. Please try again.');
@@ -93,6 +98,25 @@ export const AuthProvider = ({ children }) => {
     setToken(userData.token);
     setUserInStorage(userData);
     return userData;
+  };
+
+  // Task 3: Verify login OTP → get JWT
+  const verifyLoginOTP = async (email, otp) => {
+    const res = await api.post('/auth/verify-login-otp', { email, otp });
+    if (!res.data.success || !res.data.data?.token) {
+      throw new Error(res.data.message || 'OTP verification failed');
+    }
+    const userData = normalizeUser(res.data.data);
+    setUser(userData);
+    setToken(userData.token);
+    setUserInStorage(userData);
+    return userData;
+  };
+
+  // Task 3: Resend login OTP
+  const resendLoginOTP = async (email) => {
+    const res = await api.post('/auth/login-otp/resend', { email });
+    return res.data;
   };
 
   const loginWithGoogle = useCallback(async (googlePayload) => {
@@ -106,8 +130,10 @@ export const AuthProvider = ({ children }) => {
     }
   }, []);
 
-  const register = async (name, email, password, confirmPassword) => {
-    const res = await api.post('/auth/register', { name, email, password, confirmPassword: confirmPassword ?? password });
+  const register = async (name, email, password, confirmPassword, turnstileToken) => {
+    const body = { name, email, password, confirmPassword: confirmPassword ?? password };
+    if (turnstileToken) body['cf-turnstile-response'] = turnstileToken;
+    const res = await api.post('/auth/register', body);
     if (res.data.success) {
       return res.data.data;
     }
@@ -178,6 +204,8 @@ export const AuthProvider = ({ children }) => {
         register,
         verifyOTP,
         resendOTP,
+        verifyLoginOTP,
+        resendLoginOTP,
         forgotPassword,
         resetPassword,
         logout,

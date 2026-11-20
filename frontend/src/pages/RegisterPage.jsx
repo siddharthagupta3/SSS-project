@@ -4,6 +4,9 @@ import { useAuth } from '../context/AuthContext';
 import { loadGoogleIdentityServices } from '../utils/googleAuth';
 import { UserIcon } from '../components/common/Icons';
 
+// Get site key from: https://dash.cloudflare.com → Turnstile → Add site
+const TURNSTILE_SITE_KEY = import.meta.env.VITE_TURNSTILE_SITE_KEY || '';
+
 const RegisterPage = () => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
@@ -12,21 +15,49 @@ const RegisterPage = () => {
   const [loading, setLoading] = useState(false);
   const [googleLoading, setGoogleLoading] = useState(false);
   const [error, setError] = useState('');
+  const [captchaError, setCaptchaError] = useState('');
+  const [turnstileToken, setTurnstileToken] = useState('');
   const googleButtonRef = useRef(null);
   const googleClientId = import.meta.env.VITE_GOOGLE_CLIENT_ID;
 
   const { register, loginWithGoogle } = useAuth();
   const navigate = useNavigate();
 
+  // Cloudflare Turnstile init
+  useEffect(() => {
+    if (!TURNSTILE_SITE_KEY) return;
+    const script = document.createElement('script');
+    script.src = 'https://challenges.cloudflare.com/turnstile/v0/api.js';
+    script.async = true;
+    script.defer = true;
+    script.onload = () => {
+      if (window.turnstile) {
+        window.turnstile.render('#turnstile-register', {
+          sitekey: TURNSTILE_SITE_KEY,
+          callback: (t) => { setTurnstileToken(t); setCaptchaError(''); },
+          'error-callback': () => setCaptchaError('CAPTCHA failed. Please refresh and try again.'),
+          'expired-callback': () => { setTurnstileToken(''); setCaptchaError('CAPTCHA expired. Please verify again.'); },
+        });
+      }
+    };
+    document.head.appendChild(script);
+    return () => { document.head.removeChild(script); };
+  }, []);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
+
+    if (TURNSTILE_SITE_KEY && !turnstileToken) {
+      setError('Please complete the CAPTCHA verification.');
+      return;
+    }
+    if (captchaError) { setError(captchaError); return; }
 
     if (password !== confirmPassword) {
       setError('Passwords do not match');
       return;
     }
-
     if (password.length < 8 || !/\d/.test(password)) {
       setError('Password must be at least 8 characters and include at least one number');
       return;
@@ -34,13 +65,9 @@ const RegisterPage = () => {
 
     setLoading(true);
     try {
-      const userData = await register(name, email, password, confirmPassword);
-      // Navigate to Gmail OTP verification
+      const userData = await register(name, email, password, confirmPassword, turnstileToken);
       navigate('/verify-email', {
-        state: {
-          email,
-          devOtp: userData?.devOtp,
-        },
+        state: { email, devOtp: userData?.devOtp },
       });
     } catch (err) {
       setError(err.response?.data?.message || err.message || 'Registration failed');
@@ -58,10 +85,7 @@ const RegisterPage = () => {
         googleIdentity.initialize({
           client_id: googleClientId,
           callback: async (response) => {
-            if (!response?.credential) {
-              setError('Google authentication failed');
-              return;
-            }
+            if (!response?.credential) { setError('Google authentication failed'); return; }
             setGoogleLoading(true);
             setError('');
             try {
@@ -75,12 +99,8 @@ const RegisterPage = () => {
           },
         });
         googleIdentity.renderButton(googleButtonRef.current, {
-          type: 'standard',
-          theme: 'outline',
-          size: 'large',
-          text: 'signup_with',
-          shape: 'pill',
-          width: 320,
+          type: 'standard', theme: 'outline', size: 'large',
+          text: 'signup_with', shape: 'pill', width: 320,
         });
       })
       .catch((err) => setError(err.message));
@@ -166,6 +186,14 @@ const RegisterPage = () => {
               placeholder="••••••••"
             />
           </div>
+
+          {/* Cloudflare Turnstile CAPTCHA */}
+          {TURNSTILE_SITE_KEY && (
+            <div id="turnstile-register" className="flex justify-center" />
+          )}
+          {captchaError && (
+            <p className="text-xs text-red-600 text-center">{captchaError}</p>
+          )}
 
           <button
             type="submit"
