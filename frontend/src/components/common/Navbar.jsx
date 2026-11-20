@@ -58,8 +58,8 @@ const Navbar = () => {
 
   return (
     <header className="sticky top-0 z-50 w-full max-w-[100vw] bg-white border-b border-neutral-200 overflow-visible">
-      {/* Moving Announcement Ticker (Left to Right continuous marquee) */}
-      <div className="bg-black text-white text-xs py-2 overflow-hidden border-b border-neutral-900 select-none hidden sm:block">
+      {/* Moving Announcement Ticker — mobile pe bhi dikhega */}
+      <div className="bg-black text-white text-[11px] py-2 overflow-hidden border-b border-neutral-900 select-none">
         <div className="animate-marquee-ltr flex items-center space-x-12 whitespace-nowrap">
           <span className="flex items-center gap-2">
             <span className="text-amber-400">⚡</span>
