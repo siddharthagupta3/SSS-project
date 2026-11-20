@@ -1,33 +1,64 @@
 import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
-import api from '../api/client';
+import api, { getToken, setToken, clearToken } from '../api/client';
 
 const AuthContext = createContext();
 
+const TOKEN_KEY = "sss_token";
+const USER_KEY = "sss_user";
+
 export const AuthProvider = ({ children }) => {
-  const [user, setUser] = useState(() => {
-    const savedUser = localStorage.getItem('sss_user');
-    return savedUser ? JSON.parse(savedUser) : null;
-  });
-  const [token, setToken] = useState(() => localStorage.getItem('sss_token') || null);
+  const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
+
+  // Helper: Get user from storage
+  const getStoredUser = () => {
+    try {
+      const savedUser = localStorage.getItem(USER_KEY);
+      return savedUser ? JSON.parse(savedUser) : null;
+    } catch (e) {
+      const sessionUser = sessionStorage.getItem(USER_KEY);
+      return sessionUser ? JSON.parse(sessionUser) : null;
+    }
+  };
+
+  // Helper: Set user in both storages
+  const setUserInStorage = (userData) => {
+    try {
+      localStorage.setItem(USER_KEY, JSON.stringify(userData));
+    } catch (e) {
+      console.warn("localStorage not available, using sessionStorage");
+    }
+    sessionStorage.setItem(USER_KEY, JSON.stringify(userData));
+  };
+
+  // Helper: Clear user from both storages
+  const clearUserFromStorage = () => {
+    try {
+      localStorage.removeItem(USER_KEY);
+    } catch (e) {
+      console.warn("localStorage not available");
+    }
+    sessionStorage.removeItem(USER_KEY);
+  };
 
   // Validate session on app initialization
   useEffect(() => {
     const verifyUserSession = async () => {
-      const storedToken = localStorage.getItem('sss_token');
+      const storedToken = getToken();
       if (storedToken) {
         try {
-          const res = await api.get('/auth/profile');
+          const res = await api.get('/auth/me');
           if (res.data.success) {
             setUser(res.data.data);
-            localStorage.setItem('sss_user', JSON.stringify(res.data.data));
+            setUserInStorage(res.data.data);
           }
         } catch (err) {
           const status = err.response?.status;
-          if (status === 401 || status === 403) {
-            logout();
-          } else {
-            console.warn('Session verification unavailable:', err.message);
+          const message = err.response?.data?.message?.toLowerCase() || '';
+          // Only logout on 401 with auth-related errors
+          if (status === 401 && (message.includes('jwt') || message.includes('token') || message.includes('unauthorized'))) {
+            clearToken();
+            clearUserFromStorage();
           }
         }
       }
@@ -51,8 +82,7 @@ export const AuthProvider = ({ children }) => {
     const userData = res.data.data;
     setUser(userData);
     setToken(userData.token);
-    localStorage.setItem('sss_token', userData.token);
-    localStorage.setItem('sss_user', JSON.stringify(userData));
+    setUserInStorage(userData);
     return userData;
   };
 
@@ -62,8 +92,7 @@ export const AuthProvider = ({ children }) => {
       const userData = res.data.data;
       setUser(userData);
       setToken(userData.token);
-      localStorage.setItem('sss_token', userData.token);
-      localStorage.setItem('sss_user', JSON.stringify(userData));
+      setUserInStorage(userData);
       return userData;
     }
   }, []);
@@ -81,10 +110,9 @@ export const AuthProvider = ({ children }) => {
       const updatedUser = res.data.data;
       if (updatedUser.token) {
         setToken(updatedUser.token);
-        localStorage.setItem('sss_token', updatedUser.token);
       }
       setUser(updatedUser);
-      localStorage.setItem('sss_user', JSON.stringify(updatedUser));
+      setUserInStorage(updatedUser);
       return res.data;
     }
   };
@@ -106,9 +134,8 @@ export const AuthProvider = ({ children }) => {
 
   const logout = () => {
     setUser(null);
-    setToken(null);
-    localStorage.removeItem('sss_token');
-    localStorage.removeItem('sss_user');
+    clearToken();
+    clearUserFromStorage();
   };
 
   const updateProfile = async (profileData) => {
@@ -116,7 +143,7 @@ export const AuthProvider = ({ children }) => {
     if (res.data.success) {
       const updatedUser = res.data.data;
       setUser(updatedUser);
-      localStorage.setItem('sss_user', JSON.stringify(updatedUser));
+      setUserInStorage(updatedUser);
       return updatedUser;
     }
   };
@@ -124,7 +151,7 @@ export const AuthProvider = ({ children }) => {
   const updateUser = (updatedUser) => {
     setUser((current) => {
       const next = { ...current, ...updatedUser };
-      localStorage.setItem('sss_user', JSON.stringify(next));
+      setUserInStorage(next);
       return next;
     });
   };
@@ -133,7 +160,6 @@ export const AuthProvider = ({ children }) => {
     <AuthContext.Provider
       value={{
         user,
-        token,
         loading,
         isAuthenticated: !!user,
         isEmailVerified: !!user?.isEmailVerified,

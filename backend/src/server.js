@@ -26,6 +26,7 @@ app.use(helmet());
 const configuredOrigins = [
   process.env.CLIENT_URL,
   process.env.VERCEL_URL && `https://${process.env.VERCEL_URL}`,
+  'https://ssproduct.vercel.app',
   ...(process.env.CORS_ORIGINS ? process.env.CORS_ORIGINS.split(',') : []),
 ]
   .map((origin) => origin?.trim())
@@ -53,6 +54,7 @@ app.use(
       }
     },
     credentials: true,
+    allowedHeaders: ['Content-Type', 'Authorization', 'x-auth-token'],
   })
 );
 

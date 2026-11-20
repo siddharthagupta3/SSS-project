@@ -3,15 +3,19 @@ const User = require('../models/User');
 
 /**
  * Protect routes: Validates Bearer JWT from Authorization header
+ * Falls back to cookie or x-auth-token header
  * Attaches the authenticated user object to `req.user`
  */
 const verifyToken = async (req, res, next) => {
   let token;
 
+  // Priority: Authorization Bearer header -> x-auth-token header -> cookie
   if (req.headers.authorization?.startsWith('Bearer ')) {
     token = req.headers.authorization.split(' ')[1];
   } else if (req.headers['x-auth-token']) {
     token = req.headers['x-auth-token'];
+  } else if (req.cookies?.token) {
+    token = req.cookies.token;
   }
 
   if (token) {
@@ -39,7 +43,13 @@ const verifyToken = async (req, res, next) => {
       return next();
     } catch (error) {
       res.status(401);
-      return next(new Error('Not authorized. Token verification failed.'));
+      // Provide clearer error message for expired/invalid tokens
+      const message = error.name === 'TokenExpiredError' 
+        ? 'jwt expired' 
+        : error.name === 'JsonWebTokenError' 
+          ? 'invalid token' 
+          : 'Not authorized. Token verification failed.';
+      return next(new Error(message));
     }
   }
 

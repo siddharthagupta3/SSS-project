@@ -62,6 +62,9 @@ router.route('/profile')
   .get(verifyToken, getUserProfile)
   .put(verifyToken, updateUserProfile);
 
+// Alias for /me endpoint (used for auth restoration)
+router.get('/me', verifyToken, getUserProfile);
+
 // Wishlist routes
 router.route('/wishlist')
   .get(verifyToken, getWishlist);
