@@ -6,7 +6,8 @@ import { loadTurnstile } from '../utils/turnstile';
 import { UserIcon } from '../components/common/Icons';
 
 // Get site key from: https://dash.cloudflare.com → Turnstile → Add site
-const TURNSTILE_SITE_KEY = import.meta.env.VITE_TURNSTILE_SITE_KEY || '';
+const TURNSTILE_SITE_KEY =
+  import.meta.env.VITE_TURNSTILE_SITE_KEY || '0x4AAAAAAGK0ipwow1maoTwK';
 
 const RegisterPage = () => {
   const [name, setName] = useState('');

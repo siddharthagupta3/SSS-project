@@ -7,7 +7,8 @@ import { loadTurnstile } from '../utils/turnstile';
 
 // Turnstile CAPTCHA — only active when VITE_TURNSTILE_SITE_KEY is set in .env
 // Leave blank to disable completely (no errors, no widget)
-const TURNSTILE_SITE_KEY = import.meta.env.VITE_TURNSTILE_SITE_KEY || '';
+const TURNSTILE_SITE_KEY =
+  import.meta.env.VITE_TURNSTILE_SITE_KEY || '0x4AAAAAAGK0ipwow1maoTwK';
 
 const LoginPage = () => {
   const [email, setEmail] = useState(() => localStorage.getItem('sss_remember_email') || '');
