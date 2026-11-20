@@ -31,7 +31,9 @@ const verifyTurnstile = async (req, res, next) => {
 
     if (!result.success) {
       res.status(400);
-      return next(new Error('CAPTCHA verification failed. Please try again.'));
+      const codes = Array.isArray(result['error-codes']) ? result['error-codes'].join(', ') : 'unknown';
+      console.error(`Turnstile verification failed: ${codes}`);
+      return next(new Error(`CAPTCHA verification failed (${codes}). Please try again.`));
     }
 
     next();

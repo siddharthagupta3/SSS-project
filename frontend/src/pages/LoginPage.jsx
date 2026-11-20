@@ -3,6 +3,7 @@ import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { UserIcon } from '../components/common/Icons';
 import { loadGoogleIdentityServices } from '../utils/googleAuth';
+import { loadTurnstile } from '../utils/turnstile';
 
 // Turnstile CAPTCHA — only active when VITE_TURNSTILE_SITE_KEY is set in .env
 // Leave blank to disable completely (no errors, no widget)
@@ -39,32 +40,24 @@ const LoginPage = () => {
   // Turnstile widget init
   useEffect(() => {
     if (!TURNSTILE_SITE_KEY || !turnstileRef.current) return;
+    let active = true;
     let widgetId;
-    const render = () => {
-      if (window.turnstile && turnstileRef.current) {
-        widgetId = window.turnstile.render(turnstileRef.current, {
+    loadTurnstile()
+      .then((turnstile) => {
+        if (!active || !turnstileRef.current) return;
+        widgetId = turnstile.render(turnstileRef.current, {
           sitekey: TURNSTILE_SITE_KEY,
           callback: (t) => setTurnstileToken(t),
           'expired-callback': () => setTurnstileToken(''),
-          'error-callback': () => setTurnstileToken(''),
+          'error-callback': () => {
+            setTurnstileToken('');
+            setError('Cloudflare verification failed. Please retry.');
+          },
         });
-      }
-    };
-    if (window.turnstile) {
-      render();
-    } else {
-      const existing = document.querySelector('script[src*="turnstile"]');
-      if (!existing) {
-        const s = document.createElement('script');
-        s.src = 'https://challenges.cloudflare.com/turnstile/v0/api.js';
-        s.async = true;
-        s.onload = render;
-        document.head.appendChild(s);
-      } else {
-        existing.addEventListener('load', render);
-      }
-    }
+      })
+      .catch((err) => setError(err.message));
     return () => {
+      active = false;
       try { if (widgetId !== undefined && window.turnstile) window.turnstile.remove(widgetId); } catch (_) {}
     };
   }, []);

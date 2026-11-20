@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { loadGoogleIdentityServices } from '../utils/googleAuth';
+import { loadTurnstile } from '../utils/turnstile';
 import { UserIcon } from '../components/common/Icons';
 
 // Get site key from: https://dash.cloudflare.com → Turnstile → Add site
@@ -26,22 +27,23 @@ const RegisterPage = () => {
   // Cloudflare Turnstile init
   useEffect(() => {
     if (!TURNSTILE_SITE_KEY) return;
-    const script = document.createElement('script');
-    script.src = 'https://challenges.cloudflare.com/turnstile/v0/api.js';
-    script.async = true;
-    script.defer = true;
-    script.onload = () => {
-      if (window.turnstile) {
-        window.turnstile.render('#turnstile-register', {
+    let active = true;
+    let widgetId;
+    loadTurnstile()
+      .then((turnstile) => {
+        if (!active) return;
+        widgetId = turnstile.render('#turnstile-register', {
           sitekey: TURNSTILE_SITE_KEY,
           callback: (t) => { setTurnstileToken(t); setCaptchaError(''); },
           'error-callback': () => setCaptchaError('CAPTCHA failed. Please refresh and try again.'),
           'expired-callback': () => { setTurnstileToken(''); setCaptchaError('CAPTCHA expired. Please verify again.'); },
         });
-      }
+      })
+      .catch((err) => setCaptchaError(err.message));
+    return () => {
+      active = false;
+      try { if (widgetId !== undefined && window.turnstile) window.turnstile.remove(widgetId); } catch (_) {}
     };
-    document.head.appendChild(script);
-    return () => { document.head.removeChild(script); };
   }, []);
 
   const handleSubmit = async (e) => {

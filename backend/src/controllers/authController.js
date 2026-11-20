@@ -618,8 +618,9 @@ const googleAuth = async (req, res, next) => {
         audience: clientId,
       });
       payload = ticket.getPayload();
-    } catch {
+    } catch (googleError) {
       res.status(401);
+      console.error('Google ID token verification failed:', googleError.message);
       throw new Error('Google authentication failed');
     }
 

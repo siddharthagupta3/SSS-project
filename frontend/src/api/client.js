@@ -37,7 +37,7 @@ const clearToken = () => {
 const configuredApiUrl = import.meta.env.VITE_API_URL?.trim();
 const apiUrl = configuredApiUrl ||
   (import.meta.env.PROD
-    ? "https://sss-project-jc2m.onrender.com"
+    ? "https://sss-project-3.onrender.com"
     : "http://localhost:5000");
 
 const api = axios.create({
