@@ -49,10 +49,9 @@ const postBrevo = ({ apiKey, sender, email, name, otp, subject, purpose }) =>
     request.end();
   });
 
-const sendEmailOTP = async ({ email, name, otp }) => {
+const sendEmailOTP = async ({ email, name, otp, purpose = 'register' }) => {
   const apiKey = process.env.BREVO_API_KEY;
   const sender = process.env.EMAIL_FROM;
-  const purpose = arguments[0]?.purpose || 'register';
   if (!apiKey || !sender) {
     if (process.env.NODE_ENV !== 'production') {
       console.log(`[DEV OTP] ${email}: ${otp} (${purpose})`);
