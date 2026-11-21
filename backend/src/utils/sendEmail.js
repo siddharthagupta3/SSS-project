@@ -1,16 +1,22 @@
 const https = require('https');
 
-const postBrevo = ({ apiKey, sender, email, name, otp, subject, purpose }) =>
+const postBrevo = ({ apiKey, sender, email, name, otp, purpose }) =>
   new Promise((resolve) => {
+    const purposeText =
+      purpose === 'reset'
+        ? 'reset your password'
+        : purpose === 'login'
+          ? 'complete your login'
+          : 'verify your email';
     const body = JSON.stringify({
       sender: { name: 'SHOP.CO', email: sender },
       to: [{ email, name: name || 'Customer' }],
-      subject,
+      subject: `${otp} is your SHOP.CO ${purpose === 'reset' ? 'password reset' : purpose === 'login' ? 'login verification' : 'verification'} code`,
       htmlContent: `
         <div style="font-family:Arial,sans-serif;max-width:560px;margin:auto;padding:24px;border:1px solid #e5e5e5;border-radius:16px">
           <h1 style="text-align:center;margin:0">SHOP.CO</h1>
           <p>Hi ${name || 'Customer'},</p>
-          <p>Use this 6-digit code to ${purpose === 'reset' ? 'reset your password' : 'verify your email'}:</p>
+          <p>Use this 6-digit code to ${purposeText}:</p>
           <div style="text-align:center;margin:28px 0">
             <span style="background:#000;color:#fff;font-size:32px;font-weight:bold;letter-spacing:8px;padding:14px 28px;border-radius:12px">${otp}</span>
           </div>
@@ -67,7 +73,6 @@ const sendEmailOTP = async ({ email, name, otp, purpose = 'register' }) => {
     name,
     otp,
     purpose,
-    subject: `${otp} is your SHOP.CO ${purpose === 'reset' ? 'password reset' : 'verification'} code`,
   });
 };
 

@@ -39,7 +39,12 @@ const issueOTP = async (user, purpose, force = false) => {
   user.otpLastSent = new Date();
   user.otpPurpose = purpose;
   await user.save();
-  await sendEmailOTP({ email: user.email, name: user.name, otp, purpose });
+  const delivery = await sendEmailOTP({ email: user.email, name: user.name, otp, purpose });
+  if (delivery?.success === false && process.env.NODE_ENV === 'production') {
+    const error = new Error(delivery.error || 'Could not send the verification code. Please try again.');
+    error.statusCode = 502;
+    throw error;
+  }
 };
 
 /**
@@ -68,7 +73,7 @@ const registerUser = async (req, res, next) => {
       throw new Error('Too many requests for this email. Please try again later.');
     }
     const existingUser = await User.findOne({ email: normalizedEmail });
-    if (existingUser && existingUser.status !== 'pending') {
+    if (existingUser && existingUser.isEmailVerified && existingUser.status === 'active') {
       res.status(400);
       throw new Error('An account with this email already exists');
     }
@@ -76,6 +81,8 @@ const registerUser = async (req, res, next) => {
     if (user) {
       user.name = name.trim();
       user.password = password;
+      user.status = 'pending';
+      user.isEmailVerified = false;
     } else {
       user = await User.create({
         name: name.trim(),
@@ -86,7 +93,7 @@ const registerUser = async (req, res, next) => {
         isEmailVerified: false,
       });
     }
-    await issueOTP(user, 'register');
+    await issueOTP(user, 'register', true);
     res.status(201).json({
       success: true,
       message: 'Verification OTP sent to your email',
