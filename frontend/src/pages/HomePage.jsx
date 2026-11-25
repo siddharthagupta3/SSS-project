@@ -58,7 +58,7 @@ const HomePage = () => {
         }}
       >
         {/* Grid overlay */}
-        <div className="absolute inset-0 pointer-events-none opacity-10" style={{
+        <div className="absolute inset-0 pointer-events-none" style={{
           backgroundImage: 'linear-gradient(rgba(192,132,252,0.08) 1px,transparent 1px),linear-gradient(90deg,rgba(192,132,252,0.08) 1px,transparent 1px)',
           backgroundSize: '44px 44px',
         }} />
@@ -75,10 +75,10 @@ const HomePage = () => {
                         pt-4 pb-4 md:h-full overflow-y-auto md:overflow-visible">
 
           {/* LEFT — text */}
-          <div className="flex flex-col gap-4 md:gap-5 items-center justify-center w-full px-4 text-center md:items-start md:text-left">
+          <div className="flex flex-col gap-4 md:gap-5">
 
             {/* Badge */}
-            <span className="text-[10px] sm:text-xs font-bold tracking-widest uppercase px-4 py-1.5 rounded-full"
+            <span className="self-start text-[10px] sm:text-xs font-bold tracking-widest uppercase px-4 py-1.5 rounded-full"
               style={{ color: PINK, border: `1.5px solid rgba(249,168,212,0.45)`, background: 'rgba(249,168,212,0.07)' }}>
               ✦ SUMMER 2026 COLLECTION — LIVE NOW
             </span>
@@ -104,41 +104,49 @@ const HomePage = () => {
             </p>
 
             {/* CTAs */}
-            <div className="flex flex-col gap-4 w-full max-w-sm">
+            <div className="flex flex-col gap-3 w-full max-w-xs">
               <Link to="/shop"
-                className="w-full max-w-sm rounded-xl py-3 font-bold text-center shadow-xl transition hover:brightness-110 active:scale-95"
+                className="text-center font-black text-sm uppercase tracking-widest py-3.5 px-8 rounded-xl shadow-xl transition hover:brightness-110 active:scale-95"
                 style={{ background: 'linear-gradient(135deg,#F5B041,#FFC107)', color: '#000' }}>
                 Shop Now →
               </Link>
               <Link to="/new-arrivals"
-                className="w-full max-w-sm rounded-xl py-3 font-semibold text-center text-white transition hover:bg-white/10 active:scale-95"
+                className="text-center font-semibold text-sm text-white py-3.5 px-8 rounded-xl transition hover:bg-white/10 active:scale-95"
                 style={{ border: '1.5px solid rgba(255,255,255,0.28)' }}>
                 View New Arrivals →
               </Link>
             </div>
 
             {/* Stats */}
-            <div className="flex flex-row justify-between items-center w-full px-6 py-8 text-center md:grid md:grid-cols-3 md:gap-4 md:pt-5 md:px-0 md:py-0"
+            <div className="grid grid-cols-3 gap-4 pt-5"
               style={{ borderTop: '1px solid rgba(255,255,255,0.1)' }}>
               {[['200+','Brands'],['2,000+','Products'],['30K+','Customers']].map(([n,l]) => (
                 <div key={l}>
-                  <p className="text-xl font-black text-white">{n}</p>
-                  <p className="text-xs mt-0.5" style={{ color: 'rgba(255,255,255,0.4)' }}>{l}</p>
+                  <p className="text-xl sm:text-2xl lg:text-3xl font-black text-white">{n}</p>
+                  <p className="text-[9px] sm:text-xs mt-0.5" style={{ color: 'rgba(255,255,255,0.4)' }}>{l}</p>
                 </div>
               ))}
             </div>
           </div>
 
           {/* MOBILE — fashion image (phone only, below text) */}
-          <div className="md:hidden w-full px-4 mb-8">
+          <div className="md:hidden relative w-full mt-2 mb-1">
             <img
               src="https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=800&auto=format&fit=crop&q=90"
               alt="Premium fashion model"
-              className="w-full h-[300px] object-cover object-center rounded-2xl shadow-2xl"
+              className="w-full rounded-2xl object-cover shadow-2xl"
+              style={{ aspectRatio: '3/4', objectPosition: 'center 15%' }}
               onError={(e) => {
                 e.target.src = 'https://images.unsplash.com/photo-1509631179647-0177331693ae?w=800&auto=format&fit=crop&q=90';
               }}
             />
+            <div className="absolute inset-0 rounded-2xl"
+              style={{ background: 'linear-gradient(to bottom, rgba(45,16,87,0.35) 0%, rgba(13,35,24,0.65) 100%)' }} />
+            <div className="absolute bottom-3 left-3 right-3 backdrop-blur-sm p-2.5 rounded-xl"
+              style={{ background: 'rgba(10,5,20,0.72)', border: '1px solid rgba(249,168,212,0.2)' }}>
+              <span className="text-[9px] font-bold uppercase tracking-wider" style={{ color: '#F9A8D4' }}>🔥 Exclusive Drop</span>
+              <p className="text-xs font-semibold text-white mt-0.5">Streetwear & Minimalist Essentials — 2026</p>
+            </div>
           </div>
 
           {/* RIGHT — fashion image (desktop/tablet only) */}
