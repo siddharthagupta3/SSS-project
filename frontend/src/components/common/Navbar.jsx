@@ -105,11 +105,11 @@ const Navbar = () => {
           <div className="flex min-w-0 items-center justify-start gap-2 sm:gap-3">
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="md:hidden flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border border-neutral-200 bg-white text-neutral-800 shadow-sm hover:border-black hover:bg-neutral-50 active:scale-95 transition"
+              className="md:hidden flex h-7 w-7 shrink-0 items-center justify-center rounded-xl border border-neutral-200 bg-white text-neutral-800 shadow-sm hover:border-black hover:bg-neutral-50 active:scale-95 transition"
               aria-label="Toggle Menu"
               aria-expanded={mobileMenuOpen}
             >
-              {mobileMenuOpen ? <CloseIcon className="w-6 h-6" /> : <MenuIcon className="w-6 h-6" />}
+              {mobileMenuOpen ? <CloseIcon className="w-5 h-5" /> : <MenuIcon className="w-5 h-5" />}
             </button>
             <Link
               to="/"

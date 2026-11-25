@@ -52,8 +52,10 @@ const HomePage = () => {
       <section
         className="relative overflow-hidden"
         style={{
-          height: '100dvh',
-          minHeight: 580,
+          height: 'auto',
+          minHeight: 'auto',
+          paddingTop: '40px',
+          paddingBottom: '40px',
           background: 'linear-gradient(to bottom, #2d1057 0%, #1a0b2e 40%, #0d2318 75%, #0f2e2a 100%)',
         }}
       >
@@ -132,18 +134,18 @@ const HomePage = () => {
           {/* MOBILE — fashion image (phone only, below text) */}
           <div className="md:hidden relative w-full mt-2 mb-1">
             <img
-              src="https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=800&auto=format&fit=crop&q=90"
+              src="https://images.unsplash.com/photo-1529139574466-a303027c1d8b?w=1200&auto=format&fit=crop&q=100"
               alt="Premium fashion model"
               className="w-full rounded-2xl object-cover shadow-2xl"
-              style={{ aspectRatio: '3/4', objectPosition: 'center 15%' }}
+              style={{ height: 400, objectPosition: 'center top' }}
               onError={(e) => {
-                e.target.src = 'https://images.unsplash.com/photo-1509631179647-0177331693ae?w=800&auto=format&fit=crop&q=90';
+                e.target.src = 'https://images.unsplash.com/photo-1483985988355-763728e1935b?w=1200&auto=format&fit=crop&q=100';
               }}
             />
             <div className="absolute inset-0 rounded-2xl"
-              style={{ background: 'linear-gradient(to bottom, rgba(45,16,87,0.35) 0%, rgba(13,35,24,0.65) 100%)' }} />
+              style={{ background: 'linear-gradient(to bottom, rgba(45,16,87,0.15) 0%, rgba(13,35,24,0.25) 100%)' }} />
             <div className="absolute bottom-3 left-3 right-3 backdrop-blur-sm p-2.5 rounded-xl"
-              style={{ background: 'rgba(10,5,20,0.72)', border: '1px solid rgba(249,168,212,0.2)' }}>
+              style={{ background: 'rgba(10,5,20,0.5)', border: '1px solid rgba(249,168,212,0.2)' }}>
               <span className="text-[9px] font-bold uppercase tracking-wider" style={{ color: '#F9A8D4' }}>🔥 Exclusive Drop</span>
               <p className="text-xs font-semibold text-white mt-0.5">Streetwear & Minimalist Essentials — 2026</p>
             </div>
