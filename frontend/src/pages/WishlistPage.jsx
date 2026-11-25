@@ -15,22 +15,22 @@ const WishlistPage = () => {
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
-      <div className="flex items-center justify-between pb-6 border-b border-neutral-200">
+      <div className="flex items-center justify-between pb-6 border-b border-white/15">
         <div>
-          <h1 className="text-3xl font-black uppercase tracking-tight text-neutral-900">
+          <h1 className="text-3xl font-black uppercase tracking-tight text-white">
             My Wishlist ({wishlist.length})
           </h1>
-          <p className="text-xs text-neutral-500 mt-1">Products you have saved for later</p>
+          <p className="text-xs text-white/50 mt-1">Products you have saved for later</p>
         </div>
       </div>
 
       {wishlist.length === 0 ? (
-        <div className="bg-white border border-neutral-200 rounded-3xl p-16 text-center my-8">
+        <div className="border border-white/10 rounded-3xl p-16 text-center my-8">
           <div className="w-16 h-16 bg-red-50 text-red-500 rounded-full flex items-center justify-center mx-auto mb-4">
             <HeartIcon className="w-8 h-8" filled={false} />
           </div>
-          <h2 className="text-xl font-bold text-neutral-800">Your wishlist is empty</h2>
-          <p className="text-xs text-neutral-500 mt-1.5 max-w-sm mx-auto">
+          <h2 className="text-xl font-bold text-white/90">Your wishlist is empty</h2>
+          <p className="text-xs text-white/50 mt-1.5 max-w-sm mx-auto">
             Explore more and shortlist some items you love by tapping the heart icon on any product!
           </p>
           <Link
@@ -49,10 +49,10 @@ const WishlistPage = () => {
             return (
               <div
                 key={product._id}
-                className="group relative flex flex-col rounded-2xl bg-white border border-neutral-200 p-3 shadow-xs hover:shadow-md transition"
+                className="group relative flex flex-col rounded-2xl border border-white/10 p-3 shadow-xs hover:shadow-md transition"
               >
                 {/* Image */}
-                <Link to={`/product/${product._id}`} className="relative aspect-square overflow-hidden rounded-xl bg-neutral-100">
+                <Link to={`/product/${product._id}`} className="relative aspect-square overflow-hidden rounded-xl bg-white/8">
                   <img
                     src={product.images?.[0]}
                     alt={product.title}
@@ -72,11 +72,11 @@ const WishlistPage = () => {
 
                 <div className="mt-3 flex-1 flex flex-col justify-between">
                   <div>
-                    <span className="text-[10px] font-bold text-neutral-400 uppercase tracking-wider">
+                    <span className="text-[10px] font-bold text-white/40 uppercase tracking-wider">
                       {product.brand}
                     </span>
                     <Link to={`/product/${product._id}`} className="mt-0.5 block">
-                      <h3 className="text-sm font-semibold text-neutral-900 line-clamp-1 group-hover:underline">
+                      <h3 className="text-sm font-semibold text-white line-clamp-1 group-hover:underline">
                         {product.title}
                       </h3>
                     </Link>
@@ -88,11 +88,11 @@ const WishlistPage = () => {
                     </div>
 
                     <div className="mt-2 flex items-baseline gap-2">
-                      <span className="text-base font-bold text-neutral-900">
+                      <span className="text-base font-bold text-white">
                         ₹{effectivePrice?.toLocaleString('en-IN')}
                       </span>
                       {hasDiscount && (
-                        <span className="text-xs text-neutral-400 line-through">
+                        <span className="text-xs text-white/40 line-through">
                           ₹{product.price?.toLocaleString('en-IN')}
                         </span>
                       )}

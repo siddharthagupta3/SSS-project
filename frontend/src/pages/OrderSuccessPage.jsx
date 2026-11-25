@@ -31,21 +31,21 @@ const OrderSuccessPage = () => {
         <CheckIcon className="w-10 h-10" />
       </div>
 
-      <h1 className="text-3xl sm:text-4xl font-black uppercase tracking-tight text-neutral-900">
+      <h1 className="text-3xl sm:text-4xl font-black uppercase tracking-tight text-white">
         Order Confirmed!
       </h1>
-      <p className="mt-2 text-sm text-neutral-600">
+      <p className="mt-2 text-sm text-white/60">
         Thank you for your purchase. We have received your payment via Razorpay.
       </p>
 
       {loading ? (
-        <div className="mt-8 h-32 bg-neutral-100 rounded-2xl animate-pulse" />
+        <div className="mt-8 h-32 bg-white/8 rounded-2xl animate-pulse" />
       ) : order ? (
-        <div className="mt-8 text-left bg-white border border-neutral-200 rounded-3xl p-6 sm:p-8 space-y-6 shadow-xs">
-          <div className="flex flex-col sm:flex-row justify-between sm:items-center pb-4 border-b border-neutral-100 gap-2">
+        <div className="mt-8 text-left border border-white/10 rounded-3xl p-6 sm:p-8 space-y-6 shadow-xs">
+          <div className="flex flex-col sm:flex-row justify-between sm:items-center pb-4 border-b border-white/10 gap-2">
             <div>
-              <span className="text-xs text-neutral-400 uppercase font-semibold">Order Reference</span>
-              <p className="font-mono font-bold text-sm text-neutral-800">#{order._id}</p>
+              <span className="text-xs text-white/40 uppercase font-semibold">Order Reference</span>
+              <p className="font-mono font-bold text-sm text-white/90">#{order._id}</p>
             </div>
             <div>
               <span className="inline-block bg-emerald-100 text-emerald-800 text-xs font-bold px-3 py-1 rounded-full">
@@ -56,34 +56,34 @@ const OrderSuccessPage = () => {
 
           {/* Delivery destination */}
           <div>
-            <h3 className="text-xs font-bold uppercase tracking-wider text-neutral-400 mb-1">Shipping To</h3>
-            <p className="text-sm font-semibold text-neutral-800">{order.shippingAddress?.fullName}</p>
-            <p className="text-xs text-neutral-600">
+            <h3 className="text-xs font-bold uppercase tracking-wider text-white/40 mb-1">Shipping To</h3>
+            <p className="text-sm font-semibold text-white/90">{order.shippingAddress?.fullName}</p>
+            <p className="text-xs text-white/60">
               {order.shippingAddress?.street}, {order.shippingAddress?.city}, {order.shippingAddress?.state} - {order.shippingAddress?.postalCode}
             </p>
-            <p className="text-xs text-neutral-600">Phone: {order.shippingAddress?.phone}</p>
+            <p className="text-xs text-white/60">Phone: {order.shippingAddress?.phone}</p>
           </div>
 
           {/* Items Preview */}
-          <div className="border-t border-neutral-100 pt-4 space-y-3">
-            <h3 className="text-xs font-bold uppercase tracking-wider text-neutral-400">Items Ordered</h3>
+          <div className="border-t border-white/10 pt-4 space-y-3">
+            <h3 className="text-xs font-bold uppercase tracking-wider text-white/40">Items Ordered</h3>
             {order.orderItems?.map((item, idx) => (
               <div key={idx} className="flex items-center justify-between text-xs">
                 <div className="flex items-center gap-3">
                   <img src={item.image} alt="" className="w-10 h-12 object-cover rounded-md" />
                   <div>
-                    <span className="font-semibold text-neutral-900">{item.title}</span>
-                    <span className="text-neutral-500 block">Qty: {item.quantity} | Size: {item.size}</span>
+                    <span className="font-semibold text-white">{item.title}</span>
+                    <span className="text-white/50 block">Qty: {item.quantity} | Size: {item.size}</span>
                   </div>
                 </div>
-                <span className="font-bold text-neutral-900">
+                <span className="font-bold text-white">
                   ₹{(item.price * item.quantity).toLocaleString('en-IN')}
                 </span>
               </div>
             ))}
           </div>
 
-          <div className="border-t border-neutral-100 pt-4 flex justify-between font-black text-base text-neutral-900">
+          <div className="border-t border-white/10 pt-4 flex justify-between font-black text-base text-white">
             <span>Amount Paid</span>
             <span>₹{order.totalPrice?.toLocaleString('en-IN')}</span>
           </div>
@@ -99,7 +99,7 @@ const OrderSuccessPage = () => {
         </Link>
         <Link
           to="/shop"
-          className="border border-neutral-300 text-neutral-800 px-8 py-3 rounded-full text-sm font-semibold hover:bg-neutral-100 transition"
+          className="border border-white/20 text-white/90 px-8 py-3 rounded-full text-sm font-semibold hover:bg-white/8 transition"
         >
           Continue Shopping
         </Link>

@@ -246,10 +246,10 @@ const CheckoutPage = () => {
 
   return (
     <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-6 border-b border-neutral-200 gap-2 mb-8">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-6 border-b border-white/15 gap-2 mb-8">
         <div>
-          <span className="text-xs font-bold uppercase tracking-wider text-neutral-400">Step 2 of 2</span>
-          <h1 className="text-3xl font-black uppercase tracking-tight text-neutral-900 mt-0.5">
+          <span className="text-xs font-bold uppercase tracking-wider text-white/40">Step 2 of 2</span>
+          <h1 className="text-3xl font-black uppercase tracking-tight text-white mt-0.5">
             Shipping & Payment
           </h1>
         </div>
@@ -260,23 +260,23 @@ const CheckoutPage = () => {
       </div>
 
       {/* Flipkart-Style Trust Badges */}
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-8 text-xs font-semibold text-neutral-700">
-        <div className="bg-neutral-50 border border-neutral-200 rounded-2xl p-3 flex items-center gap-2.5">
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-8 text-xs font-semibold text-white/80">
+        <div className="border border-white/15 rounded-2xl p-3 flex items-center gap-2.5">
           <ShieldCheckIcon className="w-5 h-5 text-emerald-600 shrink-0" />
           <span>100% Safe & Secure Payment</span>
         </div>
-        <div className="bg-neutral-50 border border-neutral-200 rounded-2xl p-3 flex items-center gap-2.5">
+        <div className="border border-white/15 rounded-2xl p-3 flex items-center gap-2.5">
           <TruckIcon className="w-5 h-5 text-blue-600 shrink-0" />
           <span>Tracked Express Courier Delivery</span>
         </div>
-        <div className="bg-neutral-50 border border-neutral-200 rounded-2xl p-3 flex items-center gap-2.5">
+        <div className="border border-white/15 rounded-2xl p-3 flex items-center gap-2.5">
           <CheckIcon className="w-5 h-5 text-purple-600 shrink-0" />
           <span>7-Day Replacement Guarantee</span>
         </div>
       </div>
 
       {errorMessage && (
-        <div className="bg-red-50 border border-red-200 text-red-700 text-sm p-4 rounded-xl mb-6 font-medium">
+        <div className="border border-red-500/40 text-red-400 text-sm p-4 rounded-xl mb-6 font-medium">
           {errorMessage}
         </div>
       )}
@@ -284,9 +284,9 @@ const CheckoutPage = () => {
       <form onSubmit={handleRazorpayPayment} className="grid grid-cols-1 lg:grid-cols-3 gap-10">
         {savedAddresses.length > 0 && (
           <div className="lg:col-span-2">
-            <label className="block text-xs font-semibold text-neutral-700 mb-2">Use a saved address</label>
+            <label className="block text-xs font-semibold text-white/80 mb-2">Use a saved address</label>
             <select
-              className="w-full bg-neutral-100 text-sm px-4 py-2.5 rounded-xl"
+              className="w-full text-sm text-white placeholder-white/40 px-4 py-2.5 rounded-xl"
               defaultValue=""
               onChange={(e) => {
                 const selected = savedAddresses.find((item) => item._id === e.target.value);
@@ -315,11 +315,11 @@ const CheckoutPage = () => {
         )}
         
         {/* Full Indian Shipping Address Form */}
-        <div className="lg:col-span-2 space-y-6 bg-white border border-neutral-200 p-6 sm:p-8 rounded-3xl shadow-xs">
+        <div className="lg:col-span-2 space-y-6 border border-white/10 p-6 sm:p-8 rounded-3xl shadow-xs">
           <div className="flex items-center justify-between border-b pb-4">
             <div>
-              <h2 className="text-lg font-bold text-neutral-900">Delivery Address Details</h2>
-              <p className="text-xs text-neutral-500">Orders are fulfilled via BlueDart, Delhivery & India Post</p>
+              <h2 className="text-lg font-bold text-white">Delivery Address Details</h2>
+              <p className="text-xs text-white/50">Orders are fulfilled via BlueDart, Delhivery & India Post</p>
             </div>
             
             {/* Address Type Pills */}
@@ -332,7 +332,7 @@ const CheckoutPage = () => {
                   className={`text-xs px-3 py-1 rounded-full font-bold transition ${
                     address.addressType === type
                       ? 'bg-black text-white'
-                      : 'bg-neutral-100 text-neutral-600 hover:bg-neutral-200'
+                      : 'bg-white/8 text-white/60 hover:bg-white/8'
                   }`}
                 >
                   {type === 'Home' ? '🏠 Home' : '🏢 Work'}
@@ -343,22 +343,22 @@ const CheckoutPage = () => {
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
-              <label className="block text-xs font-semibold text-neutral-700 mb-1">Recipient Full Name *</label>
+              <label className="block text-xs font-semibold text-white/80 mb-1">Recipient Full Name *</label>
               <input
                 type="text"
                 name="fullName"
                 required
                 value={address.fullName}
                 onChange={handleInputChange}
-                className="w-full bg-neutral-100 text-sm px-4 py-2.5 rounded-xl outline-none focus:ring-2 focus:ring-black"
+                className="w-full text-sm text-white placeholder-white/40 px-4 py-2.5 rounded-xl outline-none focus:ring-2 focus:ring-black"
                 placeholder="Rohan Sharma"
               />
             </div>
 
             <div>
-              <label className="block text-xs font-semibold text-neutral-700 mb-1">10-Digit Mobile Number *</label>
+              <label className="block text-xs font-semibold text-white/80 mb-1">10-Digit Mobile Number *</label>
               <div className="flex">
-                <span className="inline-flex items-center px-3 text-xs font-bold text-neutral-500 bg-neutral-200 rounded-l-xl border-r border-neutral-300">
+                <span className="inline-flex items-center px-3 text-xs font-bold text-white/50 bg-white/8 rounded-l-xl border-r border-white/20">
                   +91
                 </span>
                 <input
@@ -368,7 +368,7 @@ const CheckoutPage = () => {
                   maxLength="10"
                   value={address.phone}
                   onChange={handleInputChange}
-                  className="w-full bg-neutral-100 text-sm px-4 py-2.5 rounded-r-xl outline-none focus:ring-2 focus:ring-black font-mono"
+                  className="w-full text-sm text-white placeholder-white/40 px-4 py-2.5 rounded-r-xl outline-none focus:ring-2 focus:ring-black font-mono"
                   placeholder="9876543210"
                 />
               </div>
@@ -377,7 +377,7 @@ const CheckoutPage = () => {
 
           {/* Flat / House Number */}
           <div>
-            <label className="block text-xs font-semibold text-neutral-700 mb-1">
+            <label className="block text-xs font-semibold text-white/80 mb-1">
               Flat, House No., Building, Apartment *
             </label>
             <input
@@ -386,14 +386,14 @@ const CheckoutPage = () => {
               required
               value={address.houseNumber}
               onChange={handleInputChange}
-              className="w-full bg-neutral-100 text-sm px-4 py-2.5 rounded-xl outline-none focus:ring-2 focus:ring-black"
+              className="w-full text-sm text-white placeholder-white/40 px-4 py-2.5 rounded-xl outline-none focus:ring-2 focus:ring-black"
               placeholder="e.g. Flat 402, Tower B, Galaxy Heights"
             />
           </div>
 
           {/* Street / Colony */}
           <div>
-            <label className="block text-xs font-semibold text-neutral-700 mb-1">
+            <label className="block text-xs font-semibold text-white/80 mb-1">
               Area, Street, Sector, Village *
             </label>
             <input
@@ -402,14 +402,14 @@ const CheckoutPage = () => {
               required
               value={address.street}
               onChange={handleInputChange}
-              className="w-full bg-neutral-100 text-sm px-4 py-2.5 rounded-xl outline-none focus:ring-2 focus:ring-black"
+              className="w-full text-sm text-white placeholder-white/40 px-4 py-2.5 rounded-xl outline-none focus:ring-2 focus:ring-black"
               placeholder="e.g. 100 Feet Road, 12th Main, Indiranagar"
             />
           </div>
 
           {/* Landmark */}
           <div>
-            <label className="block text-xs font-semibold text-neutral-700 mb-1">
+            <label className="block text-xs font-semibold text-white/80 mb-1">
               Landmark (Optional)
             </label>
             <input
@@ -417,7 +417,7 @@ const CheckoutPage = () => {
               name="landmark"
               value={address.landmark}
               onChange={handleInputChange}
-              className="w-full bg-neutral-100 text-sm px-4 py-2.5 rounded-xl outline-none focus:ring-2 focus:ring-black"
+              className="w-full text-sm text-white placeholder-white/40 px-4 py-2.5 rounded-xl outline-none focus:ring-2 focus:ring-black"
               placeholder="e.g. Near Metro Station / Opposite Axis Bank"
             />
           </div>
@@ -425,7 +425,7 @@ const CheckoutPage = () => {
           {/* PIN Code, City, State */}
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             <div>
-              <label className="block text-xs font-semibold text-neutral-700 mb-1">6-Digit PIN Code *</label>
+              <label className="block text-xs font-semibold text-white/80 mb-1">6-Digit PIN Code *</label>
               <input
                 type="text"
                 name="postalCode"
@@ -433,31 +433,31 @@ const CheckoutPage = () => {
                 maxLength="6"
                 value={address.postalCode}
                 onChange={handleInputChange}
-                className="w-full bg-neutral-100 text-sm px-4 py-2.5 rounded-xl outline-none focus:ring-2 focus:ring-black font-mono font-bold"
+                className="w-full text-sm text-white placeholder-white/40 px-4 py-2.5 rounded-xl outline-none focus:ring-2 focus:ring-black font-mono font-bold"
                 placeholder="560001"
               />
             </div>
 
             <div>
-              <label className="block text-xs font-semibold text-neutral-700 mb-1">Town / City *</label>
+              <label className="block text-xs font-semibold text-white/80 mb-1">Town / City *</label>
               <input
                 type="text"
                 name="city"
                 required
                 value={address.city}
                 onChange={handleInputChange}
-                className="w-full bg-neutral-100 text-sm px-4 py-2.5 rounded-xl outline-none focus:ring-2 focus:ring-black"
+                className="w-full text-sm text-white placeholder-white/40 px-4 py-2.5 rounded-xl outline-none focus:ring-2 focus:ring-black"
                 placeholder="Bengaluru"
               />
             </div>
 
             <div>
-              <label className="block text-xs font-semibold text-neutral-700 mb-1">State *</label>
+              <label className="block text-xs font-semibold text-white/80 mb-1">State *</label>
               <select
                 name="state"
                 value={address.state}
                 onChange={handleInputChange}
-                className="w-full bg-neutral-100 text-sm px-3 py-2.5 rounded-xl outline-none focus:ring-2 focus:ring-black"
+                className="w-full text-sm text-white placeholder-white/40 px-3 py-2.5 rounded-xl outline-none focus:ring-2 focus:ring-black"
               >
                 {INDIAN_STATES.map((s) => (
                   <option key={s} value={s}>{s}</option>
@@ -478,7 +478,7 @@ const CheckoutPage = () => {
           )}
 
           {/* Checkbox to remember address */}
-          <label className="flex items-center gap-2 text-xs font-semibold text-neutral-700 cursor-pointer pt-2">
+          <label className="flex items-center gap-2 text-xs font-semibold text-white/80 cursor-pointer pt-2">
             <input
               type="checkbox"
               checked={saveAddressForFuture}
@@ -491,13 +491,13 @@ const CheckoutPage = () => {
 
         {/* Order Review & Razorpay Pay Button */}
         <div className="lg:col-span-1">
-          <div className="bg-white border border-neutral-200 p-6 rounded-3xl space-y-6 sticky top-24 shadow-xs">
-            <h2 className="text-lg font-bold text-neutral-900 border-b pb-3">Payment Summary</h2>
+          <div className="border border-white/10 p-6 rounded-3xl space-y-6 sticky top-24 shadow-xs">
+            <h2 className="text-lg font-bold text-white border-b pb-3">Payment Summary</h2>
 
             <div className="space-y-3 text-xs">
-              <div className="flex justify-between text-neutral-600">
+              <div className="flex justify-between text-white/60">
                 <span>Items Subtotal ({cartItems.length} items)</span>
-                <span className="font-semibold text-neutral-900">₹{cartSubtotal.toLocaleString('en-IN')}</span>
+                <span className="font-semibold text-white">₹{cartSubtotal.toLocaleString('en-IN')}</span>
               </div>
               {promoDiscount > 0 && (
                 <div className="flex justify-between text-emerald-600 font-semibold">
@@ -505,17 +505,17 @@ const CheckoutPage = () => {
                   <span>-₹{promoDiscount.toLocaleString('en-IN')}</span>
                 </div>
               )}
-              <div className="flex justify-between text-neutral-600">
+              <div className="flex justify-between text-white/60">
                 <span>Express Delivery</span>
                 <span>
                   {shippingFee === 0 ? <strong className="text-emerald-600">FREE</strong> : `₹${shippingFee}`}
                 </span>
               </div>
-              <div className="flex justify-between text-neutral-600">
+              <div className="flex justify-between text-white/60">
                 <span>GST (5%)</span>
-                <span className="font-semibold text-neutral-900">₹{tax.toLocaleString('en-IN')}</span>
+                <span className="font-semibold text-white">₹{tax.toLocaleString('en-IN')}</span>
               </div>
-              <div className="border-t pt-3 flex justify-between text-base font-black text-neutral-900">
+              <div className="border-t pt-3 flex justify-between text-base font-black text-white">
                 <span>Total Amount Due</span>
                 <span>₹{total.toLocaleString('en-IN')}</span>
               </div>
@@ -530,12 +530,12 @@ const CheckoutPage = () => {
               <span>{loading ? 'Opening Razorpay...' : `Pay ₹${total.toLocaleString('en-IN')} with Razorpay`}</span>
             </button>
 
-            <div className="space-y-2 text-[11px] text-neutral-500 pt-2 border-t">
-              <div className="flex items-center gap-1.5 text-neutral-700 font-semibold">
+            <div className="space-y-2 text-[11px] text-white/50 pt-2 border-t">
+              <div className="flex items-center gap-1.5 text-white/80 font-semibold">
                 <CheckIcon className="w-3.5 h-3.5 text-emerald-600" />
                 <span>HMAC SHA-256 Server Signature Verification</span>
               </div>
-              <div className="flex items-center gap-1.5 text-neutral-700 font-semibold">
+              <div className="flex items-center gap-1.5 text-white/80 font-semibold">
                 <CheckIcon className="w-3.5 h-3.5 text-emerald-600" />
                 <span>Supports UPI, Cards, NetBanking & Wallets</span>
               </div>
@@ -547,16 +547,16 @@ const CheckoutPage = () => {
 
       {pendingPayment && (
         <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/60 p-4 backdrop-blur-sm" onClick={() => setPendingPayment(null)}>
-          <div className="w-full max-w-md overflow-hidden rounded-3xl bg-white shadow-2xl" onClick={(event) => event.stopPropagation()}>
-            <div className="flex items-center justify-between border-b border-neutral-100 px-5 py-4">
+          <div className="w-full max-w-md overflow-hidden rounded-3xl bg-transparent shadow-2xl" onClick={(event) => event.stopPropagation()}>
+            <div className="flex items-center justify-between border-b border-white/10 px-5 py-4">
               <div>
                 <p className="text-[10px] font-black uppercase tracking-[0.2em] text-blue-600">Razorpay Secure Checkout</p>
                 <h2 className="mt-1 text-lg font-black">₹{total.toLocaleString('en-IN')}</h2>
               </div>
-              <button type="button" onClick={() => setPendingPayment(null)} className="h-10 w-10 rounded-full border border-neutral-200 text-xl">×</button>
+              <button type="button" onClick={() => setPendingPayment(null)} className="h-10 w-10 rounded-full border border-white/15 text-xl">×</button>
             </div>
             <div className="p-5">
-              <p className="mb-3 text-xs font-bold text-neutral-500">Choose payment method</p>
+              <p className="mb-3 text-xs font-bold text-white/50">Choose payment method</p>
               <div className="grid grid-cols-3 gap-2">
                 {['UPI', 'Card', 'Netbanking'].map((method) => (
                   <button
@@ -564,7 +564,7 @@ const CheckoutPage = () => {
                     type="button"
                     onClick={() => setPaymentMethod(method)}
                     className={`rounded-2xl border px-2 py-3 text-xs font-black ${
-                      paymentMethod === method ? 'border-blue-600 bg-blue-50 text-blue-700' : 'border-neutral-200 text-neutral-600'
+                      paymentMethod === method ? 'border-blue-600 bg-blue-50 text-blue-700' : 'border-white/15 text-white/60'
                     }`}
                   >
                     {method}
@@ -572,13 +572,13 @@ const CheckoutPage = () => {
                 ))}
               </div>
               {paymentMethod === 'UPI' && (
-                <input required placeholder="yourname@upi" className="mt-4 w-full rounded-xl bg-neutral-100 px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-blue-600" />
+                <input required placeholder="yourname@upi" className="mt-4 w-full rounded-xl bg-white/8 px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-blue-600" />
               )}
               {paymentMethod === 'Card' && (
-                <input required inputMode="numeric" maxLength="16" placeholder="Card number" className="mt-4 w-full rounded-xl bg-neutral-100 px-4 py-3 text-sm font-mono outline-none focus:ring-2 focus:ring-blue-600" />
+                <input required inputMode="numeric" maxLength="16" placeholder="Card number" className="mt-4 w-full rounded-xl bg-white/8 px-4 py-3 text-sm font-mono outline-none focus:ring-2 focus:ring-blue-600" />
               )}
               {paymentMethod === 'Netbanking' && (
-                <select className="mt-4 w-full rounded-xl bg-neutral-100 px-4 py-3 text-sm"><option>SBI</option><option>HDFC Bank</option><option>ICICI Bank</option></select>
+                <select className="mt-4 w-full rounded-xl bg-white/8 px-4 py-3 text-sm"><option>SBI</option><option>HDFC Bank</option><option>ICICI Bank</option></select>
               )}
               <button
                 type="button"
@@ -606,7 +606,7 @@ const CheckoutPage = () => {
               >
                 Pay ₹{total.toLocaleString('en-IN')}
               </button>
-              <p className="mt-3 text-center text-[10px] text-neutral-400">Test checkout UI — configure live Razorpay keys for real payments.</p>
+              <p className="mt-3 text-center text-[10px] text-white/40">Test checkout UI — configure live Razorpay keys for real payments.</p>
             </div>
           </div>
         </div>

@@ -216,7 +216,7 @@ const ProductDetailPage = () => {
                   key={idx}
                   onClick={() => setSelectedImage(img)}
                   className={`w-20 h-24 rounded-xl overflow-hidden border-2 shrink-0 ${
-                    selectedImage === img ? 'border-black' : 'border-neutral-200'
+                    selectedImage === img ? 'border-black' : 'border-white/15'
                   }`}
                 >
                   <img src={img} alt="" className="w-full h-full object-cover" />
@@ -226,7 +226,7 @@ const ProductDetailPage = () => {
           )}
 
           {/* Main Hero Image */}
-          <div className="relative flex-1 aspect-4/5 rounded-3xl overflow-hidden bg-neutral-100 shadow-md">
+          <div className="relative flex-1 aspect-4/5 rounded-3xl overflow-hidden bg-white/8 shadow-md">
             <img
               src={selectedImage || product.images?.[0]}
               alt={product.title}
@@ -242,7 +242,7 @@ const ProductDetailPage = () => {
                 }
                 toggleWishlist(product);
               }}
-              className="absolute top-4 right-4 bg-white/90 backdrop-blur-xs p-3 rounded-full shadow-md text-neutral-700 hover:text-red-500 hover:scale-110 active:scale-95 transition"
+              className="absolute top-4 right-4 bg-white/90 backdrop-blur-xs p-3 rounded-full shadow-md text-white/80 hover:text-red-500 hover:scale-110 active:scale-95 transition"
               title={isFav ? 'Remove from Wishlist' : 'Add to Wishlist'}
             >
               <HeartIcon className={`w-5 h-5 ${isFav ? 'text-red-500 fill-current' : ''}`} filled={isFav} />
@@ -254,7 +254,7 @@ const ProductDetailPage = () => {
         <div className="space-y-6">
           <div>
             <div className="flex items-center gap-2">
-              <span className="text-xs font-bold uppercase tracking-wider text-neutral-400">
+              <span className="text-xs font-bold uppercase tracking-wider text-white/40">
                 {product.brand} • {product.category}
               </span>
               {/* Flipkart Assured Style Badge */}
@@ -263,17 +263,17 @@ const ProductDetailPage = () => {
               </span>
             </div>
 
-            <h1 className="text-2xl sm:text-3xl font-black uppercase tracking-tight text-neutral-900 mt-1">
+            <h1 className="text-2xl sm:text-3xl font-black uppercase tracking-tight text-white mt-1">
               {product.title}
             </h1>
 
             {/* Rating */}
-            <div className="mt-2.5 flex items-center gap-2 text-sm text-neutral-600">
+            <div className="mt-2.5 flex items-center gap-2 text-sm text-white/60">
               <span className="inline-flex items-center gap-1 bg-emerald-600 text-white text-xs font-bold px-2 py-0.5 rounded">
                 <span>{product.rating?.toFixed(1) || '4.5'}</span>
                 <StarIcon className="w-3 h-3" filled={true} />
               </span>
-              <span className="text-xs font-semibold text-neutral-500">
+              <span className="text-xs font-semibold text-white/50">
                 {product.numReviews || 0} Ratings & Reviews
               </span>
             </div>
@@ -281,12 +281,12 @@ const ProductDetailPage = () => {
 
           {/* Pricing (Flipkart Style) */}
           <div className="flex items-baseline gap-3">
-            <span className="text-3xl font-black text-neutral-900">
+            <span className="text-3xl font-black text-white">
               ₹{effectivePrice.toLocaleString('en-IN')}
             </span>
             {hasDiscount && (
               <>
-                <span className="text-base text-neutral-400 line-through">
+                <span className="text-base text-white/40 line-through">
                   ₹{product.price.toLocaleString('en-IN')}
                 </span>
                 <span className="text-emerald-700 text-sm font-bold">
@@ -297,12 +297,12 @@ const ProductDetailPage = () => {
           </div>
 
           {/* Flipkart Style Available Offers Accordion */}
-          <div className="border border-neutral-200 rounded-2xl p-4 bg-neutral-50/60 space-y-2.5">
-            <h3 className="text-xs font-black uppercase tracking-wider text-neutral-900 flex items-center gap-1.5">
+          <div className="border border-white/15 rounded-2xl p-4 bg-white/5/60 space-y-2.5">
+            <h3 className="text-xs font-black uppercase tracking-wider text-white flex items-center gap-1.5">
               <TagIcon className="w-4 h-4 text-emerald-600" />
               <span>Available Offers & Discounts</span>
             </h3>
-            <ul className="space-y-2 text-xs text-neutral-700">
+            <ul className="space-y-2 text-xs text-white/80">
               <li className="flex items-start gap-2">
                 <span className="text-emerald-600 font-bold">🏷️ Bank Offer:</span>
                 <span>10% Instant Discount on HDFC & ICICI Bank Credit Cards on min spend of ₹1,499.</span>
@@ -319,10 +319,10 @@ const ProductDetailPage = () => {
           </div>
 
           {/* Flipkart Style Delivery PIN Code Checker */}
-          <div className="border-t border-b border-neutral-200 py-4 space-y-3">
+          <div className="border-t border-b border-white/15 py-4 space-y-3">
             <div className="flex items-center justify-between">
-              <span className="text-xs font-bold uppercase tracking-wider text-neutral-600 flex items-center gap-1.5">
-                <TruckIcon className="w-4 h-4 text-neutral-900" />
+              <span className="text-xs font-bold uppercase tracking-wider text-white/60 flex items-center gap-1.5">
+                <TruckIcon className="w-4 h-4 text-white" />
                 <span>Delivery & Services</span>
               </span>
             </div>
@@ -334,7 +334,7 @@ const ProductDetailPage = () => {
                 placeholder="Enter Delivery PIN Code"
                 value={pincode}
                 onChange={(e) => setPincode(e.target.value.replace(/\D/g, ''))}
-                className="flex-1 bg-neutral-100 text-xs font-mono font-semibold px-4 py-2 rounded-xl outline-none focus:ring-1 focus:ring-black"
+                className="flex-1 text-xs text-white placeholder-white/40 font-mono font-semibold px-4 py-2 rounded-xl outline-none focus:ring-1 focus:ring-black"
               />
               <button
                 type="submit"
@@ -345,12 +345,12 @@ const ProductDetailPage = () => {
             </form>
 
             {pincodeChecked && (
-              <div className="space-y-1.5 text-xs text-neutral-700">
-                <p className="font-semibold text-neutral-900">
+              <div className="space-y-1.5 text-xs text-white/80">
+                <p className="font-semibold text-white">
                   Delivery by <strong className="text-emerald-700">{deliveryDate}</strong> |{' '}
-                  <span className="text-emerald-700">FREE</span> <span className="line-through text-neutral-400">₹40</span>
+                  <span className="text-emerald-700">FREE</span> <span className="line-through text-white/40">₹40</span>
                 </p>
-                <div className="flex flex-wrap gap-4 text-neutral-500 pt-1">
+                <div className="flex flex-wrap gap-4 text-white/50 pt-1">
                   <span>💵 Cash on Delivery / UPI</span>
                   <span>🔄 7 Days Replacement Policy</span>
                   <span>🛡️ 100% Original Guarantee</span>
@@ -362,7 +362,7 @@ const ProductDetailPage = () => {
           {/* Color & Size Selectors */}
           {product.colors && product.colors.length > 0 && (
             <div>
-              <span className="text-xs font-bold uppercase tracking-wider text-neutral-400">Color</span>
+              <span className="text-xs font-bold uppercase tracking-wider text-white/40">Color</span>
               <div className="mt-2 flex flex-wrap gap-2">
                 {product.colors.map((c) => (
                   <button
@@ -371,7 +371,7 @@ const ProductDetailPage = () => {
                     className={`px-4 py-1.5 rounded-full text-xs font-semibold border ${
                       selectedColor === c
                         ? 'bg-black text-white border-black'
-                        : 'border-neutral-200 text-neutral-700 hover:bg-neutral-100'
+                        : 'border-white/15 text-white/80 hover:bg-white/8'
                     }`}
                   >
                     {c}
@@ -383,7 +383,7 @@ const ProductDetailPage = () => {
 
           {product.sizes && product.sizes.length > 0 && (
             <div>
-              <span className="text-xs font-bold uppercase tracking-wider text-neutral-400">Size</span>
+              <span className="text-xs font-bold uppercase tracking-wider text-white/40">Size</span>
               <div className="mt-2 flex flex-wrap gap-2">
                 {product.sizes.map((s) => (
                   <button
@@ -392,7 +392,7 @@ const ProductDetailPage = () => {
                     className={`w-12 h-10 rounded-xl text-xs font-bold border flex items-center justify-center ${
                       selectedSize === s
                         ? 'bg-black text-white border-black'
-                        : 'border-neutral-200 text-neutral-700 hover:bg-neutral-100'
+                        : 'border-white/15 text-white/80 hover:bg-white/8'
                     }`}
                   >
                     {s}
@@ -404,10 +404,10 @@ const ProductDetailPage = () => {
 
           {/* Quantity & CTA */}
           <div className="pt-2 flex flex-col sm:flex-row gap-4">
-            <div className="flex items-center justify-between border border-neutral-300 rounded-full px-4 py-2 w-32 shrink-0">
+            <div className="flex items-center justify-between border border-white/20 rounded-full px-4 py-2 w-32 shrink-0">
               <button
                 onClick={() => setQuantity((q) => Math.max(1, q - 1))}
-                className="text-neutral-500 hover:text-black"
+                className="text-white/50 hover:text-black"
                 disabled={quantity <= 1}
               >
                 <MinusIcon className="w-4 h-4" />
@@ -415,7 +415,7 @@ const ProductDetailPage = () => {
               <span className="font-bold text-sm">{quantity}</span>
               <button
                 onClick={() => setQuantity((q) => Math.min(product.stock, q + 1))}
-                className="text-neutral-500 hover:text-black"
+                className="text-white/50 hover:text-black"
                 disabled={quantity >= product.stock}
               >
                 <PlusIcon className="w-4 h-4" />
@@ -440,7 +440,7 @@ const ProductDetailPage = () => {
             )}
           </div>
 
-          <p className="text-sm text-neutral-600 leading-relaxed pt-2">
+          <p className="text-sm text-white/60 leading-relaxed pt-2">
             {product.description}
           </p>
 
@@ -449,71 +449,71 @@ const ProductDetailPage = () => {
       </div>
 
       {/* Customer Ratings & Reviews (Flipkart Style Section) */}
-      <section className="mt-16 border-t border-neutral-200 pt-10">
-        <h2 className="text-2xl font-black uppercase tracking-tight text-neutral-900 mb-6">
+      <section className="mt-16 border-t border-white/15 pt-10">
+        <h2 className="text-2xl font-black uppercase tracking-tight text-white mb-6">
           Ratings & Customer Reviews
         </h2>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
           
           {/* Left: Overall rating summary & progress bars */}
-          <div className="bg-neutral-50 p-6 rounded-3xl border border-neutral-200 h-fit space-y-4">
+          <div className="p-6 rounded-3xl border border-white/15 h-fit space-y-4">
             <div className="flex items-baseline gap-2">
-              <span className="text-4xl font-black text-neutral-900">{product.rating?.toFixed(1) || '4.8'}</span>
-              <span className="text-neutral-400 text-sm">/ 5</span>
+              <span className="text-4xl font-black text-white">{product.rating?.toFixed(1) || '4.8'}</span>
+              <span className="text-white/40 text-sm">/ 5</span>
               <div className="flex text-amber-400 ml-2">
                 {[...Array(5)].map((_, i) => (
                   <StarIcon key={i} className="w-4 h-4" filled={i < Math.round(product.rating || 5)} />
                 ))}
               </div>
             </div>
-            <p className="text-xs text-neutral-500">{product.numReviews || 0} verified customers</p>
+            <p className="text-xs text-white/50">{product.numReviews || 0} verified customers</p>
 
             <div className="space-y-2 pt-2 text-xs">
               <div className="flex items-center gap-2">
                 <span className="w-6 font-bold">5★</span>
-                <div className="flex-1 bg-neutral-200 h-2 rounded-full overflow-hidden">
+                <div className="flex-1 bg-white/8 h-2 rounded-full overflow-hidden">
                   <div className="bg-emerald-500 h-full w-[78%]" />
                 </div>
-                <span className="w-8 text-neutral-500 text-right">78%</span>
+                <span className="w-8 text-white/50 text-right">78%</span>
               </div>
               <div className="flex items-center gap-2">
                 <span className="w-6 font-bold">4★</span>
-                <div className="flex-1 bg-neutral-200 h-2 rounded-full overflow-hidden">
+                <div className="flex-1 bg-white/8 h-2 rounded-full overflow-hidden">
                   <div className="bg-emerald-400 h-full w-[16%]" />
                 </div>
-                <span className="w-8 text-neutral-500 text-right">16%</span>
+                <span className="w-8 text-white/50 text-right">16%</span>
               </div>
               <div className="flex items-center gap-2">
                 <span className="w-6 font-bold">3★</span>
-                <div className="flex-1 bg-neutral-200 h-2 rounded-full overflow-hidden">
+                <div className="flex-1 bg-white/8 h-2 rounded-full overflow-hidden">
                   <div className="bg-amber-400 h-full w-[4%]" />
                 </div>
-                <span className="w-8 text-neutral-500 text-right">4%</span>
+                <span className="w-8 text-white/50 text-right">4%</span>
               </div>
               <div className="flex items-center gap-2">
                 <span className="w-6 font-bold">2★</span>
-                <div className="flex-1 bg-neutral-200 h-2 rounded-full overflow-hidden">
+                <div className="flex-1 bg-white/8 h-2 rounded-full overflow-hidden">
                   <div className="bg-orange-400 h-full w-[1%]" />
                 </div>
-                <span className="w-8 text-neutral-500 text-right">1%</span>
+                <span className="w-8 text-white/50 text-right">1%</span>
               </div>
               <div className="flex items-center gap-2">
                 <span className="w-6 font-bold">1★</span>
-                <div className="flex-1 bg-neutral-200 h-2 rounded-full overflow-hidden">
+                <div className="flex-1 bg-white/8 h-2 rounded-full overflow-hidden">
                   <div className="bg-red-500 h-full w-[1%]" />
                 </div>
-                <span className="w-8 text-neutral-500 text-right">1%</span>
+                <span className="w-8 text-white/50 text-right">1%</span>
               </div>
             </div>
 
             {/* Write a review form toggle */}
-            <form onSubmit={handleReviewSubmit} className="pt-4 border-t border-neutral-200 space-y-3">
-              <h4 className="text-xs font-bold uppercase tracking-wider text-neutral-800">Review This Product</h4>
+            <form onSubmit={handleReviewSubmit} className="pt-4 border-t border-white/15 space-y-3">
+              <h4 className="text-xs font-bold uppercase tracking-wider text-white/90">Review This Product</h4>
               
               {reviewError && <p className="text-xs text-red-600">{reviewError}</p>}
 
-              <div className="flex gap-1 text-neutral-300">
+              <div className="flex gap-1 text-white/30">
                 {[1, 2, 3, 4, 5].map((star) => (
                   <button
                     key={star}
@@ -522,7 +522,7 @@ const ProductDetailPage = () => {
                     className="focus:outline-none"
                   >
                     <StarIcon
-                      className={`w-5 h-5 ${star <= reviewRating ? 'text-amber-400' : 'text-neutral-300'}`}
+                      className={`w-5 h-5 ${star <= reviewRating ? 'text-amber-400' : 'text-white/30'}`}
                       filled={star <= reviewRating}
                     />
                   </button>
@@ -535,7 +535,7 @@ const ProductDetailPage = () => {
                 value={reviewComment}
                 onChange={(e) => setReviewComment(e.target.value)}
                 placeholder="Share your experience (fabric, fit, comfort)..."
-                className="w-full text-xs bg-white border border-neutral-300 rounded-xl p-2.5 outline-none focus:ring-1 focus:ring-black"
+                className="w-full text-xs bg-transparent border border-white/20 rounded-xl p-2.5 outline-none focus:ring-1 focus:ring-black"
               />
 
               <button
@@ -552,29 +552,29 @@ const ProductDetailPage = () => {
           <div className="md:col-span-2 space-y-4">
             {product.reviews && product.reviews.length > 0 ? (
               product.reviews.map((rev, idx) => (
-                <div key={idx} className="border border-neutral-200 rounded-2xl p-5 bg-white space-y-2">
+                <div key={idx} className="border border-white/15 rounded-2xl p-5 bg-transparent space-y-2">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2">
                       <span className="inline-flex items-center gap-1 bg-emerald-600 text-white text-[11px] font-bold px-2 py-0.5 rounded">
                         <span>{rev.rating}</span>
                         <StarIcon className="w-3 h-3" filled={true} />
                       </span>
-                      <span className="font-bold text-sm text-neutral-900">{rev.name}</span>
-                      <span className="inline-flex items-center gap-0.5 text-[10px] font-bold text-neutral-400 bg-neutral-100 px-2 py-0.5 rounded-full">
+                      <span className="font-bold text-sm text-white">{rev.name}</span>
+                      <span className="inline-flex items-center gap-0.5 text-[10px] font-bold text-white/40 bg-white/8 px-2 py-0.5 rounded-full">
                         <CheckIcon className="w-2.5 h-2.5 text-emerald-600" />
                         <span>Verified Buyer</span>
                       </span>
                     </div>
-                    <span className="text-xs text-neutral-400">
+                    <span className="text-xs text-white/40">
                       {new Date(rev.createdAt || Date.now()).toLocaleDateString('en-IN')}
                     </span>
                   </div>
-                  <p className="text-xs text-neutral-700 leading-relaxed">{rev.comment}</p>
+                  <p className="text-xs text-white/80 leading-relaxed">{rev.comment}</p>
                 </div>
               ))
             ) : (
-              <div className="bg-white border border-neutral-200 rounded-2xl p-8 text-center text-xs text-neutral-500">
-                <p className="font-bold text-sm text-neutral-800">No reviews yet for this product</p>
+              <div className="border border-white/10 rounded-2xl p-8 text-center text-xs text-white/50">
+                <p className="font-bold text-sm text-white/90">No reviews yet for this product</p>
                 <p className="mt-1">Be the first to review this product and help other shoppers!</p>
               </div>
             )}

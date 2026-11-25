@@ -47,10 +47,10 @@ const NewArrivalsPage = () => {
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
       <div className="text-center mb-12">
-        <h1 className="text-3xl sm:text-4xl font-black uppercase tracking-tight text-neutral-900 mb-4">
+        <h1 className="text-3xl sm:text-4xl font-black uppercase tracking-tight text-white mb-4">
           New Arrivals
         </h1>
-        <p className="text-sm text-neutral-500 max-w-2xl mx-auto">
+        <p className="text-sm text-white/50 max-w-2xl mx-auto">
           Discover the latest additions to our collection. Fresh styles just dropped.
         </p>
       </div>
@@ -58,7 +58,7 @@ const NewArrivalsPage = () => {
       {loading ? (
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 sm:gap-6">
           {[...Array(10)].map((_, i) => (
-            <div key={i} className="animate-pulse bg-neutral-200 aspect-square rounded-2xl" />
+            <div key={i} className="animate-pulse bg-white/8 aspect-square rounded-2xl" />
           ))}
         </div>
       ) : products.length > 0 ? (
@@ -69,7 +69,7 @@ const NewArrivalsPage = () => {
         </div>
       ) : (
         <div className="text-center py-20">
-          <p className="text-neutral-500">No new arrivals found.</p>
+          <p className="text-white/50">No new arrivals found.</p>
         </div>
       )}
     </div>

@@ -49,11 +49,11 @@ const CartPage = () => {
   if (cartItems.length === 0) {
     return (
       <div className="max-w-7xl mx-auto px-4 py-20 text-center">
-        <div className="w-20 h-20 bg-neutral-100 rounded-full flex items-center justify-center mx-auto mb-6 text-neutral-400">
+        <div className="w-20 h-20 bg-white/8 rounded-full flex items-center justify-center mx-auto mb-6 text-white/40">
           <ShoppingBagIcon className="w-10 h-10" />
         </div>
-        <h2 className="text-3xl font-black uppercase tracking-tight text-neutral-900">Your Cart is Empty</h2>
-        <p className="text-sm text-neutral-500 mt-2 max-w-sm mx-auto">
+        <h2 className="text-3xl font-black uppercase tracking-tight text-white">Your Cart is Empty</h2>
+        <p className="text-sm text-white/50 mt-2 max-w-sm mx-auto">
           Looks like you haven't added anything to your cart yet. Explore our latest drops!
         </p>
         <Link
@@ -68,7 +68,7 @@ const CartPage = () => {
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
-      <h1 className="text-3xl sm:text-4xl font-black uppercase tracking-tight text-neutral-900 mb-8">
+      <h1 className="text-3xl sm:text-4xl font-black uppercase tracking-tight text-white mb-8">
         YOUR CART
       </h1>
 
@@ -76,7 +76,7 @@ const CartPage = () => {
         
         {/* Cart Items List */}
         <div className="lg:col-span-2 space-y-4">
-          <div className="border border-neutral-200 rounded-3xl p-6 bg-white space-y-6">
+          <div className="border border-white/15 rounded-3xl p-6 bg-transparent space-y-6">
             {cartItems.map((item) => {
               const product = item.product || {};
               const title = product.title || item.title || 'Product';
@@ -86,10 +86,10 @@ const CartPage = () => {
               return (
                 <div
                   key={item._id}
-                  className="flex gap-4 sm:gap-6 pb-6 border-b border-neutral-100 last:border-b-0 last:pb-0"
+                  className="flex gap-4 sm:gap-6 pb-6 border-b border-white/10 last:border-b-0 last:pb-0"
                 >
                   {/* Thumbnail */}
-                  <div className="w-24 h-28 sm:w-28 sm:h-32 rounded-2xl overflow-hidden bg-neutral-100 shrink-0">
+                  <div className="w-24 h-28 sm:w-28 sm:h-32 rounded-2xl overflow-hidden bg-white/8 shrink-0">
                     <img src={image} alt={title} className="w-full h-full object-cover" />
                   </div>
 
@@ -99,7 +99,7 @@ const CartPage = () => {
                       <div className="flex justify-between items-start">
                         <Link
                           to={`/product/${product._id || item.product}`}
-                          className="font-bold text-sm sm:text-base text-neutral-900 hover:underline line-clamp-1"
+                          className="font-bold text-sm sm:text-base text-white hover:underline line-clamp-1"
                         >
                           {title}
                         </Link>
@@ -112,30 +112,30 @@ const CartPage = () => {
                         </button>
                       </div>
 
-                      <div className="mt-1 flex gap-3 text-xs text-neutral-500">
-                        {item.size && <span>Size: <strong className="text-neutral-800">{item.size}</strong></span>}
-                        {item.color && <span>Color: <strong className="text-neutral-800">{item.color}</strong></span>}
+                      <div className="mt-1 flex gap-3 text-xs text-white/50">
+                        {item.size && <span>Size: <strong className="text-white/90">{item.size}</strong></span>}
+                        {item.color && <span>Color: <strong className="text-white/90">{item.color}</strong></span>}
                       </div>
                     </div>
 
                     <div className="flex justify-between items-center mt-4">
-                      <span className="font-extrabold text-base sm:text-lg text-neutral-900">
+                      <span className="font-extrabold text-base sm:text-lg text-white">
                         ₹{(price * item.quantity).toLocaleString('en-IN')}
                       </span>
 
                       {/* Quantity counter */}
-                      <div className="flex items-center gap-3 bg-neutral-100 rounded-full px-3 py-1 text-xs">
+                      <div className="flex items-center gap-3 bg-white/8 rounded-full px-3 py-1 text-xs">
                         <button
                           onClick={() => updateQuantity(item._id, item.quantity - 1)}
                           disabled={item.quantity <= 1}
-                          className="text-neutral-600 hover:text-black disabled:opacity-40"
+                          className="text-white/60 hover:text-black disabled:opacity-40"
                         >
                           <MinusIcon className="w-3.5 h-3.5" />
                         </button>
                         <span className="font-bold">{item.quantity}</span>
                         <button
                           onClick={() => updateQuantity(item._id, item.quantity + 1)}
-                          className="text-neutral-600 hover:text-black"
+                          className="text-white/60 hover:text-black"
                         >
                           <PlusIcon className="w-3.5 h-3.5" />
                         </button>
@@ -151,13 +151,13 @@ const CartPage = () => {
 
         {/* Order Summary */}
         <div className="lg:col-span-1">
-          <div className="border border-neutral-200 rounded-3xl p-6 bg-white space-y-6 sticky top-24">
-            <h2 className="text-xl font-bold text-neutral-900">Order Summary</h2>
+          <div className="border border-white/15 rounded-3xl p-6 bg-transparent space-y-6 sticky top-24">
+            <h2 className="text-xl font-bold text-white">Order Summary</h2>
 
             <div className="space-y-3 text-sm">
-              <div className="flex justify-between text-neutral-600">
+              <div className="flex justify-between text-white/60">
                 <span>Subtotal</span>
-                <span className="font-bold text-neutral-900">₹{cartSubtotal.toLocaleString('en-IN')}</span>
+                <span className="font-bold text-white">₹{cartSubtotal.toLocaleString('en-IN')}</span>
               </div>
 
               {promoApplied && (
@@ -167,19 +167,19 @@ const CartPage = () => {
                 </div>
               )}
 
-              <div className="flex justify-between text-neutral-600">
+              <div className="flex justify-between text-white/60">
                 <span>Delivery Fee</span>
-                <span className="font-bold text-neutral-900">
+                <span className="font-bold text-white">
                   {shippingFee === 0 ? <span className="text-emerald-600">FREE</span> : `₹${shippingFee}`}
                 </span>
               </div>
 
-              <div className="flex justify-between text-neutral-600">
+              <div className="flex justify-between text-white/60">
                 <span>GST (5%)</span>
-                <span className="font-bold text-neutral-900">₹{tax.toLocaleString('en-IN')}</span>
+                <span className="font-bold text-white">₹{tax.toLocaleString('en-IN')}</span>
               </div>
 
-              <div className="border-t border-neutral-200 pt-3 flex justify-between text-base font-black text-neutral-900">
+              <div className="border-t border-white/15 pt-3 flex justify-between text-base font-black text-white">
                 <span>Total</span>
                 <span>₹{total.toLocaleString('en-IN')}</span>
               </div>
@@ -193,7 +193,7 @@ const CartPage = () => {
                   placeholder="Add promo code"
                   value={promoCode}
                   onChange={(e) => setPromoCode(e.target.value)}
-                  className="min-w-0 flex-1 basis-0 bg-neutral-100 text-xs font-semibold px-3 sm:px-4 py-2.5 rounded-full outline-none uppercase focus:ring-1 focus:ring-black"
+                  className="min-w-0 flex-1 basis-0 text-xs text-white placeholder-white/40 font-semibold px-3 sm:px-4 py-2.5 rounded-full outline-none uppercase focus:ring-1 focus:ring-black"
                 />
                 <button
                   type="submit"

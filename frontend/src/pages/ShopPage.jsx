@@ -87,12 +87,12 @@ const ShopPage = () => {
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       {/* Breadcrumb & Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between pb-6 border-b border-neutral-200 gap-4">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between pb-6 border-b border-white/15 gap-4">
         <div>
-          <h1 className="text-3xl font-black uppercase tracking-tight text-neutral-900">
+          <h1 className="text-3xl font-black uppercase tracking-tight text-white">
             {categoryParam !== 'All' ? categoryParam : 'All Products'}
           </h1>
-          <p className="text-xs text-neutral-500 mt-1">
+          <p className="text-xs text-white/50 mt-1">
             Showing {products.length} of {totalProducts} products
             {keywordParam && ` for "${keywordParam}"`}
           </p>
@@ -102,18 +102,18 @@ const ShopPage = () => {
         <div className="flex items-center gap-3">
           <button
             onClick={() => setMobileFilterOpen(true)}
-            className="md:hidden flex items-center gap-1.5 bg-neutral-100 text-neutral-800 px-4 py-2 rounded-full text-sm font-semibold"
+            className="md:hidden flex items-center gap-1.5 bg-white/8 text-white/90 px-4 py-2 rounded-full text-sm font-semibold"
           >
             <FilterIcon className="w-4 h-4" />
             <span>Filters</span>
           </button>
 
           <div className="flex items-center gap-2 text-sm">
-            <span className="text-neutral-500 text-xs hidden sm:inline">Sort by:</span>
+            <span className="text-white/50 text-xs hidden sm:inline">Sort by:</span>
             <select
               value={sortParam}
               onChange={(e) => updateFilter('sort', e.target.value)}
-              className="bg-neutral-100 border-none rounded-full px-4 py-2 text-sm font-medium focus:ring-2 focus:ring-black outline-none"
+              className="bg-white/8 border-none rounded-full px-4 py-2 text-sm font-medium focus:ring-2 focus:ring-black outline-none"
             >
               <option value="newest">Newest First</option>
               <option value="price-low">Price: Low to High</option>
@@ -127,9 +127,9 @@ const ShopPage = () => {
       <div className="mt-8 grid grid-cols-1 md:grid-cols-4 gap-8">
         
         {/* Desktop Sidebar Filters */}
-        <aside className="hidden md:block col-span-1 border border-neutral-200 rounded-2xl p-6 bg-white h-fit space-y-6">
+        <aside className="hidden md:block col-span-1 border border-white/15 rounded-2xl p-6 bg-transparent h-fit space-y-6">
           <div className="flex items-center justify-between">
-            <h2 className="font-bold text-base text-neutral-900">Filters</h2>
+            <h2 className="font-bold text-base text-white">Filters</h2>
             {(categoryParam !== 'All' || keywordParam || sortParam !== 'newest') && (
               <button
                 onClick={clearAllFilters}
@@ -141,8 +141,8 @@ const ShopPage = () => {
           </div>
 
           {/* Categories */}
-          <div className="space-y-2 border-t border-neutral-100 pt-4">
-            <h3 className="text-xs font-bold uppercase tracking-wider text-neutral-400">Categories</h3>
+          <div className="space-y-2 border-t border-white/10 pt-4">
+            <h3 className="text-xs font-bold uppercase tracking-wider text-white/40">Categories</h3>
             <div className="flex flex-col space-y-1">
               {CATEGORIES.map((cat) => (
                 <button
@@ -151,7 +151,7 @@ const ShopPage = () => {
                   className={`text-left text-sm py-1.5 px-3 rounded-lg transition ${
                     categoryParam === cat
                       ? 'bg-black text-white font-semibold'
-                      : 'text-neutral-600 hover:bg-neutral-100'
+                      : 'text-white/60 hover:bg-white/8'
                   }`}
                 >
                   {cat}
@@ -166,13 +166,13 @@ const ShopPage = () => {
           {loading ? (
             <div className="grid grid-cols-2 sm:grid-cols-3 gap-6">
               {[...Array(6)].map((_, i) => (
-                <div key={i} className="animate-pulse bg-neutral-200 aspect-3/4 rounded-2xl" />
+                <div key={i} className="animate-pulse bg-white/8 aspect-3/4 rounded-2xl" />
               ))}
             </div>
           ) : products.length === 0 ? (
-            <div className="text-center py-20 bg-neutral-50 rounded-2xl border border-dashed border-neutral-300 p-8">
-              <h3 className="text-lg font-bold text-neutral-800">No products match your criteria</h3>
-              <p className="text-sm text-neutral-500 mt-2">Try clearing your filters or searching for something else.</p>
+            <div className="text-center py-20 rounded-2xl border border-dashed border-white/20 p-8">
+              <h3 className="text-lg font-bold text-white/90">No products match your criteria</h3>
+              <p className="text-sm text-white/50 mt-2">Try clearing your filters or searching for something else.</p>
               <button
                 onClick={clearAllFilters}
                 className="mt-4 bg-black text-white px-6 py-2 rounded-full text-xs font-semibold hover:bg-neutral-800"
@@ -190,11 +190,11 @@ const ShopPage = () => {
 
               {/* Pagination */}
               {totalPages > 1 && (
-                <div className="mt-12 flex items-center justify-between border-t border-neutral-200 pt-6">
+                <div className="mt-12 flex items-center justify-between border-t border-white/15 pt-6">
                   <button
                     onClick={() => handlePageChange(pageParam - 1)}
                     disabled={pageParam <= 1}
-                    className="border border-neutral-300 text-neutral-700 px-4 py-2 rounded-full text-xs font-semibold hover:bg-neutral-100 disabled:opacity-40"
+                    className="border border-white/20 text-white/80 px-4 py-2 rounded-full text-xs font-semibold hover:bg-white/8 disabled:opacity-40"
                   >
                     Previous
                   </button>
@@ -209,7 +209,7 @@ const ShopPage = () => {
                           className={`w-8 h-8 rounded-full text-xs font-semibold ${
                             pageParam === pageNum
                               ? 'bg-black text-white'
-                              : 'text-neutral-700 hover:bg-neutral-100'
+                              : 'text-white/80 hover:bg-white/8'
                           }`}
                         >
                           {pageNum}
@@ -221,7 +221,7 @@ const ShopPage = () => {
                   <button
                     onClick={() => handlePageChange(pageParam + 1)}
                     disabled={pageParam >= totalPages}
-                    className="border border-neutral-300 text-neutral-700 px-4 py-2 rounded-full text-xs font-semibold hover:bg-neutral-100 disabled:opacity-40"
+                    className="border border-white/20 text-white/80 px-4 py-2 rounded-full text-xs font-semibold hover:bg-white/8 disabled:opacity-40"
                   >
                     Next
                   </button>
@@ -236,16 +236,16 @@ const ShopPage = () => {
       {/* Mobile Filters Drawer */}
       {mobileFilterOpen && (
         <div className="fixed inset-0 z-50 flex bg-black/50 backdrop-blur-xs md:hidden">
-          <div className="w-4/5 max-w-sm bg-white h-full p-6 overflow-y-auto space-y-6">
+          <div className="w-4/5 max-w-sm bg-transparent h-full p-6 overflow-y-auto space-y-6">
             <div className="flex items-center justify-between border-b pb-4">
-              <h2 className="font-bold text-lg text-neutral-900">Filters</h2>
+              <h2 className="font-bold text-lg text-white">Filters</h2>
               <button onClick={() => setMobileFilterOpen(false)}>
-                <CloseIcon className="w-5 h-5 text-neutral-500" />
+                <CloseIcon className="w-5 h-5 text-white/50" />
               </button>
             </div>
 
             <div className="space-y-2">
-              <h3 className="text-xs font-bold uppercase tracking-wider text-neutral-400">Categories</h3>
+              <h3 className="text-xs font-bold uppercase tracking-wider text-white/40">Categories</h3>
               <div className="flex flex-col space-y-1">
                 {CATEGORIES.map((cat) => (
                   <button
@@ -257,7 +257,7 @@ const ShopPage = () => {
                     className={`text-left text-sm py-2 px-3 rounded-lg ${
                       categoryParam === cat
                         ? 'bg-black text-white font-semibold'
-                        : 'text-neutral-700 hover:bg-neutral-100'
+                        : 'text-white/80 hover:bg-white/8'
                     }`}
                   >
                     {cat}
@@ -271,7 +271,7 @@ const ShopPage = () => {
                 clearAllFilters();
                 setMobileFilterOpen(false);
               }}
-              className="w-full bg-neutral-200 text-neutral-800 py-2.5 rounded-full text-sm font-semibold"
+              className="w-full bg-white/8 text-white/90 py-2.5 rounded-full text-sm font-semibold"
             >
               Clear All
             </button>

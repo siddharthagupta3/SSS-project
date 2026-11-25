@@ -185,22 +185,24 @@ const LoginPage = () => {
   // ── OTP Step ──────────────────────────────────────────────────────────────
   if (step === 'otp') {
     return (
-      <div className="min-h-[75vh] flex items-center justify-center px-4 py-12">
-        <div className="max-w-md w-full bg-white border border-neutral-200 rounded-3xl p-8 sm:p-10 shadow-xl space-y-6 text-center">
-          <div className="w-16 h-16 bg-blue-50 text-blue-600 rounded-full flex items-center justify-center mx-auto text-2xl shadow-sm">🔐</div>
+      <div className="min-h-[75vh] flex items-center justify-center px-4 py-12"
+        style={{ background: 'linear-gradient(to bottom, #2d1057, #1a0b2e, #0f2e2a)' }}>
+        <div className="max-w-md w-full border border-white/10 rounded-3xl p-8 sm:p-10 shadow-2xl space-y-6 text-center"
+          style={{ background: 'rgba(255,255,255,0.04)', backdropFilter: 'blur(12px)' }}>
+          <div className="w-16 h-16 bg-purple-900/60 text-pink-300 rounded-full flex items-center justify-center mx-auto text-2xl shadow-sm">🔐</div>
           <div>
-            <h1 className="text-2xl font-black uppercase tracking-tight text-neutral-900">Login Verification</h1>
-            <p className="text-xs text-neutral-500 mt-2">We sent a 6-digit code to:</p>
-            <p className="font-bold text-sm text-neutral-800 mt-0.5">{loginEmail}</p>
+            <h1 className="text-2xl font-black uppercase tracking-tight text-white">Login Verification</h1>
+            <p className="text-xs text-white/50 mt-2">We sent a 6-digit code to:</p>
+            <p className="font-bold text-sm text-white/90 mt-0.5">{loginEmail}</p>
           </div>
 
           {error && (
-            <div className="bg-red-50 border border-red-200 text-red-700 text-xs p-3 rounded-xl font-medium">{error}</div>
+            <div className="border border-red-500/40 text-red-400 text-xs p-3 rounded-xl font-medium">{error}</div>
           )}
 
           <form onSubmit={handleOtpSubmit} className="space-y-6">
             <div>
-              <label className="block text-xs font-semibold text-neutral-600 mb-2">Enter 6-Digit Code</label>
+              <label className="block text-xs font-semibold text-white/60 mb-2">Enter 6-Digit Code</label>
               <div className="flex justify-center gap-2">
                 {otpDigits.map((digit, index) => (
                   <input
@@ -227,7 +229,7 @@ const LoginPage = () => {
                       const pasted = e.clipboardData.getData('text').replace(/\D/g, '').slice(0, 6);
                       if (pasted) setOtpDigits(Array.from({ length: 6 }, (_, i) => pasted[i] || ''));
                     }}
-                    className="w-10 h-12 sm:w-12 sm:h-14 text-center text-xl font-bold rounded-xl bg-neutral-100 border border-neutral-200 outline-none focus:ring-2 focus:ring-black"
+                    className="w-10 h-12 sm:w-12 sm:h-14 text-center text-xl font-bold rounded-xl border border-white/20 outline-none focus:ring-2 focus:ring-purple-400 text-white" style={{ background: "rgba(255,255,255,0.08)""
                   />
                 ))}
               </div>
@@ -241,17 +243,17 @@ const LoginPage = () => {
             </button>
           </form>
 
-          <div className="text-xs text-neutral-500 flex items-center justify-center gap-2">
+          <div className="text-xs text-white/50 flex items-center justify-center gap-2">
             <span>Didn't receive code?</span>
             {canResend ? (
               <button onClick={handleResendLoginOTP} className="font-bold text-black hover:underline">Resend Code</button>
             ) : (
-              <span className="font-semibold text-neutral-400">Resend in {otpTimer}s</span>
+              <span className="font-semibold text-white/40">Resend in {otpTimer}s</span>
             )}
           </div>
           <button
             onClick={() => { setStep('credentials'); setError(''); setOtpDigits(['', '', '', '', '', '']); }}
-            className="text-xs text-neutral-500 hover:text-black"
+            className="text-xs text-white/50 hover:text-black"
           >
             ← Back to Login
           </button>
@@ -262,18 +264,20 @@ const LoginPage = () => {
 
   // ── Credentials Step ──────────────────────────────────────────────────────
   return (
-    <div className="min-h-[75vh] flex items-center justify-center px-4 py-8">
-      <div className="w-full max-w-sm sm:max-w-md bg-white border border-neutral-200 rounded-3xl p-6 sm:p-8 shadow-xl space-y-5">
+    <div className="min-h-[75vh] flex items-center justify-center px-4 py-8"
+      style={{ background: 'linear-gradient(to bottom, #2d1057, #1a0b2e, #0f2e2a)' }}>
+      <div className="w-full max-w-sm sm:max-w-md border border-white/10 rounded-3xl p-6 sm:p-8 shadow-2xl space-y-5"
+        style={{ background: 'rgba(255,255,255,0.04)', backdropFilter: 'blur(12px)' }}>
         <div className="text-center">
           <div className="w-11 h-11 bg-black text-white rounded-full flex items-center justify-center mx-auto mb-3 shadow-sm">
             <UserIcon className="w-5 h-5" />
           </div>
-          <h1 className="text-xl sm:text-2xl font-black uppercase tracking-tight text-neutral-900">Welcome to SHOP.CO</h1>
-          <p className="text-xs text-neutral-500 mt-1">Sign in to your verified account</p>
+          <h1 className="text-xl sm:text-2xl font-black uppercase tracking-tight text-white">Welcome to SHOP.CO</h1>
+          <p className="text-xs text-white/50 mt-1">Sign in to your verified account</p>
         </div>
 
         {error && (
-          <div className="bg-red-50 border border-red-200 text-red-700 text-xs p-3 rounded-xl font-medium">{error}</div>
+          <div className="border border-red-500/40 text-red-400 text-xs p-3 rounded-xl font-medium">{error}</div>
         )}
 
         {/* Google Sign-In */}
@@ -282,36 +286,36 @@ const LoginPage = () => {
           {!googleClientId && <p className="text-center text-xs text-red-600">Google Sign-In is not configured.</p>}
           {googleClientId && !googleReady && !googleLoading && (
             <button type="button" onClick={initializeGoogle}
-              className="mt-2 w-full rounded-full border border-neutral-300 py-2.5 text-sm font-bold text-neutral-800 hover:bg-neutral-50">
+              className="mt-2 w-full rounded-full border border-white/20 py-2.5 text-sm font-bold text-white/90 hover:bg-neutral-50">
               Retry Google Sign-In
             </button>
           )}
         </div>
 
         <div className="relative flex items-center justify-center">
-          <div className="border-t border-neutral-200 w-full" />
-          <span className="bg-white px-3 text-xs uppercase font-bold text-neutral-400 absolute">or continue with email</span>
+          <div className="border-t border-white/15 w-full" />
+          <span className="bg-transparent px-3 text-xs uppercase font-bold text-white/40 absolute">or continue with email</span>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label className="block text-xs font-semibold text-neutral-700 mb-1">Email Address</label>
+            <label className="block text-xs font-semibold text-white/80 mb-1">Email Address</label>
             <input type="email" required value={email} onChange={(e) => setEmail(e.target.value)}
-              className="w-full bg-neutral-100 text-sm px-4 py-2.5 rounded-xl outline-none focus:ring-2 focus:ring-black"
+              className="w-full text-sm text-white placeholder-white/40 px-4 py-2.5 rounded-xl outline-none focus:ring-2 focus:ring-purple-400" style={{ background: "rgba(255,255,255,0.08)", border: "1px solid rgba(255,255,255,0.12)" }}
               placeholder="name@example.com" />
           </div>
           <div>
-            <label className="block text-xs font-semibold text-neutral-700 mb-1">Password</label>
+            <label className="block text-xs font-semibold text-white/80 mb-1">Password</label>
             <input type="password" required value={password} onChange={(e) => setPassword(e.target.value)}
-              className="w-full bg-neutral-100 text-sm px-4 py-2.5 rounded-xl outline-none focus:ring-2 focus:ring-black"
+              className="w-full text-sm text-white placeholder-white/40 px-4 py-2.5 rounded-xl outline-none focus:ring-2 focus:ring-purple-400" style={{ background: "rgba(255,255,255,0.08)", border: "1px solid rgba(255,255,255,0.12)" }}
               placeholder="••••••••" />
           </div>
           <div className="flex items-center justify-between">
-            <label className="flex items-center gap-2 text-xs text-neutral-600">
+            <label className="flex items-center gap-2 text-xs text-white/60">
               <input type="checkbox" checked={rememberMe} onChange={(e) => setRememberMe(e.target.checked)} />
               Remember me
             </label>
-            <Link to="/forgot-password" className="text-xs font-semibold text-neutral-600 hover:text-black">Forgot password?</Link>
+            <Link to="/forgot-password" className="text-xs font-semibold text-white/60 hover:text-black">Forgot password?</Link>
           </div>
 
           {/* Turnstile CAPTCHA — only shown when site key is set */}
@@ -325,7 +329,7 @@ const LoginPage = () => {
           </button>
         </form>
 
-        <p className="text-center text-xs text-neutral-500">
+        <p className="text-center text-xs text-white/50">
           New to SHOP.CO?{' '}
           <Link to="/register" className="font-bold text-black hover:underline">Create an account</Link>
         </p>

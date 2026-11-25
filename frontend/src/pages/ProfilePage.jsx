@@ -199,7 +199,7 @@ const ProfilePage = () => {
           <button
             key={key}
             onClick={() => setActiveTab(key)}
-            className={`shrink-0 px-3 sm:px-4 pb-3 text-xs sm:text-sm font-bold border-b-2 ${activeTab === key ? 'border-black text-black' : 'border-transparent text-neutral-400'}`}
+            className={`shrink-0 px-3 sm:px-4 pb-3 text-xs sm:text-sm font-bold border-b-2 ${activeTab === key ? 'border-black text-black' : 'border-transparent text-white/40'}`}
           >
             {label}
           </button>
@@ -207,7 +207,7 @@ const ProfilePage = () => {
       </div>
 
       {activeTab === 'personal' && (
-        <form onSubmit={saveProfile} className="max-w-3xl bg-white border rounded-2xl p-6 space-y-6">
+        <form onSubmit={saveProfile} className="max-w-3xl bg-transparent border rounded-2xl p-6 space-y-6">
           <div className="flex items-center gap-5">
             {avatarPreview || profile.avatar ? (
               <img
@@ -236,23 +236,23 @@ const ProfilePage = () => {
           <div className="grid sm:grid-cols-2 gap-5">
             <div>
               <label className="block text-sm font-semibold mb-2">Name</label>
-              <input value={profile.name} onChange={(e) => setProfile({ ...profile, name: e.target.value })} required className="w-full bg-neutral-100 px-4 py-2 rounded-lg" />
+              <input value={profile.name} onChange={(e) => setProfile({ ...profile, name: e.target.value })} required className="w-full bg-white/8 px-4 py-2 rounded-lg" />
             </div>
             <div>
               <label className="block text-sm font-semibold mb-2">Email</label>
-              <input value={profile.email} readOnly className="w-full bg-neutral-100 px-4 py-2 rounded-lg opacity-60" />
+              <input value={profile.email} readOnly className="w-full bg-white/8 px-4 py-2 rounded-lg opacity-60" />
             </div>
             <div>
               <label className="block text-sm font-semibold mb-2">Phone</label>
-              <input value={profile.phone} onChange={(e) => setProfile({ ...profile, phone: e.target.value.replace(/\D/g, '').slice(0, 10) })} className="w-full bg-neutral-100 px-4 py-2 rounded-lg" />
+              <input value={profile.phone} onChange={(e) => setProfile({ ...profile, phone: e.target.value.replace(/\D/g, '').slice(0, 10) })} className="w-full bg-white/8 px-4 py-2 rounded-lg" />
             </div>
             <div>
               <label className="block text-sm font-semibold mb-2">Date of Birth</label>
-              <input type="date" value={profile.dob} onChange={(e) => setProfile({ ...profile, dob: e.target.value })} className="w-full bg-neutral-100 px-4 py-2 rounded-lg" />
+              <input type="date" value={profile.dob} onChange={(e) => setProfile({ ...profile, dob: e.target.value })} className="w-full bg-white/8 px-4 py-2 rounded-lg" />
             </div>
             <div>
               <label className="block text-sm font-semibold mb-2">Gender</label>
-              <select value={profile.gender} onChange={(e) => setProfile({ ...profile, gender: e.target.value })} className="w-full bg-neutral-100 px-4 py-2 rounded-lg">
+              <select value={profile.gender} onChange={(e) => setProfile({ ...profile, gender: e.target.value })} className="w-full bg-white/8 px-4 py-2 rounded-lg">
                 <option value="">Select</option>
                 <option>Male</option>
                 <option>Female</option>
@@ -275,9 +275,9 @@ const ProfilePage = () => {
               <div className="flex flex-wrap justify-between gap-3">
                 <div>
                   <p className="font-bold">{address.fullName} — {address.addressType}</p>
-                  <p className="text-sm text-neutral-600">{address.houseNumber}, {address.street}{address.landmark ? `, ${address.landmark}` : ''}</p>
-                  <p className="text-sm text-neutral-600">{address.city}, {address.state} - {address.postalCode}</p>
-                  <p className="text-sm text-neutral-600">{address.phone}</p>
+                  <p className="text-sm text-white/60">{address.houseNumber}, {address.street}{address.landmark ? `, ${address.landmark}` : ''}</p>
+                  <p className="text-sm text-white/60">{address.city}, {address.state} - {address.postalCode}</p>
+                  <p className="text-sm text-white/60">{address.phone}</p>
                   {address.isDefault && <span className="inline-block mt-2 text-xs font-bold bg-emerald-100 text-emerald-700 px-2 py-1 rounded-full">Default</span>}
                 </div>
                 <div className="flex gap-2 items-start">
@@ -305,19 +305,19 @@ const ProfilePage = () => {
                       setAddressForm({ ...addressForm, [key]: value });
                     }}
                     required={key !== 'landmark'}
-                    className="w-full bg-neutral-100 px-4 py-2 rounded-lg"
+                    className="w-full bg-white/8 px-4 py-2 rounded-lg"
                   />
                 </div>
               ))}
               <div>
                 <label className="block text-sm font-semibold mb-1">State</label>
-                <select value={addressForm.state} onChange={(e) => setAddressForm({ ...addressForm, state: e.target.value })} className="w-full bg-neutral-100 px-4 py-2 rounded-lg">
+                <select value={addressForm.state} onChange={(e) => setAddressForm({ ...addressForm, state: e.target.value })} className="w-full bg-white/8 px-4 py-2 rounded-lg">
                   {INDIAN_STATES.map((state) => <option key={state}>{state}</option>)}
                 </select>
               </div>
               <div>
                 <label className="block text-sm font-semibold mb-1">Address Type</label>
-                <select value={addressForm.addressType} onChange={(e) => setAddressForm({ ...addressForm, addressType: e.target.value })} className="w-full bg-neutral-100 px-4 py-2 rounded-lg">
+                <select value={addressForm.addressType} onChange={(e) => setAddressForm({ ...addressForm, addressType: e.target.value })} className="w-full bg-white/8 px-4 py-2 rounded-lg">
                   <option>Home</option><option>Work</option><option>Other</option>
                 </select>
               </div>
@@ -338,11 +338,11 @@ const ProfilePage = () => {
         <div className="space-y-3">
           {orders.map((order) => (
             <div key={order._id} className="border rounded-xl p-4 flex justify-between">
-              <div><p className="font-bold">#{order._id.slice(-8)}</p><p className="text-sm text-neutral-500">{order.orderItems?.length || 0} items</p></div>
+              <div><p className="font-bold">#{order._id.slice(-8)}</p><p className="text-sm text-white/50">{order.orderItems?.length || 0} items</p></div>
               <p className="font-bold">₹{order.totalPrice}</p>
             </div>
           ))}
-          {orders.length === 0 && <p className="text-neutral-500">No orders yet.</p>}
+          {orders.length === 0 && <p className="text-white/50">No orders yet.</p>}
         </div>
       )}
 
@@ -354,7 +354,7 @@ const ProfilePage = () => {
               <p className="mt-2 text-sm font-bold line-clamp-2">{product.title}</p>
             </a>
           ))}
-          {wishlist.length === 0 && <p className="text-neutral-500">Your wishlist is empty.</p>}
+          {wishlist.length === 0 && <p className="text-white/50">Your wishlist is empty.</p>}
         </div>
       )}
 
@@ -367,7 +367,7 @@ const ProfilePage = () => {
           ].map(([key, label]) => (
             <div key={key}>
               <label className="block text-sm font-semibold mb-1">{label}</label>
-              <input type="password" value={password[key]} onChange={(e) => setPassword({ ...password, [key]: e.target.value })} required className="w-full bg-neutral-100 px-4 py-2 rounded-lg" />
+              <input type="password" value={password[key]} onChange={(e) => setPassword({ ...password, [key]: e.target.value })} required className="w-full bg-white/8 px-4 py-2 rounded-lg" />
             </div>
           ))}
           <button disabled={saving} className="bg-black text-white px-5 py-2.5 rounded-full text-sm font-bold">

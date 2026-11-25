@@ -68,7 +68,7 @@ const VerifyEmailPage = () => {
 
   return (
     <div className="min-h-[75vh] flex items-center justify-center px-4 py-12">
-      <div className="max-w-md w-full bg-white border border-neutral-200 rounded-3xl p-8 sm:p-10 shadow-xl space-y-6 text-center">
+      <div className="max-w-md w-full border border-white/10 rounded-3xl p-8 sm:p-10 shadow-xl space-y-6 text-center">
         
         {/* Envelope Icon */}
         <div className="w-16 h-16 bg-red-50 text-red-600 rounded-full flex items-center justify-center mx-auto text-2xl shadow-sm">
@@ -76,17 +76,17 @@ const VerifyEmailPage = () => {
         </div>
 
         <div>
-          <h1 className="text-2xl font-black uppercase tracking-tight text-neutral-900">
+          <h1 className="text-2xl font-black uppercase tracking-tight text-white">
             Verify Your Gmail
           </h1>
-          <p className="text-xs text-neutral-500 mt-2">
+          <p className="text-xs text-white/50 mt-2">
             We have sent a 6-digit verification code to:
           </p>
-          <p className="font-bold text-sm text-neutral-800 mt-0.5">{email || 'your email'}</p>
+          <p className="font-bold text-sm text-white/90 mt-0.5">{email || 'your email'}</p>
         </div>
 
         {error && (
-          <div className="bg-red-50 border border-red-200 text-red-700 text-xs p-3 rounded-xl font-medium">
+          <div className="border border-red-500/40 text-red-400 text-xs p-3 rounded-xl font-medium">
             {error}
           </div>
         )}
@@ -100,7 +100,7 @@ const VerifyEmailPage = () => {
 
         <form onSubmit={handleVerify} className="space-y-6">
           <div>
-            <label className="block text-xs font-semibold text-neutral-600 mb-2">
+            <label className="block text-xs font-semibold text-white/60 mb-2">
               Enter 6-Digit Code
             </label>
             <div className="flex justify-center gap-2">
@@ -128,7 +128,7 @@ const VerifyEmailPage = () => {
                       setOtp(pasted);
                     }
                   }}
-                  className="w-11 h-12 sm:w-12 sm:h-14 text-center text-xl font-bold rounded-xl bg-neutral-100 border border-neutral-200 outline-none focus:ring-2 focus:ring-black"
+                  className="w-11 h-12 sm:w-12 sm:h-14 text-center text-xl font-bold rounded-xl bg-white/8 border border-white/15 outline-none focus:ring-2 focus:ring-black"
                 />
               ))}
             </div>
@@ -143,7 +143,7 @@ const VerifyEmailPage = () => {
           </button>
         </form>
 
-        <div className="pt-2 text-xs text-neutral-500 flex items-center justify-center gap-2">
+        <div className="pt-2 text-xs text-white/50 flex items-center justify-center gap-2">
           <span>Didn't receive code?</span>
           {canResend ? (
             <button
@@ -153,12 +153,12 @@ const VerifyEmailPage = () => {
               Resend OTP
             </button>
           ) : (
-            <span className="font-semibold text-neutral-400">Resend in {timer}s</span>
+            <span className="font-semibold text-white/40">Resend in {timer}s</span>
           )}
         </div>
 
         <div className="border-t pt-4">
-          <Link to="/shop" className="text-xs text-neutral-500 hover:text-black">
+          <Link to="/shop" className="text-xs text-white/50 hover:text-black">
             Skip for now & browse store →
           </Link>
         </div>
