@@ -39,8 +39,20 @@ const adminLoginLimiter = rateLimit({
   },
 });
 
+const chatLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 30,
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: {
+    success: false,
+    message: 'You are sending messages too quickly. Please wait a few minutes.',
+  },
+});
+
 module.exports = {
   authLimiter,
   adminLimiter,
   adminLoginLimiter,
+  chatLimiter,
 };
