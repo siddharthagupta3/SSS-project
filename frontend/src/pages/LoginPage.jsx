@@ -262,13 +262,13 @@ const LoginPage = () => {
 
   // ── Credentials Step ──────────────────────────────────────────────────────
   return (
-    <div className="min-h-[75vh] flex items-center justify-center px-4 py-12">
-      <div className="max-w-md w-full bg-white border border-neutral-200 rounded-3xl p-8 sm:p-10 shadow-xl space-y-6">
+    <div className="min-h-[75vh] flex items-center justify-center px-4 py-8">
+      <div className="w-full max-w-sm sm:max-w-md bg-white border border-neutral-200 rounded-3xl p-6 sm:p-8 shadow-xl space-y-5">
         <div className="text-center">
-          <div className="w-12 h-12 bg-black text-white rounded-full flex items-center justify-center mx-auto mb-3 shadow-sm">
-            <UserIcon className="w-6 h-6" />
+          <div className="w-11 h-11 bg-black text-white rounded-full flex items-center justify-center mx-auto mb-3 shadow-sm">
+            <UserIcon className="w-5 h-5" />
           </div>
-          <h1 className="text-2xl font-black uppercase tracking-tight text-neutral-900">Welcome to SHOP.CO</h1>
+          <h1 className="text-xl sm:text-2xl font-black uppercase tracking-tight text-neutral-900">Welcome to SHOP.CO</h1>
           <p className="text-xs text-neutral-500 mt-1">Sign in to your verified account</p>
         </div>
 
@@ -276,11 +276,13 @@ const LoginPage = () => {
           <div className="bg-red-50 border border-red-200 text-red-700 text-xs p-3 rounded-xl font-medium">{error}</div>
         )}
 
-        <div className="w-full">
+        {/* Google Sign-In */}
+        <div className="w-full overflow-hidden">
           <div className="flex min-h-[44px] w-full justify-center overflow-hidden" ref={googleButtonRef} />
           {!googleClientId && <p className="text-center text-xs text-red-600">Google Sign-In is not configured.</p>}
           {googleClientId && !googleReady && !googleLoading && (
-            <button type="button" onClick={initializeGoogle} className="mt-2 w-full rounded-full border border-neutral-300 py-2.5 text-sm font-bold text-neutral-800 hover:bg-neutral-50">
+            <button type="button" onClick={initializeGoogle}
+              className="mt-2 w-full rounded-full border border-neutral-300 py-2.5 text-sm font-bold text-neutral-800 hover:bg-neutral-50">
               Retry Google Sign-In
             </button>
           )}
@@ -294,37 +296,31 @@ const LoginPage = () => {
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
             <label className="block text-xs font-semibold text-neutral-700 mb-1">Email Address</label>
-            <input
-              type="email" required value={email} onChange={(e) => setEmail(e.target.value)}
+            <input type="email" required value={email} onChange={(e) => setEmail(e.target.value)}
               className="w-full bg-neutral-100 text-sm px-4 py-2.5 rounded-xl outline-none focus:ring-2 focus:ring-black"
-              placeholder="name@example.com"
-            />
+              placeholder="name@example.com" />
           </div>
           <div>
             <label className="block text-xs font-semibold text-neutral-700 mb-1">Password</label>
-            <input
-              type="password" required value={password} onChange={(e) => setPassword(e.target.value)}
+            <input type="password" required value={password} onChange={(e) => setPassword(e.target.value)}
               className="w-full bg-neutral-100 text-sm px-4 py-2.5 rounded-xl outline-none focus:ring-2 focus:ring-black"
-              placeholder="••••••••"
-            />
+              placeholder="••••••••" />
           </div>
-          <div className="flex justify-end">
+          <div className="flex items-center justify-between">
+            <label className="flex items-center gap-2 text-xs text-neutral-600">
+              <input type="checkbox" checked={rememberMe} onChange={(e) => setRememberMe(e.target.checked)} />
+              Remember me
+            </label>
             <Link to="/forgot-password" className="text-xs font-semibold text-neutral-600 hover:text-black">Forgot password?</Link>
           </div>
-          <label className="flex items-center gap-2 text-xs text-neutral-600">
-            <input type="checkbox" checked={rememberMe} onChange={(e) => setRememberMe(e.target.checked)} />
-            Remember me
-          </label>
 
-          {/* Cloudflare Turnstile — only shown when VITE_TURNSTILE_SITE_KEY is set */}
+          {/* Turnstile CAPTCHA — only shown when site key is set */}
           {TURNSTILE_SITE_KEY && (
-            <div className="flex justify-center" ref={turnstileRef} />
+            <div className="flex justify-center overflow-hidden rounded-xl" ref={turnstileRef} />
           )}
 
-          <button
-            type="submit" disabled={loading}
-            className="w-full bg-black text-white py-3.5 rounded-full font-bold text-sm hover:bg-neutral-800 transition active:scale-95 disabled:opacity-50 shadow-md"
-          >
+          <button type="submit" disabled={loading}
+            className="w-full bg-black text-white py-3 rounded-full font-bold text-sm hover:bg-neutral-800 transition active:scale-95 disabled:opacity-50 shadow-md">
             {loading ? 'Sending Code...' : 'Sign In'}
           </button>
         </form>
