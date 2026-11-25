@@ -54,7 +54,7 @@ const HomePage = () => {
         style={{
           height: '100dvh',
           minHeight: 580,
-          background: 'radial-gradient(ellipse at 25% 0%, #2d1057 0%, #1a0b2e 45%, #2d0a3e 100%)',
+          background: 'linear-gradient(to bottom, #2d1057 0%, #1a0b2e 40%, #0d2318 75%, #0f2e2a 100%)',
         }}
       >
         {/* Grid overlay */}
@@ -70,9 +70,9 @@ const HomePage = () => {
           style={{ background: `radial-gradient(circle,rgba(192,132,252,0.18) 0%,transparent 70%)` }} />
 
         {/* Content grid — LAPTOP: 2 cols, MOBILE: 1 col stacked */}
-        <div className="relative z-10 h-full max-w-7xl mx-auto px-5 sm:px-8 lg:px-12
-                        grid md:grid-cols-2 gap-6 items-center
-                        pt-4 pb-4">
+        <div className="relative z-10 max-w-7xl mx-auto px-5 sm:px-8 lg:px-12
+                        grid md:grid-cols-2 gap-4 md:gap-6 items-center
+                        pt-4 pb-4 md:h-full overflow-y-auto md:overflow-visible">
 
           {/* LEFT — text */}
           <div className="flex flex-col gap-4 md:gap-5">
@@ -129,18 +129,52 @@ const HomePage = () => {
             </div>
           </div>
 
+          {/* MOBILE — fashion image (phone only, below text) */}
+          <div className="md:hidden relative w-full mt-2 mb-1">
+            <img
+              src="https://images.unsplash.com/photo-1529139574466-a303027c1d8b?w=700&auto=format&fit=crop&q=80"
+              alt="Premium fashion model"
+              className="w-full rounded-2xl object-cover shadow-2xl"
+              style={{ height: 260, objectPosition: 'center top' }}
+              onError={(e) => {
+                e.target.src = 'https://images.unsplash.com/photo-1483985988355-763728e1935b?w=700&auto=format&fit=crop&q=80';
+              }}
+            />
+            <div className="absolute inset-0 rounded-2xl"
+              style={{ background: 'linear-gradient(to bottom, rgba(45,16,87,0.35) 0%, rgba(13,35,24,0.65) 100%)' }} />
+            <div className="absolute bottom-3 left-3 right-3 backdrop-blur-sm p-2.5 rounded-xl"
+              style={{ background: 'rgba(10,5,20,0.72)', border: '1px solid rgba(249,168,212,0.2)' }}>
+              <span className="text-[9px] font-bold uppercase tracking-wider" style={{ color: '#F9A8D4' }}>🔥 Exclusive Drop</span>
+              <p className="text-xs font-semibold text-white mt-0.5">Streetwear & Minimalist Essentials — 2026</p>
+            </div>
+          </div>
+
           {/* RIGHT — fashion image (desktop/tablet only) */}
           <div className="hidden md:flex justify-center items-center relative">
             <div className="absolute inset-0 rounded-3xl blur-3xl pointer-events-none"
-              style={{ background: 'radial-gradient(ellipse,rgba(249,168,212,0.14) 0%,transparent 70%)' }} />
+              style={{ background: 'radial-gradient(ellipse at top,rgba(192,132,252,0.3) 0%,rgba(13,35,24,0.3) 100%)' }} />
             <div className="relative w-full max-w-xs lg:max-w-sm xl:max-w-md">
+              <div className="absolute -inset-3 rounded-3xl pointer-events-none"
+                style={{
+                  background: 'linear-gradient(135deg, rgba(192,132,252,0.4) 0%, rgba(13,35,24,0.4) 100%)',
+                  filter: 'blur(20px)',
+                  opacity: 0.6
+                }} />
               <div className="absolute -inset-2 rounded-3xl pointer-events-none"
                 style={{ border: '1px solid rgba(249,168,212,0.2)' }} />
               <img
                 src="https://images.unsplash.com/photo-1529139574466-a303027c1d8b?w=800&auto=format&fit=crop&q=80"
                 alt="Premium fashion model"
                 className="relative w-full rounded-3xl object-cover shadow-2xl"
-                style={{ aspectRatio: '3/4', maxHeight: 'calc(100dvh - 180px)', objectPosition: 'center top' }}
+                style={{
+                  aspectRatio: '3/4',
+                  maxHeight: 'calc(100dvh - 180px)',
+                  objectPosition: 'center top',
+                  boxShadow: '0 0 40px rgba(192,132,252,0.3), 0 0 80px rgba(13,35,24,0.2)'
+                }}
+                onError={(e) => {
+                  e.target.src = 'https://images.unsplash.com/photo-1483985988355-763728e1935b?w=800&auto=format&fit=crop&q=80';
+                }}
               />
               {/* Overlay badge */}
               <div className="absolute bottom-5 left-5 right-5 backdrop-blur-md p-3 rounded-2xl"
