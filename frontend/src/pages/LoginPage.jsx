@@ -229,7 +229,7 @@ const LoginPage = () => {
                       const pasted = e.clipboardData.getData('text').replace(/\D/g, '').slice(0, 6);
                       if (pasted) setOtpDigits(Array.from({ length: 6 }, (_, i) => pasted[i] || ''));
                     }}
-                    className="w-10 h-12 sm:w-12 sm:h-14 text-center text-xl font-bold rounded-xl border border-white/20 outline-none focus:ring-2 focus:ring-purple-400 text-white" style={{ background: "rgba(255,255,255,0.08)""
+                    className="w-10 h-12 sm:w-12 sm:h-14 text-center text-xl font-bold rounded-xl border border-white/20 outline-none focus:ring-2 focus:ring-purple-400 text-white" style={{ background: "rgba(255,255,255,0.08)" }}
                   />
                 ))}
               </div>
