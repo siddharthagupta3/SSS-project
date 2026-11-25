@@ -132,12 +132,12 @@ const HomePage = () => {
           {/* MOBILE — fashion image (phone only, below text) */}
           <div className="md:hidden relative w-full mt-2 mb-1">
             <img
-              src="https://images.unsplash.com/photo-1529139574466-a303027c1d8b?w=700&auto=format&fit=crop&q=80"
+              src="https://images.unsplash.com/photo-1529139574466-a303027c1d8b?w=800&auto=format&fit=crop&q=90"
               alt="Premium fashion model"
               className="w-full rounded-2xl object-cover shadow-2xl"
-              style={{ height: 260, objectPosition: 'center top' }}
+              style={{ height: 300, objectPosition: 'center 25%' }}
               onError={(e) => {
-                e.target.src = 'https://images.unsplash.com/photo-1483985988355-763728e1935b?w=700&auto=format&fit=crop&q=80';
+                e.target.src = 'https://images.unsplash.com/photo-1483985988355-763728e1935b?w=800&auto=format&fit=crop&q=90';
               }}
             />
             <div className="absolute inset-0 rounded-2xl"
